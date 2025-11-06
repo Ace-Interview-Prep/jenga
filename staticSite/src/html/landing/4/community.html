@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>Ace Talent</title><link href="/static/staticSite/images/logo-single-blue.webp" rel="icon" /><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" /><meta content="Discover exceptional tech talent with Ace Talent. We connect businesses to upskilled professionals from top organizations, ready for remote or on-site roles. Our personalized approach ensures candidates align with your company&#39;s vision and culture. Experience efficient hiring and seamless integration with a partner who truly cares about your success. For developers, Ace Talent Community is the best way to learn how to code and get hired as a software engineer" name="description" /><script defer="" src="/static/staticSite/js/lib.js" type="application/javascript"></script><link href="/static/staticSite/css/styles.css" rel="stylesheet" type="text/css" /><script href="https://cdn.tailwindcss.com"></script><link as="style" href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap" onload="this.onload=null;this.rel=&#39;stylesheet&#39;;" rel="preload" /><link as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons" onload="this.onload=null;this.rel=&#39;stylesheet&#39;;" rel="preload" /><link as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel=&#39;stylesheet&#39;;" rel="preload" /><link as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" onload="this.onload=null;this.rel=&#39;stylesheet&#39;;" rel="preload" /><link as="style" href="https://fonts.googleapis.com/css2?family=Sarabun&amp;display=swap" onload="this.onload=null;this.rel=&#39;stylesheet&#39;;" rel="preload" /><link as="style" href="https://fonts.gstatic.com" onload="this.onload=null;this.rel=&#39;stylesheet&#39;;" rel="preload" /><style>
+/* Markdown Shell */
+.containerBlog {
+   padding: 200px;
+   background-color: black;
+   color: white;
+   font-size: 20px;
+   font-family: Georgia, serif;
+}
+
+.containerBlog ol {
+   list-style-type: decimal;
+   padding-left: 2.5rem;
+}
+.containerBlog ul {
+   list-style-type: disc;
+   padding-left: 2.5rem;
+}
+
+.containerBlog td {
+   padding: 3px;
+   border-color: #888;
+}
+
+.containerBlog li {
+   padding: 5px 10px;
+}
+
+.containerBlog p {
+   padding: 10px 0px;
+}
+
+.containerBlog a {
+   color: #00B9DA;
+   text-decoration: none;
+}
+
+.containerBlog p code {
+  background-color: #D3D3D3;
+  padding: 0px 3px;
+  border-radius: 0.5rem;
+}
+
+.containerBlog h1 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 2em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h2 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h3 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size:1.17em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h4 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h5 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 0.83em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+
+
+
+/* Otherwise comments can go on into infinity */
+span.co {
+  word-break: break-word;        /* Safe wrap on words */
+  overflow-wrap: anywhere;       /* Force wrap anywhere if needed */
+  white-space: normal;           /* Allow wrapping */
+}
+
+
+code:not([class]) {
+  /* your styles here */
+  background-color: white;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+code span {
+  display: inline;
+  white-space: pre;
+}
+
+.source-code {
+  padding: 8px;
+  border-color: white;
+  background-color: black;
+}
+
+}
+/* One off haskell constructs */
+code {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+div.source-code {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+code.language-haskell {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+/* Haskell Syntax */
+.pr {
+   color: #F8E473;
+}
+.op {
+   color: gold;
+}
+.sy {
+   color: #FADA5E;
+}
+.co {
+   color: green;
+}
+.cr {
+   color: #af64ff;
+}
+.va {
+   color: #6693F5; 
+}
+.kw {
+    color: #f0883e;
+}
+
+/* Haskell Syntax - Literals */
+.st {
+  color: #a5d6ff;
+}
+.ch {
+  color: #2E3A59;
+}
+.it {}
+.ra {}
+
+
+/* Other Languages Via Skylighting Tokenizer */
+
+.pp {
+  color: blue;
+}
+.im {
+  color: green;
+}
+.dt {
+  color: green;
+}
+.cf {
+  color: orange;
+}
+/*Like char */
+.sc {
+  color: orange;
+}
+/* java func */
+.fu {
+  color: #6693F5;
+}
+
+/* base color C lang */
+.language-c {
+  color: #6693F5;
+}
+
+.language-bash {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+.language-nix {
+  color: grey;
+  font-weight: bold;
+}
+
+.language-java {
+  color: #6693F5;
+}
+.language-csharp {
+  color: #E3B778;
+}
+.language-python {
+  color: #E3B778;
+}
+</style></head><body><div class="fixed top-0 left-0 w-full h-full overflow-auto z-10 scroll-smooth"><div class="pl-8 sm:pl-16 pt-[50px]"><div class="w-[60%] sm:w-[60%] md:w-[68%] lg:w-[70%] xl:w-[75%] 2xl:w-[80%] inline-block"><a aria-label="base" class="" href="/landing/base" style="text-decoration: none;"><img class="w-[25%] sm:w-[20%] md:w-[20%] lg:w-[20%] xl:w-[15%] inline-block" src="/static/staticAssets/images/Ace-blue-logo.webp" /></a><div class="w-[25%] sm:w-[20%] md:w-[20%] lg:w-[20%] xl:w-[15%] inline-block"><div class="grid justify-items-center content-center"><div class="relative" onClick="toggleOpenDropdown()"><button class="text-black px-4 py-2 font-normal border-none cursor-pointer hover:text-[#D6F6FF]"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-4xl font-[Inter] hover:text-[#00B9DA]">Solutions </span><span class="text-sm sm:text-xl md:text-2xl font-[Inter] hover:text-[#00B9DA]">▼</span></button><div class="absolute left-0 w-[100vw] bg-white shadow-lg drop-shadow-2xl z-40 rounded-lg hidden" id="solutionsDropdown" onClick="toggleOpenDropdown"><a aria-label="bootcamps" class="" href="/landing/4/bootcamps" style="text-decoration: none;"><li class="text-black w-[100vw] px-4 py-2 block no-underline hover:bg-[#D6F6FF]"><span class="text-2xl font-semibold font-[Inter] text-[#2E3A59]">Coding Bootcamps</span></li></a><a aria-label="recruitingFirms" class="" href="/landing/4/recruitingFirms" style="text-decoration: none;"><li class="text-black w-[100vw] px-4 py-2 block no-underline hover:bg-[#D6F6FF]"><span class="text-2xl font-semibold font-[Inter] text-[#2E3A59]">Tech Recruiting Firms</span></li></a><a aria-label="community" class="" href="/landing/4/community" style="text-decoration: none;"><li class="text-black w-[100vw] px-4 py-2 block no-underline hover:bg-[#D6F6FF]"><span class="text-2xl font-semibold font-[Inter] text-[#2E3A59]">Tech Communities</span></li></a><a aria-label="u" class="" href="/landing/4/u" style="text-decoration: none;"><li class="text-black w-[100vw] px-4 py-2 block no-underline hover:bg-[#D6F6FF]"><span class="text-2xl font-semibold font-[Inter] text-[#2E3A59]">Job Seekers</span></li></a></div></div></div></div><a class="w-[25%] sm:w-[20%] md:w-[20%] lg:w-[20%] xl:w-[15%] inline-block" href="https://medium.com/all-things-ace" style="text-decoration: none;"><div class="grid justify-items-center content-center"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-4xl font-[Inter] hover:text-[#00B9DA]">Resources</span></div></a><a aria-label="aboutAce" class="" href="/landing/aboutAce" style="text-decoration: none;"><div class="w-[25%] sm:w-[20%] md:w-[20%] lg:w-[20%] xl:w-[15%] inline-block"><div class="grid justify-items-center content-center"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-4xl font-[Inter] hover:text-[#00B9DA]">About us</span></div></div></a></div><div class="w-[40%] sm:w-[40%] md:w-[32%] lg:w-[30%] xl:w-[25%] 2xl:w-[20%] inline-block"><div class="inline-block"><a aria-label="login" class="" href="/login" style="text-decoration: none;"><button class="rounded-tr rounded-tl rounded-br rounded-bl border-l-2 border-r-2 border-t-2 border-b-2 border-l-[#00B9DA] border-r-[#00B9DA] border-t-[#00B9DA] border-b-[#00B9DA] pl-4 sm:pl-8 pr-4 sm:pr-8 pt-2 sm:pt-4 pb-2 sm:pb-4"><span class="text-base sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-[Inter] text-[#00B9DA]">Login </span><div class="inline-block"><img alt="Vector" class="w-4 sm:w-6 md:w-8 lg:w-10" src="/static/staticAssets/images/Vector.svg" /></div></button></a></div><div class="inline-block pl-4"><a aria-label="freeTest" class="" href="/main/mockInterview/freeTest" style="text-decoration: none;"><button class="bg-[#00B9DA] py-3 sm:py-4 px-4 sm:px-8 rounded focus:outline-none transition duration-300 ease-in-out hover:scale-105 drop-shadow-2xl"><span class="text-base sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-bold font-[Inter] text-white">Sign Up Now</span></button></a></div></div></div><div><div class="h-[30vh] sm:h-[40vh] md:h-[80vh] bg-[#F1FCFF] relative"><div class="grid justify-items-center content-center w-full h-full absolute z-30"><div class="text-center"><div class="pb-4"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">FOR TECH COMMUNITIES</span></div><div class="pb-4"><span class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-[Inter] text-[#00B9DA]">Supercharge</span><span class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-[Inter]"> your</span></div><div class="pb-24"><span class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-[Inter]"> community&#39;s offerings</span></div><a class="bg-[#00B9DA] py-4 sm:py-6 px-4 sm:px-8 rounded focus:outline-none transition duration-300 ease-in-out hover:scale-105" href="https://calendly.com/aceinterviewprep/meet-with-lauren" style="text-decoration: none;"><span class="text-base sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-bold font-[Inter] text-white">Book a demo</span></a></div></div><div class="grid justify-items-start content-end w-full h-full z-20 absolute"><img class="w-1/3" src="/static/staticSite/images/bannerImg_communities.webp" /></div></div></div><div class="pt-56 pb-56"><div class=""><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="grid grid-cols-12"><div class="grid justify-items-center content-center col-span-12 sm:col-span-12 md:col-span-6 lg:col-span-5"><div class="text-center md:text-left"><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">SET FOR SUCCESS</span></div><div class="pt-4 pb-4"><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#2E3A59]">Give your members a unique advantage</span></div><div class=""><span class="text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl font-[Inter] leading-none">Offer your members the platform that will help them win every interview.</span></div><div class="pt-20 xl:pt-32 pb-20 xl:pb-32"><a class="bg-[#00B9DA] py-4 sm:py-6 px-4 sm:px-8 rounded focus:outline-none transition duration-300 ease-in-out hover:scale-105" href="https://calendly.com/aceinterviewprep/meet-with-lauren" style="text-decoration: none;"><span class="text-base sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-bold font-[Inter] text-white">Book a demo</span></a></div></div></div><div class="col-start-2 sm:col-start-2 md:col-start-8 lg:col-start-7 col-span-10 sm:col-span-10 md:col-span-5 lg:col-span-6 pt-32 sm:pt-0 pb-32 sm:pb-0"><img alt="row2_feedback" src="/static/staticSite/images/row2_feedback.webp" /></div></div></div></div></div></div><div class="bg-[#F1FCFF]"><div class="pt-28 pb-28"><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="grid grid-cols-2"><div class="col-span-2 sm:col-span-2 md:col-span-1"><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="pt-20 pb-20"><div class="h-[150px] text-center"><span class="text-9xl font-extrabold font-[Inter] leading-3">“</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">We invest in tools that</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"> </span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#00B9DA]">prepare our students to become top tech talent.</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"> </span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">Ace is the perfect platform to provide a worry-free and valuable service to train communication skills for our students.</span></div><div class="pt-10"><div class="pl-0 pr-0"><div class="grid grid-cols-3"><div class=""><img alt="testimonial_Muddassar" class="w-full h-full" src="/static/staticSite/images/testimonial_Muddassar.webp" /></div><div class="grid justify-items-start content-center col-span-2 pl-10"><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter]">Muddassar Sharif</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] italic">Co-founder</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] italic">DevNation Coding Bootcamp</span></div></div></div></div></div></div></div></div></div><div class="col-span-2 sm:col-span-2 md:col-span-1"><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="pt-20 pb-20"><div class="h-[150px] text-center"><span class="text-9xl font-extrabold font-[Inter] leading-3">“</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">Opting for Ace Interview Prep has proven to be a</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"> </span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#00B9DA]">transformative experience</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"> </span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">for CMU-Africa Career Services and our MS students. The platform&#39;s dynamic approach to interview preparation, combined with its remarkably user-friendly interface,</span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"> </span><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#00B9DA]">has exceeded our expectations.</span></div><div class="pt-10"><div class="pl-0 pr-0"><div class="grid grid-cols-3"><div class=""><img alt="testimonial_Patricia" class="w-full h-full" src="/static/staticSite/images/testimonial_Patricia.webp" /></div><div class="grid justify-items-start content-center col-span-2 pl-10"><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter]">Patricia Musiime</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] italic">Career Services Officer</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] italic">Carnegie Mellon University Africa</span></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="py-10 md:py-48 lg:px-72 text-center"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">ENHANCE YOUR OFFERING</span><div class="pt-8"><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#2E3A59]">Make your offering more</span><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl"> </span><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#00B9DA] leading-normal">unique and valuable.</span></div><div class="pt-4"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">Partnering with Ace means you get to offer a unique, one-of-a-kind service to your members.</span></div></div></div></div><div class="pt-10 pb-10"><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="grid grid-cols-12"><div class="col-span-8 pl-10 pr-10 grid justify-items-start content-center"><div><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="pb-10"><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#2E3A59]">Access to easy, effortless practice</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">Give your members the ability to practice in a judgement-free zone at their own pace with a wide range of tools to grow their communication skills at their own pace.</span></div></div></div></div></div><div class="col-span-4"><img alt="communities_accessEasy" class="h-64" src="/static/staticSite/images/communities_accessEasy.webp" /></div></div></div></div></div><div class="pt-10 pb-10"><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="grid grid-cols-12"><div class="col-span-4"><img alt="communities_exercises" class="h-64" src="/static/staticSite/images/communities_exercises.webp" /></div><div class="col-span-8 pl-10 pr-10 grid justify-items-end content-center"><div><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="pb-10"><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#2E3A59]">Exercises that prepare job seekers like a pro</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">With exclusive exercises covering tough topics like How to Approach Questions and The Ins &amp; Outs of Interviewing, your members have everything they need to shine.</span></div></div></div></div></div></div></div></div></div><div class="pt-10 pb-10"><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="grid grid-cols-12"><div class="col-span-8 pl-10 pr-10 grid justify-items-start content-center"><div><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="pb-10"><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#2E3A59]">Empower your members with the ultimate resource</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">Boost your community’s offerings with access to unlimited mock interviews, evergreen content, and invaluable training.</span></div></div></div></div></div><div class="col-span-4"><img alt="communities_empower" class="h-64" src="/static/staticSite/images/communities_empower.webp" /></div></div></div></div></div><div class="pl-10 sm:pl-20 md:pl-36 pr-10 sm:pr-20 md:pr-36 pt-40 pb-40 bg-[#F1FCFF]"><div class="grid grid-cols-3"><div class="text-center"><div class="pb-8"><span class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold font-[Inter] text-[#00B9DA]">13</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter]">tech roles offered,</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter]">from frontend to data science</span></div></div><div class="text-center"><div class="pb-8"><span class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold font-[Inter] text-[#00B9DA]">90%</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter]">confidence rate</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter]">reported by our users after using Ace</span></div></div><div class="text-center"><div class="pb-8"><span class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold font-[Inter] text-[#00B9DA]">20+</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter]">soft skills analyzed</span></div><div class=""><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter]">to make each and every talent exceptional</span></div></div></div></div><div class="grid justify-items-center content-center w-[100%]"><div class="w-[100%] sm:w-[80%] md:w-[80%] lg:w-[80%] xl:w-[80%] 2xl:w-[70%]"><div class="py-48 text-center"><span class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-[Inter] text-[#2E3A59]">Ready to supercharge your community?</span><div class="pt-8"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-[#2E3A59]">Contact our team to discuss how Ace is the perfect complement to your community’s offerings.</span></div><div class="pt-10"><a class="bg-[#00B9DA] py-4 sm:py-6 px-4 sm:px-8 rounded focus:outline-none transition duration-300 ease-in-out hover:scale-105" href="https://calendly.com/aceinterviewprep/meet-with-lauren" style="text-decoration: none;"><span class="text-base sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-bold font-[Inter] text-white">Book a demo</span></a></div></div></div></div><div class="pt-24 pb-24 bg-[#00B9DA]"><div class="pl-20 sm:pl-28 md:pl-60 pr-20 sm:pr-28 md:pr-60"><div class="grid grid-cols-6"><div class="col-span-2"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter] text-white">We&#39;re here to help</span><div class="pr-24 pt-16"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">For questions about the platform, sales, or any questions, feel free to contact us and we’ll be ready to assist you.</span><a href="https://calendly.com/aceinterviewprep/meet-with-lauren"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]"> contact us</span></a><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]"> and we&#39;ll be ready to assist you.</span></div></div><div><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter] text-white">Platform</span><div class="pt-16"><a aria-label="bootcamps" class="" href="/landing/4/bootcamps" style="text-decoration: none;"><div class="pt-2 pb-2 hover:underline"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">For Coding Bootcamps</span></div></a><a aria-label="recruitingFirms" class="" href="/landing/4/recruitingFirms" style="text-decoration: none;"><div class="pt-2 pb-2 hover:underline"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">For Tech Recruiting Firms</span></div></a><a aria-label="community" class="" href="/landing/4/community" style="text-decoration: none;"><div class="pt-2 pb-2 hover:underline"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">For Tech Communities</span></div></a><a aria-label="u" class="" href="/landing/4/u" style="text-decoration: none;"><div class="pt-2 pb-2 hover:underline"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">For Job Seekers</span></div></a></div></div><div class="pl-4 pr-4"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-[Inter] text-white">Company</span><div class="pt-16"><a aria-label="aboutAce" class="" href="/landing/aboutAce" style="text-decoration: none;"><div class="pt-2 pb-2 hover:underline"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">About Us</span></div></a><a aria-label="main" class="" href="/landing/Blog/main" style="text-decoration: none;"><div class="pt-2 pb-2 hover:underline"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">Blog</span></div></a></div></div><div class="col-span-2 pl-8 sm:pl-0"><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white">Learn how to master interviewing</span><div class="pt-4"><input class="rounded-2xl inline-block w-full sm:w-[60%] p-2" id="emailInput" placeholder="Sign up for our newsletter..." value="" /><button class="px-4" onClick="submitEmail()"><div class=""><img alt="Vector white" class="w-8" src="/static/staticSite/images/Vector-white.svg" /></div></button></div><div class="pt-4 pb-4"></div><span class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-[Inter] text-white leading-[0px]">Thoughtful insights on interviewing strategies, hiring trends, and how to become a master at interviewing.</span></div></div></div></div></div></body></html>

@@ -1,0 +1,1026 @@
+<html lang="en"><head><style>
+/* Markdown Shell */
+.containerBlog {
+   padding: 200px;
+   background-color: black;
+   color: white;
+   font-size: 20px;
+   font-family: Georgia, serif;
+}
+
+.containerBlog ol {
+   list-style-type: decimal;
+   padding-left: 2.5rem;
+}
+.containerBlog ul {
+   list-style-type: disc;
+   padding-left: 2.5rem;
+}
+
+.containerBlog td {
+   padding: 3px;
+   border-color: #888;
+}
+
+.containerBlog li {
+   padding: 5px 10px;
+}
+
+.containerBlog p {
+   padding: 10px 0px;
+}
+
+.containerBlog a {
+   color: #00B9DA;
+   text-decoration: none;
+}
+
+.containerBlog p code {
+  background-color: #D3D3D3;
+  padding: 0px 3px;
+  border-radius: 0.5rem;
+}
+
+.containerBlog h1 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 2em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h2 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h3 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size:1.17em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h4 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h5 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 0.83em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+
+
+
+/* Otherwise comments can go on into infinity */
+span.co {
+  word-break: break-word;        /* Safe wrap on words */
+  overflow-wrap: anywhere;       /* Force wrap anywhere if needed */
+  white-space: normal;           /* Allow wrapping */
+}
+
+
+code:not([class]) {
+  /* your styles here */
+  background-color: white;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+code span {
+  display: inline;
+  white-space: pre;
+}
+
+.source-code {
+  padding: 8px;
+  border-color: white;
+  background-color: black;
+}
+
+}
+/* One off haskell constructs */
+code {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+div.source-code {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+code.language-haskell {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+/* Haskell Syntax */
+.pr {
+   color: #F8E473;
+}
+.op {
+   color: gold;
+}
+.sy {
+   color: #FADA5E;
+}
+.co {
+   color: green;
+}
+.cr {
+   color: #af64ff;
+}
+.va {
+   color: #6693F5; 
+}
+.kw {
+    color: #f0883e;
+}
+
+/* Haskell Syntax - Literals */
+.st {
+  color: #a5d6ff;
+}
+.ch {
+  color: #2E3A59;
+}
+.it {}
+.ra {}
+
+
+/* Other Languages Via Skylighting Tokenizer */
+
+.pp {
+  color: blue;
+}
+.im {
+  color: green;
+}
+.dt {
+  color: green;
+}
+.cf {
+  color: orange;
+}
+/*Like char */
+.sc {
+  color: orange;
+}
+/* java func */
+.fu {
+  color: #6693F5;
+}
+
+/* base color C lang */
+.language-c {
+  color: #6693F5;
+}
+
+.language-bash {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+.language-nix {
+  color: grey;
+  font-weight: bold;
+}
+
+.language-java {
+  color: #6693F5;
+}
+.language-csharp {
+  color: #E3B778;
+}
+.language-python {
+  color: #E3B778;
+}
+</style><style>a { color: #00B9DA; text-decoration: none; }</style></head><body><div class="fixed top-0 left-0 w-full h-full overflow-auto z-10 scroll-smooth"><div class="containerBlog"><h1 id="chapter-7-recursion-goto-recursion">Chapter 7: Recursion = GOTO Recursion</h1>
+<ol>
+<li>
+<a href="/landing/Blog/Chapter7#1-introduction">Introduction</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter7#2-how-recursion-works">How Recursion Works</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter7#3-what-is-looping">What is Looping?</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter7#4-why-recursion-is-better">Why Recursion is Better</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter7#5-how-to-write-recursive-functions-in-haskell">How to Write Recursive Functions in Haskell</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter7#6-thinking-recursively-instead-of-imperatively">Thinking Recursively Instead of Imperatively</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter7#recap">Recap &amp; Exercises</a>
+</li>
+</ol>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>Recursion is a fundamental concept in functional programming, and it plays a critical role in Haskell. At its core, recursion allows a function to call itself, enabling us to solve complex problems by breaking them down into smaller, simpler subproblems. This idea isn’t just limited to programming—it’s a concept rooted in mathematics and nature.</p>
+<h2 id="2-how-recursion-works">2. How Recursion Works</h2>
+<h3 id="the-structure-of-a-recursive-function">The Structure of a Recursive Function</h3>
+<p>Every recursive function consists of two essential parts:</p>
+<ol>
+<li>
+<strong>Base Case</strong>: The condition where the function stops calling itself. This prevents infinite recursion. Without a base case, recursion would continue infinitely, eventually causing a stack overflow.
+</li>
+<li>
+<strong>Recursive Case</strong>: The part of the function where it calls itself with a smaller or simpler input. This defines how the problem is broken down into smaller instances that the function can solve by itself.
+</li>
+</ol>
+<h3 id="example-1-summing-a-list">Example 1: Summing a List</h3>
+<p>Let&#39;s look at a simple recursive function to calculate the sum of a list:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">sumList</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="cr">Int</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">sumList</span><span> </span><span class="sy">[</span><span class="sy">]</span><span> </span><span class="sy">=</span><span> </span><span class="it">0</span><span>
+</span><span class="va">sumList</span><span> </span><span class="sy">(</span><span class="va">x</span><span class="sy">:</span><span class="va">xs</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">x</span><span> </span><span class="op">+</span><span> </span><span class="va">sumList</span><span> </span><span class="va">xs</span><span>
+</span></code></pre></div>
+<h4 id="breaking-it-down">Breaking It Down:</h4>
+<ol>
+<li>
+<strong>Base Case</strong>:
+<ul>
+<li>
+When the list is empty (<code>[]</code>), the sum is <code>0</code>. This is the simplest possible input for this function.
+</li>
+</ul>
+</li>
+<li>
+<strong>Recursive Case</strong>:
+<ul>
+<li>
+The list is split into its head (<code>x</code>) and tail (<code>xs</code>). The function computes the sum of the tail (<code>sumList xs</code>) and adds it to the head.
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="execution-trace">Execution Trace</h4>
+<p>Let’s see how this function works step-by-step for the input <code>[1, 2, 3]</code>:</p>
+<ol>
+<li>
+<code>sumList [1, 2, 3] = 1 + sumList [2, 3]</code>
+</li>
+<li>
+<code>sumList [2, 3] = 2 + sumList [3]</code>
+</li>
+<li>
+<code>sumList [3] = 3 + sumList []</code>
+</li>
+<li>
+<code>sumList [] = 0</code>
+</li>
+</ol>
+<p>Combining the results:</p>
+<ul>
+<li>
+<code>3 + 0 = 3</code>
+</li>
+<li>
+<code>2 + 3 = 5</code>
+</li>
+<li>
+<code>1 + 5 = 6</code>
+</li>
+</ul>
+<p>The result is <code>6</code>.</p>
+<h3 id="example-2-factorial-of-a-number">Example 2: Factorial of a Number</h3>
+<p>The factorial of a number <code>n</code> is the product of all integers from <code>1</code> to <code>n</code>. For example, <code>factorial(4)</code> equals <code>4 * 3 * 2 * 1</code>.</p>
+<p>Here’s the recursive implementation in Haskell:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">factorial</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">factorial</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="it">1</span><span>               </span><span class="co">-- Base case: factorial of 0 is 1</span><span>
+</span><span class="va">factorial</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="va">n</span><span> </span><span class="sy">*</span><span> </span><span class="va">factorial</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span> </span><span class="co">-- Recursive case: n * factorial of (n-1)</span><span>
+</span></code></pre></div>
+<h4 id="execution-trace">Execution Trace</h4>
+<p>Let’s compute <code>factorial 4</code>:</p>
+<ol>
+<li>
+<code>factorial 4 = 4 * factorial 3</code>
+</li>
+<li>
+<code>factorial 3 = 3 * factorial 2</code>
+</li>
+<li>
+<code>factorial 2 = 2 * factorial 1</code>
+</li>
+<li>
+<code>factorial 1 = 1 * factorial 0</code>
+</li>
+<li>
+<code>factorial 0 = 1 (base case)</code>
+</li>
+</ol>
+<p>Combining the results:</p>
+<ul>
+<li>
+<code>1 * 1 = 1</code>
+</li>
+<li>
+<code>2 * 1 = 2</code>
+</li>
+<li>
+<code>3 * 2 = 6</code>
+</li>
+<li>
+<code>4 * 6 = 24</code>
+</li>
+</ul>
+<p>The result is <code>24</code>.</p>
+<h3 id="why-recursion-is-so-powerful">Why Recursion is So Powerful</h3>
+<h4 id="1-purity-and-safety">1. Purity and Safety</h4>
+<p>Recursive functions in Haskell are pure expressions:</p>
+<ul>
+<li>
+They depend only on their inputs, guaranteeing no side effects or mutable state.
+</li>
+<li>
+Each step of the computation aligns with the problem&#39;s domain, ensuring correctness and eliminating invalid states.
+</li>
+</ul>
+<h4 id="2-mathematical-precision">2. Mathematical Precision</h4>
+<p>Recursion mirrors the way many problems are defined in mathematics:</p>
+<ul>
+<li>
+The base case represents a simple or trivial instance of the problem.
+</li>
+<li>
+The recursive case models the relationship between the larger problem and its subproblems.
+</li>
+</ul>
+<p>This alignment with mathematical principles ensures:</p>
+<ul>
+<li>
+Consistency across all computations.
+</li>
+<li>
+Easy reasoning about correctness using formal proofs.
+</li>
+</ul>
+<h4 id="3-expressiveness">3. Expressiveness</h4>
+<p>Recursive functions often lead to concise and elegant solutions. The entire problem-solving process is embedded directly in the function definition, making the code easier to read and maintain.</p>
+<h3 id="recursive-thinking-in-everyday-life">Recursive Thinking in Everyday Life</h3>
+<p>To understand recursion intuitively, consider this example:</p>
+<ul>
+<li>
+Imagine you are looking for a book on a messy shelf.
+</li>
+<li>
+To find the book, you:
+<ul>
+<li>
+Check the first book (base case: if it’s the book, you stop).
+</li>
+<li>
+If it’s not the book, you move to the next one and repeat (recursive case).
+</li>
+</ul>
+</li>
+</ul>
+<p>This process of narrowing down the problem until you reach the simplest case mirrors how recursive functions work.</p>
+<h3 id="recursive-problems-in-nature">Recursive Problems in Nature</h3>
+<p>Recursion isn’t just a programming construct—it appears in nature, mathematics, and even art:</p>
+<ul>
+<li>
+<strong>Fractals</strong>: Patterns that repeat at different scales, like snowflakes or fern leaves.
+</li>
+<li>
+<strong>Fibonacci Sequence</strong>: A mathematical sequence where each number is the sum of the two preceding ones.
+</li>
+<li>
+<strong>Human Anatomy</strong>: The branching structure of veins, arteries, and nerves.
+</li>
+</ul>
+<p>These examples highlight how recursion is a universal concept that helps us break down and understand complex systems.</p>
+<h2 id="3-what-is-looping">3. What is Looping?</h2>
+<p>In programming, <strong>looping</strong> is a technique for repeatedly executing a block of code. This is a core concept in imperative programming, where loops like <code>for</code>, <code>while</code>, and <code>do-while</code> are commonly used to handle repetitive tasks such as traversing a list, iterating over numbers, or processing files.</p>
+<p>While looping works, it comes with significant challenges, particularly in how it handles state, mutability, and side effects. Functional programming avoids traditional looping constructs entirely, opting instead for recursion, which aligns better with functional principles.</p>
+<h3 id="how-looping-works-in-imperative-programming">How Looping Works in Imperative Programming</h3>
+<p>In an imperative language like Python, Java, or C#, looping relies on mutable variables that change their state during each iteration of the loop.</p>
+<h4 id="example-summing-a-list-imperative-style">Example: Summing a List (Imperative Style)</h4>
+<p>Let’s sum a list of integers in Python:</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> sum_list(lst):</span>
+<span>    total </span><span class="op">=</span><span> </span><span class="dv">0</span><span>              </span><span class="co"># Initialize mutable state</span>
+<span>    </span><span class="cf">for</span><span> x </span><span class="kw">in</span><span> lst:          </span><span class="co"># Loop through the list</span>
+<span>        total </span><span class="op">+=</span><span> x         </span><span class="co"># Mutate the total in each iteration</span>
+<span>    </span><span class="cf">return</span><span> total           </span><span class="co"># Return the result</span>
+</code></pre></div>
+<h4 id="how-this-works">How This Works:</h4>
+<ol>
+<li>
+<strong>State Initialization</strong>: The <code>total</code> variable is initialized to <code>0</code>.
+</li>
+<li>
+<strong>Iteration</strong>: For each element in the list, the loop mutates <code>total</code> by adding the element.
+</li>
+<li>
+<strong>Final Result</strong>: Once the loop ends, the accumulated value of <code>total</code> is returned.
+</li>
+</ol>
+<h3 id="problems-with-looping">Problems with Looping</h3>
+<p>While loops are effective, they introduce several issues that can complicate programming and lead to bugs:</p>
+<h4 id="1-mutable-state">1. Mutable State</h4>
+<ul>
+<li>
+Loops often depend on variables (like <code>total</code>) that change their value during execution.
+</li>
+<li>
+Mutable state is error-prone, especially in larger or concurrent programs where state might be modified unexpectedly.
+</li>
+</ul>
+<h4 id="example-issue-shared-mutable-state-in-loops">Example Issue: Shared Mutable State in Loops</h4>
+<p>In multithreaded programs, shared variables that are mutated inside a loop can lead to <strong>race conditions</strong> — unpredictable behavior caused by concurrent threads modifying the same variable. This problem becomes worse when references to shared objects are used, as changes made by one thread affect all threads accessing the same reference.</p>
+<p><strong>Imperative Example: Python</strong></p>
+<p>Let’s simulate a program where two threads increment a shared counter in a loop:</p>
+<div class="source-code"><pre><code class="language-python"><span class="im">import</span><span> threading</span>
+
+<span class="co"># Shared mutable state</span>
+<span>counter </span><span class="op">=</span><span> </span><span class="dv">0</span>
+
+<span class="co"># Function to increment the counter in a loop</span>
+<span class="kw">def</span><span> increment_counter():</span>
+<span>    </span><span class="kw">global</span><span> counter</span>
+<span>    </span><span class="cf">for</span><span> _ </span><span class="kw">in</span><span> </span><span class="bu">range</span><span>(</span><span class="dv">100000</span><span>):</span>
+<span>        counter </span><span class="op">+=</span><span> </span><span class="dv">1</span><span>  </span><span class="co"># This is not atomic!</span>
+
+<span class="co"># Create two threads</span>
+<span>thread1 </span><span class="op">=</span><span> threading.Thread(target</span><span class="op">=</span><span>increment_counter)</span>
+<span>thread2 </span><span class="op">=</span><span> threading.Thread(target</span><span class="op">=</span><span>increment_counter)</span>
+
+<span class="co"># Start the threads</span>
+<span>thread1.start()</span>
+<span>thread2.start()</span>
+
+<span class="co"># Wait for both threads to finish</span>
+<span>thread1.join()</span>
+<span>thread2.join()</span>
+
+<span class="co"># Print the counter</span>
+<span class="bu">print</span><span>(</span><span class="ss">f&quot;Final Counter: </span><span class="sc">{</span><span>counter</span><span class="sc">}</span><span class="ss">&quot;</span><span>)</span>
+</code></pre></div>
+<p><strong>What Happens:</strong></p>
+<ol>
+<li>
+Both threads are modifying the shared variable <code>counter</code> simultaneously.
+</li>
+<li>
+<strong>Race Condition</strong>: The <code>counter += 1</code> operation involves three steps:
+<ul>
+<li>
+Read the current value of counter.
+</li>
+<li>
+Increment it.
+</li>
+<li>
+Write the new value back.
+</li>
+</ul>
+</li>
+<li>
+If two threads perform these steps at the same time, they may overwrite each other’s updates, leading to an incorrect final value.
+</li>
+</ol>
+<p><strong>Expected Output:</strong></p>
+<pre><code class="language-plaintext">Final Counter: 200000
+</code></pre>
+<p><strong>Actual Output (Varies):</strong></p>
+<pre><code class="language-plaintext">Final Counter: 165743
+</code></pre>
+<p><strong>Why References Make This Worse</strong></p>
+<p>In imperative languages, shared references (e.g., objects or arrays) allow multiple threads to manipulate the same data. This is inherently unsafe without explicit synchronization.</p>
+<p><strong>Example: Java (Shared Array)</strong></p>
+<div class="source-code"><pre><code class="language-java"><span class="kw">import</span><span> </span><span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">concurrent</span><span class="op">.</span><span class="im">atomic</span><span class="op">.</span><span class="im">AtomicInteger</span><span class="op">;</span>
+
+<span class="kw">public</span><span> </span><span class="kw">class</span><span> SharedReferenceExample </span><span class="op">{</span>
+<span>    </span><span class="dt">static</span><span> </span><span class="dt">int</span><span class="op">[]</span><span> counter </span><span class="op">=</span><span> </span><span class="op">{</span><span class="dv">0</span><span class="op">};</span>
+
+<span>    </span><span class="kw">public</span><span> </span><span class="dt">static</span><span> </span><span class="dt">void</span><span> </span><span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span><span> args</span><span class="op">)</span><span> </span><span class="kw">throws</span><span> </span><span class="bu">InterruptedException</span><span> </span><span class="op">{</span>
+<span>        </span><span class="bu">Thread</span><span> thread1 </span><span class="op">=</span><span> </span><span class="kw">new</span><span> </span><span class="bu">Thread</span><span class="op">(()</span><span> </span><span class="op">-&gt;</span><span> </span><span class="fu">incrementCounter</span><span class="op">());</span>
+<span>        </span><span class="bu">Thread</span><span> thread2 </span><span class="op">=</span><span> </span><span class="kw">new</span><span> </span><span class="bu">Thread</span><span class="op">(()</span><span> </span><span class="op">-&gt;</span><span> </span><span class="fu">incrementCounter</span><span class="op">());</span>
+
+<span>        thread1</span><span class="op">.</span><span class="fu">start</span><span class="op">();</span>
+<span>        thread2</span><span class="op">.</span><span class="fu">start</span><span class="op">();</span>
+<span>        thread1</span><span class="op">.</span><span class="fu">join</span><span class="op">();</span>
+<span>        thread2</span><span class="op">.</span><span class="fu">join</span><span class="op">();</span>
+
+<span>        </span><span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">&quot;Final Counter: &quot;</span><span> </span><span class="op">+</span><span> counter</span><span class="op">[</span><span class="dv">0</span><span class="op">]);</span>
+<span>    </span><span class="op">}</span>
+
+<span>    </span><span class="dt">static</span><span> </span><span class="dt">void</span><span> </span><span class="fu">incrementCounter</span><span class="op">()</span><span> </span><span class="op">{</span>
+<span>        </span><span class="cf">for</span><span> </span><span class="op">(</span><span class="dt">int</span><span> i </span><span class="op">=</span><span> </span><span class="dv">0</span><span class="op">;</span><span> i </span><span class="op">&lt;</span><span> </span><span class="dv">100000</span><span class="op">;</span><span> i</span><span class="op">++)</span><span> </span><span class="op">{</span>
+<span>            counter</span><span class="op">[</span><span class="dv">0</span><span class="op">]++;</span><span> </span><span class="co">// Not thread-safe</span>
+<span>        </span><span class="op">}</span>
+<span>    </span><span class="op">}</span>
+<span class="op">}</span>
+</code></pre></div>
+<p>Here:</p>
+<ul>
+<li>
+The <code>counter</code> array is a reference shared by all threads.
+</li>
+<li>
+Incrementing <code>counter[0]</code> causes a race condition, leading to unpredictable results.
+</li>
+</ul>
+<p><strong>Why Functional Programming Avoids This Problem</strong></p>
+<p>Functional programming avoids shared mutable state entirely:</p>
+<ul>
+<li>
+All data is <strong>immutable</strong>, so functions cannot alter state directly.
+</li>
+<li>
+State is passed explicitly as arguments to functions, ensuring each thread works with its own copy.
+</li>
+</ul>
+<p><strong>Recursive Example: Haskell</strong></p>
+<p>In Haskell, the equivalent logic would be implemented using <strong>pure functions</strong> and immutable data:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">incrementCounter</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">incrementCounter</span><span> </span><span class="it">0</span><span> </span><span class="va">counter</span><span> </span><span class="sy">=</span><span> </span><span class="va">counter</span><span>                     </span><span class="co">-- Base case</span><span>
+</span><span class="va">incrementCounter</span><span> </span><span class="va">n</span><span> </span><span class="va">counter</span><span> </span><span class="sy">=</span><span> </span><span class="va">incrementCounter</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span> </span><span class="sy">(</span><span class="va">counter</span><span> </span><span class="op">+</span><span> </span><span class="it">1</span><span class="sy">)</span><span> </span><span class="co">-- Recursive case</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">result</span><span> </span><span class="sy">=</span><span> </span><span class="va">incrementCounter</span><span> </span><span class="it">100000</span><span> </span><span class="it">0</span><span>  </span><span class="co">-- Thread 1</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">result2</span><span> </span><span class="sy">=</span><span> </span><span class="va">incrementCounter</span><span> </span><span class="it">100000</span><span> </span><span class="it">0</span><span> </span><span class="co">-- Thread 2</span><span>
+    </span><span class="va">print</span><span> </span><span class="sy">(</span><span class="va">result</span><span> </span><span class="op">+</span><span> </span><span class="va">result2</span><span class="sy">)</span><span>                </span><span class="co">-- Combine results</span><span>
+</span></code></pre></div>
+<p>Key Points:</p>
+<ol>
+<li>
+Each thread operates on its own independent copy of the state (<code>counter</code>).
+</li>
+<li>
+State is passed explicitly, ensuring immutability and thread safety.
+</li>
+<li>
+There’s no chance of race conditions because functions in Haskell are pure and cannot modify shared state.
+</li>
+</ol>
+<p><strong>Why References and Mutability Are Dangerous</strong></p>
+<ol>
+<li>
+<strong>Unpredictability</strong>: Shared references lead to hard-to-debug race conditions.
+</li>
+<li>
+<strong>Non-Deterministic Behavior</strong>: The program’s output depends on the order of thread execution, which is inherently unpredictable.
+</li>
+<li>
+<strong>Scalability Issues</strong>: As the number of threads increases, synchronization mechanisms (e.g., locks) become necessary, adding complexity and reducing performance.
+</li>
+</ol>
+<h4 id="2-side-effects">2. Side Effects</h4>
+<ul>
+<li>
+Loops often interact with external systems (e.g., modifying global variables, writing to files) during their iterations.
+</li>
+<li>
+These side effects make it difficult to reason about the program’s behavior or guarantee correctness.
+</li>
+</ul>
+<p>Example Issue:</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> increment_list(lst):</span>
+<span>    </span><span class="cf">for</span><span> i </span><span class="kw">in</span><span> </span><span class="bu">range</span><span>(</span><span class="bu">len</span><span>(lst)):</span>
+<span>        lst[i] </span><span class="op">+=</span><span> </span><span class="dv">1</span><span>    </span><span class="co"># Mutating the original list (side effect)</span>
+</code></pre></div>
+<p>This function directly modifies the input list, which might not be the intended behavior. Functional programming avoids this by working with immutable data.</p>
+<h4 id="3-loss-of-declarativeness">3. Loss of Declarativeness</h4>
+<ul>
+<li>
+Imperative loops focus on <strong>how</strong> to perform a task (e.g., increment a counter, check conditions) rather than what the task is.
+</li>
+<li>
+This imperative approach leads to verbose and less readable code.
+</li>
+</ul>
+<p><strong>Imperative vs Declarative</strong>
+Imperative:</p>
+<div class="source-code"><pre><code class="language-python"><span>result </span><span class="op">=</span><span> []</span>
+<span class="cf">for</span><span> x </span><span class="kw">in</span><span> </span><span class="bu">range</span><span>(</span><span class="dv">10</span><span>):</span>
+<span>    </span><span class="cf">if</span><span> x </span><span class="op">%</span><span> </span><span class="dv">2</span><span> </span><span class="op">==</span><span> </span><span class="dv">0</span><span>:</span>
+<span>        result.append(x)</span>
+</code></pre></div>
+<p>Declarative (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">result</span><span> </span><span class="sy">=</span><span> </span><span class="sy">[</span><span class="va">x</span><span> </span><span class="sy">|</span><span> </span><span class="va">x</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="sy">[</span><span class="it">0</span><span class="sy">..</span><span class="it">9</span><span class="sy">]</span><span class="sy">,</span><span> </span><span class="va">x</span><span> </span><span class="sy">`</span><span class="va">mod</span><span class="sy">`</span><span> </span><span class="it">2</span><span> </span><span class="op">==</span><span> </span><span class="it">0</span><span class="sy">]</span><span>
+</span></code></pre></div>
+<p>The declarative Haskell code directly expresses the result rather than the steps to compute it.</p>
+<h3 id="why-functional-programming-avoids-loops">Why Functional Programming Avoids Loops</h3>
+<p>Functional programming avoids traditional loops because they:</p>
+<ol>
+<li>
+<strong>Encourage Mutability</strong>: Loops inherently rely on changing variables, which is at odds with functional programming’s principle of immutability.
+</li>
+<li>
+<strong>Introduce Complexity</strong>: Tracking mutable state and ensuring correctness in loops can be error-prone.
+</li>
+<li>
+<strong>Conflict with Purity</strong>: Loops often involve side effects, breaking Haskell’s core principle of pure functions.
+</li>
+<li>
+<strong>Make Reasoning Harder</strong>: Loops require understanding both the current state and how it changes with each iteration, which can be difficult to follow in complex programs.
+</li>
+</ol>
+<p>Instead, functional programming uses recursion, which eliminates these pitfalls by transforming iteration into pure expressions.</p>
+<h3 id="comparing-looping-to-recursion">Comparing Looping to Recursion</h3>
+<h4 id="1-state-management">1. State Management</h4>
+<ul>
+<li>
+<strong>Loops</strong>: Use mutable state (e.g., counters, accumulators) that changes during each iteration.
+</li>
+<li>
+<strong>Recursion</strong>: Passes state explicitly as function arguments, keeping it immutable.
+</li>
+</ul>
+<p><strong>Example: Counting Down from 10</strong>
+Imperative (Python):</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> count_down(n):</span>
+<span>    </span><span class="cf">while</span><span> n </span><span class="op">&gt;</span><span> </span><span class="dv">0</span><span>:</span>
+<span>        </span><span class="bu">print</span><span>(n)</span>
+<span>        n </span><span class="op">-=</span><span> </span><span class="dv">1</span><span>  </span><span class="co"># Mutable state</span>
+</code></pre></div>
+<p>Recursive (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">countDown</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">countDown</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>         </span><span class="co">-- Base case</span><span>
+</span><span class="va">countDown</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">print</span><span> </span><span class="va">n</span><span>
+    </span><span class="va">countDown</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span>           </span><span class="co">-- Recursive case with explicit state</span><span>
+</span></code></pre></div>
+<h4 id="2-control-flow">2. Control Flow</h4>
+<ul>
+<li>
+<strong>Loops</strong>: Use constructs like break or continue to manage control flow, which can lead to inconsistencies.
+</li>
+<li>
+<strong>Recursion</strong>: Control flow is inherently structured through base and recursive cases.
+</li>
+</ul>
+<p><strong>Example: Finding the First Even Number</strong>
+Imperative (Python):</p>
+<div class="source-code"><pre><code class="language-python"><span>Copy code</span>
+<span class="kw">def</span><span> find_first_even(lst):</span>
+<span>    </span><span class="cf">for</span><span> x </span><span class="kw">in</span><span> lst:</span>
+<span>        </span><span class="cf">if</span><span> x </span><span class="op">%</span><span> </span><span class="dv">2</span><span> </span><span class="op">==</span><span> </span><span class="dv">0</span><span>:</span>
+<span>            </span><span class="cf">return</span><span> x</span>
+<span>    </span><span class="cf">return</span><span> </span><span class="va">None</span><span>  </span><span class="co"># No even number found</span>
+</code></pre></div>
+<p>Recursive (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">findFirstEven</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="cr">Int</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Maybe</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">findFirstEven</span><span> </span><span class="sy">[</span><span class="sy">]</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Nothing</span><span>                         </span><span class="co">-- Base case</span><span>
+</span><span class="va">findFirstEven</span><span> </span><span class="sy">(</span><span class="va">x</span><span class="sy">:</span><span class="va">xs</span><span class="sy">)</span><span>
+    </span><span class="sy">|</span><span> </span><span class="va">x</span><span> </span><span class="sy">`</span><span class="va">mod</span><span class="sy">`</span><span> </span><span class="it">2</span><span> </span><span class="op">==</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Just</span><span> </span><span class="va">x</span><span>                      </span><span class="co">-- Found even number</span><span>
+    </span><span class="sy">|</span><span> </span><span class="va">otherwise</span><span>      </span><span class="sy">=</span><span> </span><span class="va">findFirstEven</span><span> </span><span class="va">xs</span><span>           </span><span class="co">-- Recursive case</span><span>
+</span></code></pre></div>
+<h4 id="3-debugging-and-reasoning">3. Debugging and Reasoning</h4>
+<ul>
+<li>
+<strong>Loops</strong>: Debugging loops often requires tracking the state of multiple variables over time.
+</li>
+<li>
+<strong>Recursion</strong>: Recursive functions have well-defined base and recursive cases, making their behavior easier to predict and test.
+</li>
+</ul>
+<h3 id="why-recursion-is-safer">Why Recursion is Safer</h3>
+<p>Recursion in Haskell provides:</p>
+<ol>
+<li>
+<strong>Immutability</strong>: State is passed explicitly, ensuring it cannot change unexpectedly.
+</li>
+<li>
+<strong>Purity</strong>: Each recursive step is a pure function, guaranteeing no side effects.
+</li>
+<li>
+<strong>Composability</strong>: Recursive functions are modular and reusable, fitting seamlessly into larger programs.
+</li>
+</ol>
+<p>By avoiding traditional looping constructs, Haskell eliminates entire categories of bugs related to mutable state and side effects, allowing developers to focus on solving problems rather than debugging loops.</p>
+<h3 id="summary-looping-vs-recursion">Summary: Looping vs Recursion</h3>
+<table>
+<thead>
+<tr><th><strong>Feature</strong></th><th><strong>Looping</strong></th><th><strong>Recursion</strong></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>State Management</strong></td><td>Mutable variables</td><td>Immutable function arguments</td></tr>
+<tr><td><strong>Side Effects</strong></td><td>Often introduces side effects</td><td>Pure and side-effect free</td></tr>
+<tr><td><strong>Control Flow</strong></td><td><code>break</code>, <code>continue</code></td><td>Base and recursive cases</td></tr>
+<tr><td><strong>Declarativeness</strong></td><td>Focuses on &quot;how&quot;</td><td>Focuses on &quot;what&quot;</td></tr>
+<tr><td><strong>Error-Prone</strong></td><td>Susceptible to bugs in state</td><td>Guaranteed correctness via purity</td></tr>
+</tbody>
+</table>
+<p>Functional programming&#39;s avoidance of loops leads to safer, more declarative, and easier-to-maintain code.</p>
+<h2 id="4-why-recursion-is-better">4. Why Recursion is Better</h2>
+<p>Recursion doesn’t just replace loops—it introduces an entirely different mindset for solving problems. By leveraging recursion, functional programming eliminates common pitfalls of looping, such as mutable state and side effects, while aligning computations with mathematical precision.</p>
+<p>In this section, we focus on <strong>why recursion is better than loops</strong>, emphasizing how it resolves the shortcomings of imperative constructs and why it’s fundamental to functional programming.</p>
+<h3 id="1-recursion-is-immutable-by-design">1. Recursion is Immutable by Design</h3>
+<p>Traditional loops rely on mutable variables to track state, like counters or accumulators, which can lead to subtle bugs and unintended behavior. In contrast, recursion passes state explicitly as arguments, ensuring immutability and predictability.</p>
+<h4 id="example-counting-down">Example: Counting Down</h4>
+<p>Imperative (Python):</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> count_down(n):</span>
+<span>    </span><span class="cf">while</span><span> n </span><span class="op">&gt;</span><span> </span><span class="dv">0</span><span>:</span>
+<span>        </span><span class="bu">print</span><span>(n)</span>
+<span>        n </span><span class="op">-=</span><span> </span><span class="dv">1</span><span>  </span><span class="co"># Mutable state</span>
+</code></pre></div>
+<p>Recursive (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">countDown</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">countDown</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>          </span><span class="co">-- Base case</span><span>
+</span><span class="va">countDown</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">print</span><span> </span><span class="va">n</span><span>
+    </span><span class="va">countDown</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span>            </span><span class="co">-- Recursive case</span><span>
+</span></code></pre></div>
+<p>Key Differences:</p>
+<ul>
+<li>
+In Python, the state (<code>n</code>) is mutated inside the loop, which can lead to errors if modified unintentionally elsewhere.
+</li>
+<li>
+In Haskell, the state is explicitly passed as an argument, ensuring it’s always immutable and localized.
+</li>
+</ul>
+<h3 id="2-recursion-eliminates-side-effects">2. Recursion Eliminates Side Effects</h3>
+<p>Loops often interact with external variables or systems during iterations, creating side effects that are difficult to control. Recursion, being pure, guarantees no side effects, making programs easier to reason about and debug.</p>
+<h4 id="problem-mutable-global-state-in-loops">Problem: Mutable Global State in Loops</h4>
+<p>Imperative (Python):</p>
+<div class="source-code"><pre><code class="language-python"><span>counter </span><span class="op">=</span><span> </span><span class="dv">0</span>
+<span class="kw">def</span><span> increment():</span>
+<span>    counter </span><span class="op">+=</span><span> </span><span class="dv">1</span>
+</code></pre></div>
+<p>Recursive (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">incrementCounter</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">incrementCounter</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="va">n</span><span> </span><span class="op">+</span><span> </span><span class="it">1</span><span>  </span><span class="co">-- Pure function, no external dependencies</span><span>
+</span></code></pre></div>
+<p>Key Insight:</p>
+<ul>
+<li>
+Recursive functions depend only on their arguments and return values, ensuring they cannot inadvertently modify global state or cause unintended side effects.
+</li>
+</ul>
+<h3 id="3-recursion-aligns-with-mathematical-definitions">3. Recursion Aligns with Mathematical Definitions</h3>
+<p>Many problems are inherently recursive in nature, such as traversing a tree or calculating factorials. Recursive functions in Haskell mirror these mathematical definitions, making them intuitive and reliable.</p>
+<h4 id="example-factorial">Example: Factorial</h4>
+<p>Mathematical Definition:</p>
+<ul>
+<li>
+<code>factorial(0) = 1</code>
+</li>
+<li>
+<code>factorial(n) = n * factorial(n-1)</code>
+</li>
+</ul>
+<p>Recursive Implementation:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">factorial</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">factorial</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="it">1</span><span>
+</span><span class="va">factorial</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="va">n</span><span> </span><span class="sy">*</span><span> </span><span class="va">factorial</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<p>This direct alignment with mathematics ensures correctness and makes the code easier to understand. There’s no need to manage complex loop logic or mutable counters.</p>
+<h3 id="4-recursion-simplifies-parallelism-and-concurrency">4. Recursion Simplifies Parallelism and Concurrency</h3>
+<p>By avoiding mutable state, recursion is inherently safe for concurrent and parallel programming. Recursive functions can be divided into independent subproblems that run in parallel without fear of race conditions.</p>
+<h4 id="example-parallel-sum-of-a-list">Example: Parallel Sum of a List</h4>
+<p>Recursive (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">parallelSum</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="cr">Int</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">parallelSum</span><span> </span><span class="sy">[</span><span class="sy">]</span><span> </span><span class="sy">=</span><span> </span><span class="it">0</span><span>
+</span><span class="va">parallelSum</span><span> </span><span class="sy">[</span><span class="va">x</span><span class="sy">]</span><span> </span><span class="sy">=</span><span> </span><span class="va">x</span><span>
+</span><span class="va">parallelSum</span><span> </span><span class="va">xs</span><span> </span><span class="sy">=</span><span> </span><span class="kw">let</span><span> </span><span class="sy">(</span><span class="va">left</span><span class="sy">,</span><span> </span><span class="va">right</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">splitAt</span><span> </span><span class="sy">(</span><span class="va">length</span><span> </span><span class="va">xs</span><span> </span><span class="sy">`</span><span class="va">div</span><span class="sy">`</span><span> </span><span class="it">2</span><span class="sy">)</span><span> </span><span class="va">xs</span><span>
+                 </span><span class="kw">in</span><span> </span><span class="va">parallelSum</span><span> </span><span class="va">left</span><span> </span><span class="op">+</span><span> </span><span class="va">parallelSum</span><span> </span><span class="va">right</span><span>
+</span></code></pre></div>
+<p>Here:</p>
+<ul>
+<li>
+The list is split into two halves, and each half is summed recursively.
+</li>
+<li>
+These recursive calls can be executed in parallel, as they operate on independent data.
+</li>
+</ul>
+<h3 id="5-recursion-encourages-declarative-thinking">5. Recursion Encourages Declarative Thinking</h3>
+<p>Unlike loops, which focus on how to iterate, recursion describes what the solution looks like. This shift in perspective leads to cleaner, more readable code.</p>
+<h4 id="example-maximum-element-in-a-list">Example: Maximum Element in a List</h4>
+<p>Imperative (Python):</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> find_max(lst):</span>
+<span>    max_value </span><span class="op">=</span><span> lst[</span><span class="dv">0</span><span>]</span>
+<span>    </span><span class="cf">for</span><span> x </span><span class="kw">in</span><span> lst[</span><span class="dv">1</span><span>:]:</span>
+<span>        </span><span class="cf">if</span><span> x </span><span class="op">&gt;</span><span> max_value:</span>
+<span>            max_value </span><span class="op">=</span><span> x</span>
+<span>    </span><span class="cf">return</span><span> max_value</span>
+</code></pre></div>
+<p>Declarative (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">findMax</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="cr">Int</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">findMax</span><span> </span><span class="sy">[</span><span class="va">x</span><span class="sy">]</span><span> </span><span class="sy">=</span><span> </span><span class="va">x</span><span>
+</span><span class="va">findMax</span><span> </span><span class="sy">(</span><span class="va">x</span><span class="sy">:</span><span class="va">xs</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">max</span><span> </span><span class="va">x</span><span> </span><span class="sy">(</span><span class="va">findMax</span><span> </span><span class="va">xs</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<p>Haskell expresses the solution directly:</p>
+<ul>
+<li>
+The maximum of a list is either the first element or the maximum of the rest.
+</li>
+<li>
+This declarative approach eliminates the need for manual iteration logic.
+</li>
+</ul>
+<h3 id="6-recursion-eliminates-entire-classes-of-bugs">6. Recursion Eliminates Entire Classes of Bugs</h3>
+<p>By avoiding mutable state and side effects, recursion prevents many common bugs found in imperative programming:</p>
+<ol>
+<li>
+<strong>Race Conditions</strong>: Recursion avoids shared state, eliminating concurrency issues.
+</li>
+<li>
+<strong>Off-by-One Errors</strong>: Recursive definitions naturally handle boundaries without needing to track counters or indices.
+</li>
+<li>
+<strong>Invalid States</strong>: Recursive functions can enforce valid states through their structure and base cases.
+</li>
+</ol>
+<h4 id="example-fibonacci-sequence">Example: Fibonacci Sequence</h4>
+<p>Imperative (Python):</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> fibonacci(n):</span>
+<span>    a, b </span><span class="op">=</span><span> </span><span class="dv">0</span><span>, </span><span class="dv">1</span>
+<span>    </span><span class="cf">for</span><span> _ </span><span class="kw">in</span><span> </span><span class="bu">range</span><span>(n):</span>
+<span>        a, b </span><span class="op">=</span><span> b, a </span><span class="op">+</span><span> b</span>
+<span>    </span><span class="cf">return</span><span> a</span>
+</code></pre></div>
+<p>Recursive (Haskell):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">fibonacci</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">fibonacci</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="it">0</span><span>
+</span><span class="va">fibonacci</span><span> </span><span class="it">1</span><span> </span><span class="sy">=</span><span> </span><span class="it">1</span><span>
+</span><span class="va">fibonacci</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="va">fibonacci</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span> </span><span class="op">+</span><span> </span><span class="va">fibonacci</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">2</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<p>Key Benefits:</p>
+<ul>
+<li>
+The Haskell version avoids mutable state entirely.
+</li>
+<li>
+Each call works with its own data, guaranteeing correctness and purity.
+</li>
+</ul>
+<h2 id="5-how-to-write-recursive-functions-in-haskell">5. How to Write Recursive Functions in Haskell</h2>
+<h3 id="recursion-with-pattern-matching">Recursion with Pattern Matching</h3>
+<p>Haskell’s pattern matching makes recursion intuitive. Here’s an example to find the factorial of a number:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">factorial</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">factorial</span><span> </span><span class="it">0</span><span> </span><span class="sy">=</span><span> </span><span class="it">1</span><span>                  </span><span class="co">-- Base case: factorial of 0 is 1</span><span>
+</span><span class="va">factorial</span><span> </span><span class="va">n</span><span> </span><span class="sy">=</span><span> </span><span class="va">n</span><span> </span><span class="sy">*</span><span> </span><span class="va">factorial</span><span> </span><span class="sy">(</span><span class="va">n</span><span class="it">-1</span><span class="sy">)</span><span> </span><span class="co">-- Recursive case: n * factorial of (n-1)</span><span>
+</span></code></pre></div>
+<h3 id="recursion-with-guards">Recursion with Guards</h3>
+<p>Guards allow you to express conditions in a clear and readable way. Here’s the same factorial example using guards:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">factorial</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">factorial</span><span> </span><span class="va">n</span><span>
+    </span><span class="sy">|</span><span> </span><span class="va">n</span><span> </span><span class="op">==</span><span> </span><span class="it">0</span><span>    </span><span class="sy">=</span><span> </span><span class="it">1</span><span>
+    </span><span class="sy">|</span><span> </span><span class="va">n</span><span> </span><span class="op">&gt;</span><span> </span><span class="it">0</span><span>     </span><span class="sy">=</span><span> </span><span class="va">n</span><span> </span><span class="sy">*</span><span> </span><span class="va">factorial</span><span> </span><span class="sy">(</span><span class="va">n</span><span> </span><span class="op">-</span><span> </span><span class="it">1</span><span class="sy">)</span><span>
+    </span><span class="sy">|</span><span> </span><span class="va">otherwise</span><span> </span><span class="sy">=</span><span> </span><span class="va">error</span><span> </span><span class="st">&quot;Negative input not allowed&quot;</span><span>
+</span></code></pre></div>
+<h3 id="recursion-with-higherkinded-types">Recursion with Higher-Kinded Types</h3>
+<p>Recursive functions can also work on recursive data structures, like trees:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">data</span><span> </span><span class="cr">Tree</span><span> </span><span class="va">a</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Empty</span><span> </span><span class="sy">|</span><span> </span><span class="cr">Node</span><span> </span><span class="va">a</span><span> </span><span class="sy">(</span><span class="cr">Tree</span><span> </span><span class="va">a</span><span class="sy">)</span><span> </span><span class="sy">(</span><span class="cr">Tree</span><span> </span><span class="va">a</span><span class="sy">)</span><span>
+    </span><span class="kw">deriving</span><span> </span><span class="sy">(</span><span class="cr">Show</span><span class="sy">)</span><span>
+
+</span><span class="va">treeSum</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Tree</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">treeSum</span><span> </span><span class="cr">Empty</span><span> </span><span class="sy">=</span><span> </span><span class="it">0</span><span>
+</span><span class="va">treeSum</span><span> </span><span class="sy">(</span><span class="cr">Node</span><span> </span><span class="va">val</span><span> </span><span class="va">left</span><span> </span><span class="va">right</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">val</span><span> </span><span class="op">+</span><span> </span><span class="va">treeSum</span><span> </span><span class="va">left</span><span> </span><span class="op">+</span><span> </span><span class="va">treeSum</span><span> </span><span class="va">right</span><span>
+</span></code></pre></div>
+<h2 id="6-thinking-recursively-instead-of-imperatively">6. Thinking Recursively Instead of Imperatively</h2>
+<p>When writing recursive functions, the key is to break the problem into smaller subproblems and focus on the following:</p>
+<ol>
+<li>
+What is the <strong>simplest possible input</strong> (the base case)?
+</li>
+<li>
+How can you <strong>reduce the problem</strong> into a smaller version of itself (the recursive case)?
+</li>
+</ol>
+<h4 id="example-reversing-a-list">Example: Reversing a List</h4>
+<p>Imperative (Python-style):</p>
+<div class="source-code"><pre><code class="language-python"><span class="kw">def</span><span> reverse_list(lst):</span>
+<span>    result </span><span class="op">=</span><span> []</span>
+<span>    </span><span class="cf">for</span><span> x </span><span class="kw">in</span><span> lst:</span>
+<span>        result.insert(</span><span class="dv">0</span><span>, x)</span>
+<span>    </span><span class="cf">return</span><span> result</span>
+</code></pre></div>
+<p>Recursive (Haskell-style):</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">reverseList</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span>
+</span><span class="va">reverseList</span><span> </span><span class="sy">[</span><span class="sy">]</span><span> </span><span class="sy">=</span><span> </span><span class="sy">[</span><span class="sy">]</span><span>                     </span><span class="co">-- Base case</span><span>
+</span><span class="va">reverseList</span><span> </span><span class="sy">(</span><span class="va">x</span><span class="sy">:</span><span class="va">xs</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">reverseList</span><span> </span><span class="va">xs</span><span> </span><span class="op">++</span><span> </span><span class="sy">[</span><span class="va">x</span><span class="sy">]</span><span> </span><span class="co">-- Recursive case</span><span>
+</span></code></pre></div>
+<h3 id="realworld-example-of-recursion-directory-traversal">Real-world example of recursion (Directory Traversal)</h3>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">System.Directory</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">System.FilePath</span><span>
+
+</span><span class="va">listFiles</span><span> </span><span class="sy">::</span><span> </span><span class="cr">FilePath</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">[</span><span class="cr">FilePath</span><span class="sy">]</span><span>
+</span><span class="va">listFiles</span><span> </span><span class="va">dir</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">contents</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">listDirectory</span><span> </span><span class="va">dir</span><span>
+    </span><span class="va">paths</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">mapM</span><span> </span><span class="sy">(</span><span class="va">name</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="kw">do</span><span>
+                     </span><span class="kw">let</span><span> </span><span class="va">path</span><span> </span><span class="sy">=</span><span> </span><span class="va">dir</span><span> </span><span class="op">&lt;/&gt;</span><span> </span><span class="va">name</span><span>
+                     </span><span class="va">isDir</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">doesDirectoryExist</span><span> </span><span class="va">path</span><span>
+                     </span><span class="kw">if</span><span> </span><span class="va">isDir</span><span>
+                        </span><span class="kw">then</span><span> </span><span class="va">listFiles</span><span> </span><span class="va">path</span><span>
+                        </span><span class="kw">else</span><span> </span><span class="va">return</span><span> </span><span class="sy">[</span><span class="va">path</span><span class="sy">]</span><span class="sy">)</span><span> </span><span class="va">contents</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">concat</span><span> </span><span class="va">paths</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<h2 id="7-recap-exercises">7. Recap &amp; Exercises</h2>
+<h3 id="recap">Recap</h3>
+<p>Recursion is a core concept in functional programming, replacing traditional looping constructs with pure, declarative solutions. In this chapter, we explored:</p>
+<ol>
+<li>
+<strong>What is Recursion</strong>: Recursive functions solve problems by breaking them down into smaller subproblems, with a base case to ensure termination and a recursive case to reduce the problem.
+</li>
+<li>
+<strong>Why Functional Programming Avoids Loops</strong>: Loops rely on mutable state and side effects, which lead to bugs and make reasoning about code harder. Recursion eliminates these issues by ensuring immutability and purity.
+</li>
+<li>
+<strong>Why Recursion is Better</strong>: Recursive functions mirror mathematical definitions, eliminate shared state, and align with functional programming principles like composability and declarative thinking.
+</li>
+<li>
+<strong>Examples of Recursion in Haskell</strong>: We saw practical examples using pattern matching, guards, and recursive data structures, and explored how recursion simplifies parallelism and concurrency.
+</li>
+</ol>
+<h3 id="exercises">Exercises</h3>
+<h4 id="exercise-1-flatten-a-nested-list">Exercise 1: Flatten a Nested List</h4>
+<p>Write a recursive function to flatten a nested list into a single list. For example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">data</span><span> </span><span class="cr">NestedList</span><span> </span><span class="va">a</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Elem</span><span> </span><span class="va">a</span><span> </span><span class="sy">|</span><span> </span><span class="cr">List</span><span> </span><span class="sy">[</span><span class="cr">NestedList</span><span> </span><span class="va">a</span><span class="sy">]</span><span>
+    </span><span class="kw">deriving</span><span> </span><span class="sy">(</span><span class="cr">Show</span><span class="sy">)</span><span>
+
+</span><span class="va">flatten</span><span> </span><span class="sy">::</span><span> </span><span class="cr">NestedList</span><span> </span><span class="va">a</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">flatten</span><span> </span><span class="sy">(</span><span class="cr">List</span><span> </span><span class="sy">[</span><span class="cr">Elem</span><span> </span><span class="it">1</span><span class="sy">,</span><span> </span><span class="cr">List</span><span> </span><span class="sy">[</span><span class="cr">Elem</span><span> </span><span class="it">2</span><span class="sy">,</span><span> </span><span class="cr">Elem</span><span> </span><span class="it">3</span><span class="sy">]</span><span class="sy">,</span><span> </span><span class="cr">Elem</span><span> </span><span class="it">4</span><span class="sy">]</span><span class="sy">)</span><span>
+</span><span class="co">-- Output: [1, 2, 3, 4]</span><span>
+</span></code></pre></div>
+<h4 id="exercise-2-find-the-depth-of-a-tree">Exercise 2: Find the Depth of a Tree</h4>
+<p>Write a recursive function to calculate the depth of a binary tree. The depth of a tree is the number of edges on the longest path from the root to a leaf.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">data</span><span> </span><span class="cr">Tree</span><span> </span><span class="va">a</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Empty</span><span> </span><span class="sy">|</span><span> </span><span class="cr">Node</span><span> </span><span class="va">a</span><span> </span><span class="sy">(</span><span class="cr">Tree</span><span> </span><span class="va">a</span><span class="sy">)</span><span> </span><span class="sy">(</span><span class="cr">Tree</span><span> </span><span class="va">a</span><span class="sy">)</span><span>
+    </span><span class="kw">deriving</span><span> </span><span class="sy">(</span><span class="cr">Show</span><span class="sy">)</span><span>
+
+</span><span class="va">treeDepth</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Tree</span><span> </span><span class="va">a</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">let</span><span> </span><span class="va">tree</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Node</span><span> </span><span class="it">1</span><span> </span><span class="sy">(</span><span class="cr">Node</span><span> </span><span class="it">2</span><span> </span><span class="cr">Empty</span><span> </span><span class="cr">Empty</span><span class="sy">)</span><span> </span><span class="sy">(</span><span class="cr">Node</span><span> </span><span class="it">3</span><span> </span><span class="sy">(</span><span class="cr">Node</span><span> </span><span class="it">4</span><span> </span><span class="cr">Empty</span><span> </span><span class="cr">Empty</span><span class="sy">)</span><span> </span><span class="cr">Empty</span><span class="sy">)</span><span>
+</span><span class="va">treeDepth</span><span> </span><span class="va">tree</span><span>
+</span><span class="co">-- Output: 3</span><span>
+</span></code></pre></div>
+<h4 id="exercise-3-merge-two-sorted-lists">Exercise 3: Merge Two Sorted Lists</h4>
+<p>Write a recursive function to merge two sorted lists into a single sorted list.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">mergeSorted</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Ord</span><span> </span><span class="va">a</span><span> </span><span class="sy">=&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">mergeSorted</span><span> </span><span class="sy">[</span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">5</span><span class="sy">]</span><span> </span><span class="sy">[</span><span class="it">2</span><span class="sy">,</span><span> </span><span class="it">4</span><span class="sy">,</span><span> </span><span class="it">6</span><span class="sy">]</span><span>
+</span><span class="co">-- Output: [1, 2, 3, 4, 5, 6]</span><span>
+</span></code></pre></div>
+<h4 id="exercise-4-count-occurrences-of-an-element">Exercise 4: Count Occurrences of an Element</h4>
+<p>Write a recursive function to count how many times a specific element appears in a list.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">countOccurrences</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Eq</span><span> </span><span class="va">a</span><span> </span><span class="sy">=&gt;</span><span> </span><span class="va">a</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">countOccurrences</span><span> </span><span class="it">3</span><span> </span><span class="sy">[</span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">5</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">6</span><span class="sy">]</span><span>
+</span><span class="co">-- Output: 3</span><span>
+</span></code></pre></div>
+<h4 id="exercise-5-generate-pascals-triangle">Exercise 5: Generate Pascal’s Triangle</h4>
+<p>Write a recursive function to generate the nth row of Pascal’s Triangle. In Pascal’s Triangle, each number is the sum of the two numbers directly above it.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">pascalsTriangle</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="cr">Int</span><span class="sy">]</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">pascalsTriangle</span><span> </span><span class="it">5</span><span>
+</span><span class="co">-- Output: [1, 5, 10, 10, 5, 1]</span><span>
+</span></code></pre></div>
+<h4 id="exercise-6-implement-quicksort">Exercise 6: Implement Quicksort</h4>
+<p>Using recursion, implement the quicksort algorithm to sort a list of elements.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">quicksort</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Ord</span><span> </span><span class="va">a</span><span> </span><span class="sy">=&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">quicksort</span><span> </span><span class="sy">[</span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">4</span><span class="sy">,</span><span> </span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">5</span><span class="sy">,</span><span> </span><span class="it">9</span><span class="sy">,</span><span> </span><span class="it">2</span><span class="sy">,</span><span> </span><span class="it">6</span><span class="sy">,</span><span> </span><span class="it">5</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">5</span><span class="sy">]</span><span>
+</span><span class="co">-- Output: [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]</span><span>
+</span></code></pre></div>
+<h4 id="exercise-7-detect-palindromes">Exercise 7: Detect Palindromes</h4>
+<p>Write a recursive function to check if a list is a palindrome. A list is a palindrome if it reads the same backward as forward.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">isPalindrome</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Eq</span><span> </span><span class="va">a</span><span> </span><span class="sy">=&gt;</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Bool</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">isPalindrome</span><span> </span><span class="sy">[</span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">2</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">,</span><span> </span><span class="it">2</span><span class="sy">,</span><span> </span><span class="it">1</span><span class="sy">]</span><span>
+</span><span class="co">-- Output: True</span><span>
+
+</span><span class="va">isPalindrome</span><span> </span><span class="sy">[</span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">2</span><span class="sy">,</span><span> </span><span class="it">3</span><span class="sy">]</span><span>
+</span><span class="co">-- Output: False</span><span>
+</span></code></pre></div>
+<h4 id="exercise-8-generate-all-subsets-of-a-list">Exercise 8: Generate All Subsets of a List</h4>
+<p>Write a recursive function to generate all subsets (the power set) of a list.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">subsets</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="sy">[</span><span class="va">a</span><span class="sy">]</span><span class="sy">]</span><span>
+</span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">subsets</span><span> </span><span class="sy">[</span><span class="it">1</span><span class="sy">,</span><span> </span><span class="it">2</span><span class="sy">]</span><span>
+</span><span class="co">-- Output: [[], [1], [2], [1,2]]</span><span>
+</span></code></pre></div>
+<p><a href="/landing/Blog/Chapter6">Previous Chapter</a></p>
+</div></div></body></html>

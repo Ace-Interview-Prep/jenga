@@ -1,0 +1,1154 @@
+<html lang="en"><head><style>
+/* Markdown Shell */
+.containerBlog {
+   padding: 200px;
+   background-color: black;
+   color: white;
+   font-size: 20px;
+   font-family: Georgia, serif;
+}
+
+.containerBlog ol {
+   list-style-type: decimal;
+   padding-left: 2.5rem;
+}
+.containerBlog ul {
+   list-style-type: disc;
+   padding-left: 2.5rem;
+}
+
+.containerBlog td {
+   padding: 3px;
+   border-color: #888;
+}
+
+.containerBlog li {
+   padding: 5px 10px;
+}
+
+.containerBlog p {
+   padding: 10px 0px;
+}
+
+.containerBlog a {
+   color: #00B9DA;
+   text-decoration: none;
+}
+
+.containerBlog p code {
+  background-color: #D3D3D3;
+  padding: 0px 3px;
+  border-radius: 0.5rem;
+}
+
+.containerBlog h1 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 2em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h2 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h3 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size:1.17em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h4 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h5 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 0.83em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+
+
+
+/* Otherwise comments can go on into infinity */
+span.co {
+  word-break: break-word;        /* Safe wrap on words */
+  overflow-wrap: anywhere;       /* Force wrap anywhere if needed */
+  white-space: normal;           /* Allow wrapping */
+}
+
+
+code:not([class]) {
+  /* your styles here */
+  background-color: white;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+code span {
+  display: inline;
+  white-space: pre;
+}
+
+.source-code {
+  padding: 8px;
+  border-color: white;
+  background-color: black;
+}
+
+}
+/* One off haskell constructs */
+code {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+div.source-code {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+code.language-haskell {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+/* Haskell Syntax */
+.pr {
+   color: #F8E473;
+}
+.op {
+   color: gold;
+}
+.sy {
+   color: #FADA5E;
+}
+.co {
+   color: green;
+}
+.cr {
+   color: #af64ff;
+}
+.va {
+   color: #6693F5; 
+}
+.kw {
+    color: #f0883e;
+}
+
+/* Haskell Syntax - Literals */
+.st {
+  color: #a5d6ff;
+}
+.ch {
+  color: #2E3A59;
+}
+.it {}
+.ra {}
+
+
+/* Other Languages Via Skylighting Tokenizer */
+
+.pp {
+  color: blue;
+}
+.im {
+  color: green;
+}
+.dt {
+  color: green;
+}
+.cf {
+  color: orange;
+}
+/*Like char */
+.sc {
+  color: orange;
+}
+/* java func */
+.fu {
+  color: #6693F5;
+}
+
+/* base color C lang */
+.language-c {
+  color: #6693F5;
+}
+
+.language-bash {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+.language-nix {
+  color: grey;
+  font-weight: bold;
+}
+
+.language-java {
+  color: #6693F5;
+}
+.language-csharp {
+  color: #E3B778;
+}
+.language-python {
+  color: #E3B778;
+}
+</style><style>a { color: #00B9DA; text-decoration: none; }</style></head><body><div class="fixed top-0 left-0 w-full h-full overflow-auto z-10 scroll-smooth"><div class="containerBlog"><h1 id="chapter-5-string-parsing">Chapter 5: String Parsing</h1>
+<ol>
+<li>
+<a href="/landing/Blog/Chapter5#1-introduction">Introduction</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#2-parser-combinators-vs-regular-expressions">Parser Combinators vs. Regular Expressions</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#3-why-choose-parsec">Why Choose Parsec?</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#4-parsec-syntax-cheat-sheet">Parsec Syntax Cheat Sheet</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#5-building-more-complex-parsers">Building More Complex Parsers</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#6-advanced-error-handling-in-parsec">Advanced Error Handling in Parsec</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#7-parse-dont-validate">Parse, Don&#39;t Validate</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter5#recap">Recap &amp; Exercises</a>
+</li>
+</ol>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>Parsing is the process of analyzing a string or a sequence of characters to extract meaningful information or transform it into a structured format. While regular expressions (regex) are a common tool for parsing, they come with significant limitations, particularly in terms of readability, maintainability, and safety.</p>
+<p>In this lesson, we’ll explore <strong>Parsec</strong>, a powerful library for parsing in Haskell. We’ll start by understanding why Parsec is superior to regular expressions and then move on to practical examples of building parsers.</p>
+<h2 id="2-parser-combinators-vs-regular-expressions">2. Parser Combinators vs. Regular Expressions</h2>
+<p>Regular expressions are widely used for string parsing due to their compact syntax and ability to match patterns. However, they have several limitations:</p>
+<h3 id="lack-of-type-safety">Lack of Type Safety</h3>
+<ul>
+<li>
+Regular expressions operate on raw strings, making them prone to errors that are only caught at runtime.
+</li>
+<li>
+A typo in the regex or a mismatch in the expected structure can lead to silent failures or unexpected results.
+</li>
+</ul>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-python"><span class="im">import</span><span> re</span>
+
+<span>pattern </span><span class="op">=</span><span> </span><span class="vs">r&quot;(d</span><span class="sc">{4}</span><span class="vs">)-(d</span><span class="sc">{2}</span><span class="vs">)-(d</span><span class="sc">{2}</span><span class="vs">)&quot;</span>
+<span>match </span><span class="op">=</span><span> re.match(pattern, </span><span class="st">&quot;2024-12-29&quot;</span><span>)</span>
+
+<span class="cf">if</span><span> match:</span>
+<span>    year, month, day </span><span class="op">=</span><span> match.groups()</span>
+<span class="cf">else</span><span>:</span>
+<span>    </span><span class="bu">print</span><span>(</span><span class="st">&quot;Invalid date&quot;</span><span>)</span>
+</code></pre></div>
+<p>If the input string doesn’t match the pattern, this code will fail without meaningful feedback on why the match failed.</p>
+<p>In contrast, Parsec provides compile-time guarantees by working with <strong>typed parsers</strong>, ensuring that the input conforms to the expected structure.</p>
+<h3 id="poor-readability-and-maintainability">Poor Readability and Maintainability</h3>
+<ul>
+<li>
+Regular expressions are often difficult to read and understand, especially for complex patterns.
+</li>
+<li>
+They mix data (the pattern) with logic (the matching rules), leading to cryptic code.
+</li>
+</ul>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-python"><span>pattern </span><span class="op">=</span><span> </span><span class="vs">r&quot;^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,})$&quot;</span>
+</code></pre></div>
+<p>What does this pattern do? While it matches an email address, understanding or modifying it requires deep knowledge of regex syntax.</p>
+<p>The regular expression above handles the simplest of email patterns, but as laid out in <a href="https://datatracker.ietf.org/doc/html/rfc5322">RFC5322</a>, email patterns can be very complex. <a href="https://pdw.ex-parrot.com/Mail-RFC822-Address.html">The following regular expression</a> is an example of a regular expression used for email address format validation in RFC822:</p>
+<pre><code>(?:(?:rn)?[ t])*(?:(?:(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*))*@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*|(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)*&lt;(?:(?:rn)?[ t])*(?:@(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*(?:,@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*)*:(?:(?:rn)?[ t])*)?(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*))*@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*&gt;(?:(?:rn)?[ t])*)|(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)*:(?:(?:rn)?[ t])*(?:(?:(?:[^()&lt;&gt;@,;:\&quot;.[]000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*))*@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*|(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)*&lt;(?:(?:rn)?[ t])*(?:@(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*(?:,@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*)*:(?:(?:rn)?[ t])*)?(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*))*@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*&gt;(?:(?:rn)?[ t])*)(?:,s*(?:(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*))*@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*|(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)*&lt;(?:(?:rn)?[ t])*(?:@(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*(?:,@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*)*:(?:(?:rn)?[ t])*)?(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|&quot;(?:[^&quot;r\]|\.|(?:(?:rn)?[ t]))*&quot;(?:(?:rn)?[ t])*))*@(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*)(?:.(?:(?:rn)?[ t])*(?:[^()&lt;&gt;@,;:\&quot;.[] 000-031]+(?:(?:(?:rn)?[ t])+|Z|(?=[[&quot;()&lt;&gt;@,;:\&quot;.[]]))|[([^[]r\]|\.)*](?:(?:rn)?[ t])*))*&gt;(?:(?:rn)?[ t])*))*)?;s*)
+</code></pre>
+<p>You can see how this becomes wildly complicated and prone to all kinds of logic errors and typos. Not to mention that standards change every couple of years. While there may be popular libraries like <a href="https://pypi.org/project/email-validator/">email-validator</a> to handle this (assuming the developer who wrote the library also didn&#39;t make any mistakes), imagine trying to parse complex data that doesn&#39;t have a common library. The issue persists.</p>
+<p>Parsec, on the other hand, allows you to build parsers in a <strong>compositional and modular</strong> way, where each part of the parser has a clear, readable purpose.</p>
+<p>Here is an example of the same parser but done with a Parser Combinator instead:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="dt">Text.Parsec</span>
+<span class="kw">import</span><span> </span><span class="dt">Text.Parsec.String</span><span> (</span><span class="dt">Parser</span><span>)</span>
+<span class="kw">import</span><span> </span><span class="dt">Control.Monad</span><span> (void)</span>
+<span class="kw">import</span><span> </span><span class="dt">Data.Char</span><span> (isAlphaNum, isAscii)</span>
+
+<span class="co">-- Helper: Parse a specific character or fail</span>
+<span class="ot">charP ::</span><span> </span><span class="dt">Char</span><span> </span><span class="ot">-&gt;</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">Char</span>
+<span>charP c </span><span class="ot">=</span><span> char c </span><span class="op">&lt;?&gt;</span><span> [c]</span>
+
+<span class="co">-- Helper: Parse a range of allowed characters</span>
+<span class="ot">satisfyP ::</span><span> (</span><span class="dt">Char</span><span> </span><span class="ot">-&gt;</span><span> </span><span class="dt">Bool</span><span>) </span><span class="ot">-&gt;</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">Char</span>
+<span>satisfyP f </span><span class="ot">=</span><span> satisfy f </span><span class="op">&lt;?&gt;</span><span> </span><span class="st">&quot;allowed character&quot;</span>
+
+<span class="co">-- Helper: Parse whitespace</span>
+<span class="ot">whitespace ::</span><span> </span><span class="dt">Parser</span><span> ()</span>
+<span>whitespace </span><span class="ot">=</span><span> void </span><span class="op">$</span><span> many (oneOf </span><span class="st">&quot; trn&quot;</span><span>)</span>
+
+<span class="co">-- 1. Local Part Parsers (Before @)</span>
+<span class="ot">localPart ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>localPart </span><span class="ot">=</span><span> try quotedString </span><span class="op">&lt;|&gt;</span><span> unquotedLocalPart</span>
+
+<span class="ot">quotedString ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>quotedString </span><span class="ot">=</span><span> </span><span class="kw">do</span>
+<span>    charP </span><span class="ch">&#39;&quot;&#39;</span><span> </span><span class="co">-- Opening quote</span>
+<span>    content </span><span class="ot">&lt;-</span><span> many (escapedChar </span><span class="op">&lt;|&gt;</span><span> satisfyP (</span><span class="op">/=</span><span> </span><span class="ch">&#39;&quot;&#39;</span><span>))</span>
+<span>    charP </span><span class="ch">&#39;&quot;&#39;</span><span> </span><span class="co">-- Closing quote</span>
+<span>    </span><span class="fu">return</span><span> content</span>
+
+<span class="ot">unquotedLocalPart ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>unquotedLocalPart </span><span class="ot">=</span><span> many1 (satisfyP isValidLocalChar)</span>
+
+<span class="ot">isValidLocalChar ::</span><span> </span><span class="dt">Char</span><span> </span><span class="ot">-&gt;</span><span> </span><span class="dt">Bool</span>
+<span>isValidLocalChar c </span><span class="ot">=</span><span> </span><span class="fu">isAlphaNum</span><span> c </span><span class="op">||</span><span> c </span><span class="ot">`elem`</span><span> </span><span class="st">&quot;!#$%&amp;&#39;*+-/=?^_`{|}~.&quot;</span>
+
+<span class="ot">escapedChar ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">Char</span>
+<span>escapedChar </span><span class="ot">=</span><span> charP </span><span class="ch">&#39;\&#39; &gt;&gt; anyChar</span>
+
+<span class="co">-- 2. Domain Parsers (After @)</span>
+<span class="ot">domain ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>domain </span><span class="ot">=</span><span> try domainLiteral </span><span class="op">&lt;|&gt;</span><span> domainName</span>
+
+<span class="ot">domainLiteral ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>domainLiteral </span><span class="ot">=</span><span> </span><span class="kw">do</span>
+<span>    charP </span><span class="ch">&#39;[&#39;</span>
+<span>    content </span><span class="ot">&lt;-</span><span> many (escapedChar </span><span class="op">&lt;|&gt;</span><span> satisfyP (</span><span class="op">/=</span><span> </span><span class="ch">&#39;]&#39;</span><span>))</span>
+<span>    charP </span><span class="ch">&#39;]&#39;</span>
+<span>    </span><span class="fu">return</span><span> content</span>
+
+<span class="ot">domainName ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>domainName </span><span class="ot">=</span><span> </span><span class="kw">do</span>
+<span>    first </span><span class="ot">&lt;-</span><span> many1 (satisfyP </span><span class="fu">isAlphaNum</span><span>)</span>
+<span>    rest </span><span class="ot">&lt;-</span><span> many (charP </span><span class="ch">&#39;.&#39;</span><span> </span><span class="op">&gt;&gt;</span><span> many1 (satisfyP </span><span class="fu">isAlphaNum</span><span>))</span>
+<span>    </span><span class="fu">return</span><span> </span><span class="op">$</span><span> first </span><span class="op">++</span><span> </span><span class="fu">concatMap</span><span> (</span><span class="ch">&#39;.&#39;</span><span> </span><span class="op">:</span><span>) rest</span>
+
+<span class="co">-- 3. Full Email Parser</span>
+<span class="ot">emailParser ::</span><span> </span><span class="dt">Parser</span><span> (</span><span class="dt">String</span><span>, </span><span class="dt">String</span><span>)</span>
+<span>emailParser </span><span class="ot">=</span><span> </span><span class="kw">do</span>
+<span>    local </span><span class="ot">&lt;-</span><span> localPart</span>
+<span>    charP </span><span class="ch">&#39;@&#39;</span>
+<span>    domain </span><span class="ot">&lt;-</span><span> domain</span>
+<span>    </span><span class="fu">return</span><span> (local, domain)</span>
+
+<span class="co">-- Example Usage</span>
+<span class="ot">main ::</span><span> </span><span class="dt">IO</span><span> ()</span>
+<span>main </span><span class="ot">=</span><span> </span><span class="kw">do</span>
+<span>    </span><span class="kw">let</span><span> testEmails </span><span class="ot">=</span>
+<span>            [ </span><span class="st">&quot;user@example.com&quot;</span>
+<span>            , </span><span class="st">&quot;&quot;</span><span>quoted</span><span class="op">@</span><span>name</span><span class="st">&quot;@example.com&quot;</span>
+<span>            , </span><span class="st">&quot;user@[192.168.1.1]&quot;</span>
+<span>            , </span><span class="st">&quot;complex.local-part+extra@sub.domain.com&quot;</span>
+<span>            ]</span>
+<span>    </span><span class="fu">mapM_</span><span> (printResult </span><span class="op">.</span><span> parse emailParser </span><span class="st">&quot;&quot;</span><span>) testEmails</span>
+
+<span class="ot">printResult ::</span><span> </span><span class="dt">Either</span><span> </span><span class="dt">ParseError</span><span> (</span><span class="dt">String</span><span>, </span><span class="dt">String</span><span>) </span><span class="ot">-&gt;</span><span> </span><span class="dt">IO</span><span> ()</span>
+<span>printResult (</span><span class="dt">Left</span><span> err) </span><span class="ot">=</span><span> </span><span class="fu">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parse error: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="fu">show</span><span> err</span>
+<span>printResult (</span><span class="dt">Right</span><span> email) </span><span class="ot">=</span><span> </span><span class="fu">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parsed: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="fu">show</span><span> email</span>
+</code></pre></div>
+<p>As you can see, it&#39;s much easier to read and to maintain. It also allows us to specify types for everything and parse into custom types, which we will explore in more detail later in this chapter.</p>
+<h3 id="ambiguity-and-nondeterminism">Ambiguity and Non-Determinism</h3>
+<ul>
+<li>
+Regular expressions can be ambiguous when multiple patterns overlap, leading to non-deterministic results.
+</li>
+<li>
+Backtracking in regex engines can also cause inefficiencies and unexpected behavior for complex patterns.
+</li>
+</ul>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-python"><span>pattern </span><span class="op">=</span><span> </span><span class="vs">r&quot;(a+)+&quot;</span>
+<span>re.match(pattern, </span><span class="st">&quot;aaaaaaaa&quot;</span><span>)</span>
+<span class="co"># Depending on the engine, this can cause excessive backtracking.</span>
+</code></pre></div>
+<p>Parsec parsers are <strong>deterministic by design</strong>. Each parser consumes the input step-by-step, ensuring there’s no ambiguity or unnecessary backtracking.</p>
+<h3 id="performance-considerations">Performance Considerations</h3>
+<p>The runtime performance of a regular expression can be faster than a parser combinator in simple scenarios, but there are many scenarios where a regular expression cannot handle parsing in a performant manner, and often times it will time-out. Regular expressions are not good at handling <strong>nested data structures</strong>.</p>
+<h4 id="example-parsing-nested-mathematical-expressions">Example: Parsing Nested Mathematical Expressions</h4>
+<p>We want to parse and evaluate nested mathematical expressions such as:</p>
+<ul>
+<li>
+Valid: <code>&quot;2 + (3 * 4)&quot;</code>, <code>&quot;(1 + 2) * (3 - 4)&quot;</code>, <code>&quot;10 / (5 + 5)&quot;</code>
+</li>
+<li>
+Invalid: <code>&quot;2 + (3 * 4&quot;</code>, <code>&quot;2 + 3)&quot;</code>
+</li>
+</ul>
+<p><strong>Regex Implementation</strong>
+Regex struggles with parsing nested structures. While you can write a regex pattern to match numbers and simple operators, handling parentheses correctly is nearly impossible.</p>
+<p><strong>Example regex for basic math expressions</strong>:</p>
+<div class="source-code"><pre><code class="language-python"><span class="im">import</span><span> re</span>
+
+<span class="co"># Regex for simple math expressions</span>
+<span>pattern </span><span class="op">=</span><span> </span><span class="vs">r&quot;^d+(s*[+-*/]s*d+)*$&quot;</span>
+
+<span class="co"># Match without considering nesting</span>
+<span class="kw">def</span><span> is_valid_math(</span><span class="bu">input</span><span>):</span>
+<span>  </span><span class="cf">return</span><span> </span><span class="bu">bool</span><span>(re.match(pattern, </span><span class="bu">input</span><span>))</span>
+
+<span class="bu">print</span><span>(is_valid_math(</span><span class="st">&quot;2 + (3 * 4)&quot;</span><span>)) </span><span class="co"># Fails</span>
+<span class="bu">print</span><span>(is_valid_math(</span><span class="st">&quot;2 + 3 * 4&quot;</span><span>)) </span><span class="co"># Passes</span>
+</code></pre></div>
+<p><strong>This regex</strong>:</p>
+<ol>
+<li>
+<strong>Cannot handle nested parentheses.</strong>
+</li>
+<li>
+<strong>Fails for valid expressions like</strong> <code>&quot;2 + (3 * 4)&quot;</code>.
+</li>
+<li>
+Would require impractical workarounds to support nesting, leading to catastrophic backtracking.
+</li>
+</ol>
+<p><strong>Parsec Implementation</strong>
+With Parsec, we can elegantly handle nested structures.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span> </span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Define a parser for mathematical expressions</span><span>
+</span><span class="kw">data</span><span> </span><span class="cr">Expr</span><span>
+  </span><span class="sy">=</span><span> </span><span class="cr">Num</span><span> </span><span class="cr">Int</span><span>
+  </span><span class="sy">|</span><span> </span><span class="cr">Add</span><span> </span><span class="cr">Expr</span><span> </span><span class="cr">Expr</span><span>
+  </span><span class="sy">|</span><span> </span><span class="cr">Sub</span><span> </span><span class="cr">Expr</span><span> </span><span class="cr">Expr</span><span>
+  </span><span class="sy">|</span><span> </span><span class="cr">Mul</span><span> </span><span class="cr">Expr</span><span> </span><span class="cr">Expr</span><span>
+  </span><span class="sy">|</span><span> </span><span class="cr">Div</span><span> </span><span class="cr">Expr</span><span> </span><span class="cr">Expr</span><span>
+  </span><span class="kw">deriving</span><span> </span><span class="cr">Show</span><span>
+
+</span><span class="co">-- Parse an integer</span><span>
+</span><span class="va">parseNumber</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">Expr</span><span>
+</span><span class="va">parseNumber</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="va">num</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="va">digit</span><span>
+  </span><span class="va">return</span><span> </span><span class="op">$</span><span> </span><span class="cr">Num</span><span> </span><span class="sy">(</span><span class="va">read</span><span> </span><span class="va">num</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Parse parentheses</span><span>
+</span><span class="va">parseParens</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">Expr</span><span>
+</span><span class="va">parseParens</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="va">char</span><span> </span><span class="ch">&#39;(&#39;</span><span>
+  </span><span class="va">expr</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">parseExpr</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;)&#39;</span><span>
+  </span><span class="va">return</span><span> </span><span class="va">expr</span><span>
+
+</span><span class="co">-- Parse operators and combine expressions</span><span>
+</span><span class="va">parseTerm</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">(</span><span class="cr">Expr</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Expr</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Expr</span><span class="sy">)</span><span>
+</span><span class="va">parseTerm</span><span> </span><span class="sy">=</span><span> </span><span class="sy">(</span><span class="va">char</span><span> </span><span class="ch">&#39;+&#39;</span><span> </span><span class="op">&gt;&gt;</span><span> </span><span class="va">return</span><span> </span><span class="cr">Add</span><span class="sy">)</span><span>
+  </span><span class="op">&lt;|&gt;</span><span> </span><span class="sy">(</span><span class="va">char</span><span> </span><span class="ch">&#39;-&#39;</span><span> </span><span class="op">&gt;&gt;</span><span> </span><span class="va">return</span><span> </span><span class="cr">Sub</span><span class="sy">)</span><span>
+  </span><span class="op">&lt;|&gt;</span><span> </span><span class="sy">(</span><span class="va">char</span><span> </span><span class="ch">&#39;*&#39;</span><span> </span><span class="op">&gt;&gt;</span><span> </span><span class="va">return</span><span> </span><span class="cr">Mul</span><span class="sy">)</span><span>
+  </span><span class="op">&lt;|&gt;</span><span> </span><span class="sy">(</span><span class="va">char</span><span> </span><span class="ch">&#39;/&#39;</span><span> </span><span class="op">&gt;&gt;</span><span> </span><span class="va">return</span><span> </span><span class="cr">Div</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Parse a full expression</span><span>
+</span><span class="va">parseExpr</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">Expr</span><span>
+</span><span class="va">parseExpr</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="va">left</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">parseNumber</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">parseParens</span><span>
+  </span><span class="va">rest</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many</span><span> </span><span class="sy">(</span><span class="kw">do</span><span>
+    </span><span class="va">op</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">parseTerm</span><span>
+    </span><span class="va">right</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">parseNumber</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">parseParens</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">op</span><span> </span><span class="va">right</span><span class="sy">)</span><span class="sy">)</span><span>
+  </span><span class="va">return</span><span> </span><span class="op">$</span><span> </span><span class="va">foldl</span><span> </span><span class="sy">(</span><span class="va">acc</span><span> </span><span class="va">f</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">f</span><span> </span><span class="va">acc</span><span class="sy">)</span><span> </span><span class="va">left</span><span> </span><span class="va">rest</span><span>
+
+</span><span class="co">-- Test the parser</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="kw">let</span><span> </span><span class="va">inputs</span><span> </span><span class="sy">=</span><span> </span><span class="sy">[</span><span class="st">&quot;2 + (3 * 4)&quot;</span><span class="sy">,</span><span> </span><span class="st">&quot;(1 + 2) * (3 - 4)&quot;</span><span class="sy">,</span><span> </span><span class="st">&quot;10 / (5 + 5)&quot;</span><span class="sy">,</span><span> </span><span class="st">&quot;2 + (3 * 4&quot;</span><span class="sy">]</span><span>
+  </span><span class="va">mapM_</span><span> </span><span class="sy">(</span><span class="va">printResult</span><span> </span><span class="op">.</span><span> </span><span class="va">parse</span><span> </span><span class="va">parseExpr</span><span> </span><span class="st">&quot;&quot;</span><span class="sy">)</span><span> </span><span class="va">inputs</span><span>
+
+</span><span class="va">printResult</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">ParseError</span><span> </span><span class="cr">Expr</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">printResult</span><span> </span><span class="sy">(</span><span class="cr">Left</span><span> </span><span class="va">err</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Invalid: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">err</span><span>
+</span><span class="va">printResult</span><span> </span><span class="sy">(</span><span class="cr">Right</span><span> </span><span class="va">expr</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Valid: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">expr</span><span>
+</span></code></pre></div>
+<h4 id="why-parsec-excels">Why Parsec Excels</h4>
+<ol>
+<li>
+<strong>Handles Nesting:</strong>
+</li>
+</ol>
+<ul>
+<li>
+The parser supports nested parentheses effortlessly by recursively calling parseExpr inside parseParens.
+</li>
+</ul>
+<ol start="2">
+<li>
+<strong>No Backtracking Issues:</strong>
+</li>
+</ol>
+<ul>
+<li>
+Parsec deterministically processes input, avoiding regex&#39;s exponential backtracking problem.
+</li>
+</ul>
+<ol start="3">
+<li>
+<strong>Error Messages:</strong>
+</li>
+</ol>
+<ul>
+<li>
+Provides detailed feedback about where parsing failed.
+</li>
+</ul>
+<p><strong>Benchmark Comparison</strong>
+Parsing 1,000,000 mathematical expressions:</p>
+<table>
+<thead>
+<tr><th>Implementation</th><th>Input</th><th>Runtime</th></tr>
+</thead>
+<tbody>
+<tr><td>Regex</td><td>&quot;2 + (3 * 4)&quot;</td><td>Timeout</td></tr>
+<tr><td>Parsec</td><td>&quot;2 + (3 * 4)&quot;</td><td>~20ms</td></tr>
+</tbody>
+</table>
+<h2 id="3-why-choose-parsec">3. Why Choose Parsec?</h2>
+<h3 id="type-safety">Type Safety</h3>
+<p>Parsec operates with <strong>typed parsers</strong> that clearly define what they parse and what they return. For example:</p>
+<ul>
+<li>
+A parser for integers will return an <code>Int</code>.
+</li>
+<li>
+A parser for dates can return a custom <code>Date</code> type.
+</li>
+</ul>
+<p>This type safety prevents common errors in parsing and makes your code more robust.</p>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="va">integer</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">integer</span><span> </span><span class="sy">=</span><span> </span><span class="va">read</span><span> </span><span class="op">&lt;$&gt;</span><span> </span><span class="va">many1</span><span> </span><span class="va">digit</span><span>
+</span></code></pre></div>
+<p>Here:</p>
+<ul>
+<li>
+The <code>integer</code> parser guarantees that it will return an <code>Int</code>.
+</li>
+<li>
+If the input doesn’t match, the parser fails deterministically with an informative error.
+</li>
+</ul>
+<h3 id="composability">Composability</h3>
+<p>Parsec parsers are modular and composable, meaning you can combine small parsers into larger ones to handle complex patterns.</p>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="va">dateParser</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">(</span><span class="cr">Int</span><span class="sy">,</span><span> </span><span class="cr">Int</span><span class="sy">,</span><span> </span><span class="cr">Int</span><span class="sy">)</span><span>
+</span><span class="va">dateParser</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">year</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">integer</span><span>
+    </span><span class="sy">_</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;-&#39;</span><span>
+    </span><span class="va">month</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">integer</span><span>
+    </span><span class="sy">_</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;-&#39;</span><span>
+    </span><span class="va">day</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">integer</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">year</span><span class="sy">,</span><span> </span><span class="va">month</span><span class="sy">,</span><span> </span><span class="va">day</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<p>This parser for dates is:</p>
+<ul>
+<li>
+<strong>Readable</strong>: Each step is explicit and easy to understand.
+</li>
+<li>
+<strong>Modular</strong>: The <code>integer</code> and <code>char</code> parsers are reused to build the <code>dateParser</code>.
+</li>
+</ul>
+<h3 id="error-reporting">Error Reporting</h3>
+<p>Regular expressions provide minimal feedback when a match fails. Parsec parsers, on the other hand, produce detailed error messages, including:</p>
+<ul>
+<li>
+The position in the input where the error occurred.
+</li>
+<li>
+The expected pattern at that point.
+</li>
+</ul>
+<p>Example:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="va">dateParser</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">(</span><span class="cr">Int</span><span class="sy">,</span><span> </span><span class="cr">Int</span><span class="sy">,</span><span> </span><span class="cr">Int</span><span class="sy">)</span><span>
+</span><span class="va">dateParser</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">year</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">integer</span><span>
+    </span><span class="sy">_</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;-&#39;</span><span>
+    </span><span class="va">month</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">integer</span><span>
+    </span><span class="sy">_</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;-&#39;</span><span>
+    </span><span class="va">day</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">integer</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">year</span><span class="sy">,</span><span> </span><span class="va">month</span><span class="sy">,</span><span> </span><span class="va">day</span><span class="sy">)</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="va">parseTest</span><span> </span><span class="va">dateParser</span><span> </span><span class="st">&quot;2024-12&quot;</span><span>
+</span></code></pre></div>
+<p><strong>Output</strong>:</p>
+<pre><code>parse error at (line 1, column 8): unexpected end of input expecting digit
+</code></pre>
+<p>This detailed feedback makes debugging easier and ensures your parsers are robust against unexpected inputs.</p>
+<h3 id="deterministic-parsing">Deterministic Parsing</h3>
+<p>Parsec ensures that parsers are deterministic:</p>
+<ul>
+<li>
+No overlapping patterns or ambiguity.
+</li>
+<li>
+Each parser consumes input step-by-step, with no backtracking or guessing.
+</li>
+</ul>
+<p><strong>Example: Parsing a choice of patterns:</strong></p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="va">parser</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">String</span><span>
+</span><span class="va">parser</span><span> </span><span class="sy">=</span><span> </span><span class="va">try</span><span> </span><span class="sy">(</span><span class="va">string</span><span> </span><span class="st">&quot;hello&quot;</span><span class="sy">)</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">string</span><span> </span><span class="st">&quot;help&quot;</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="va">parseTest</span><span> </span><span class="va">parser</span><span> </span><span class="st">&quot;help&quot;</span><span>
+</span></code></pre></div>
+<p>Here, the <code>try</code> function ensures that Parsec can test the first parser (<code>&quot;hello&quot;</code>) without consuming input prematurely. This makes parsing unambiguous and efficient.</p>
+<h3 id="summary-of-advantages">Summary of Advantages</h3>
+<table>
+<thead>
+<tr><th><strong>Feature</strong></th><th><strong>Regex</strong></th><th><strong>Parsec</strong></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Type Safety</strong></td><td>None (operates on raw strings)</td><td>Strong (works with typed parsers)</td></tr>
+<tr><td><strong>Readability</strong></td><td>Cryptic and hard to modify</td><td>Modular and composable</td></tr>
+<tr><td><strong>Error Reporting</strong></td><td>Minimal</td><td>Detailed and informative</td></tr>
+<tr><td><strong>Determinism</strong></td><td>Non-deterministic with backtracking</td><td>Deterministic and predictable</td></tr>
+</tbody>
+</table>
+<h2 id="4-parsec-syntax-cheat-sheet">4. Parsec Syntax Cheat Sheet</h2>
+<p>This table combines syntax and types for commonly used functions in Parsec, along with descriptions and examples for quick reference.</p>
+<table>
+<thead>
+<tr><th><strong>Function</strong></th><th><strong>Type</strong></th><th><strong>Description</strong></th><th><strong>Example Usage</strong></th></tr>
+</thead>
+<tbody>
+<tr><td><code>parse</code></td><td><code>Parser a -&gt; SourceName -&gt; String -&gt; Either ParseError a</code></td><td>Runs a parser on input and returns the result or an error.</td><td><code>parse digit &quot;&quot; &quot;123&quot;</code></td></tr>
+<tr><td><code>try</code></td><td><code>Parser a -&gt; Parser a</code></td><td>Allows backtracking; tries the parser without consuming input on failure.</td><td><code>try (string &quot;hello&quot;) &lt;|&gt; string &quot;help&quot;</code></td></tr>
+<tr><td><code>choice</code></td><td><code>[Parser a] -&gt; Parser a</code></td><td>Tries a list of parsers in sequence until one succeeds.</td><td><code>choice [string &quot;a&quot;, string &quot;b&quot;, string &quot;c&quot;]</code></td></tr>
+<tr><td><code>&lt;|&gt;</code></td><td><code>Parser a -&gt; Parser a -&gt; Parser a</code></td><td>Choice combinator: Tries the first parser, and if it fails, tries the second parser.</td><td><code>string &quot;yes&quot; &lt;|&gt; string &quot;no&quot;</code></td></tr>
+<tr><td><code>many</code></td><td><code>Parser a -&gt; Parser [a]</code></td><td>Matches zero or more occurrences of a parser.</td><td><code>many digit</code></td></tr>
+<tr><td><code>many1</code></td><td><code>Parser a -&gt; Parser [a]</code></td><td>Matches one or more occurrences of a parser.</td><td><code>many1 letter</code></td></tr>
+<tr><td><code>optional</code></td><td><code>Parser a -&gt; Parser ()</code></td><td>Tries a parser and succeeds with no value if the parser fails.</td><td><code>optional (char &#39;-&#39;)</code></td></tr>
+<tr><td><code>sepBy</code></td><td><code>Parser a -&gt; Parser sep -&gt; Parser [a]</code></td><td>Parses zero or more occurrences of a parser separated by another parser.</td><td><code>digit `sepBy` char &#39;,&#39;</code></td></tr>
+<tr><td><code>sepBy1</code></td><td><code>Parser a -&gt; Parser sep -&gt; Parser [a]</code></td><td>Parses one or more occurrences of a parser separated by another parser.</td><td><code>digit `sepBy1` char &#39;,&#39;</code></td></tr>
+<tr><td><code>endBy</code></td><td><code>Parser a -&gt; Parser sep -&gt; Parser [a]</code></td><td>Parses zero or more occurrences of a parser, each followed by a separator.</td><td><code>digit `endBy` char &#39;;&#39;</code></td></tr>
+<tr><td><code>endBy1</code></td><td><code>Parser a -&gt; Parser sep -&gt; Parser [a]</code></td><td>Parses one or more occurrences of a parser, each followed by a separator.</td><td><code>digit `endBy1` char &#39;;&#39;</code></td></tr>
+<tr><td><code>between</code></td><td><code>Parser open -&gt; Parser close -&gt; Parser a -&gt; Parser a</code></td><td>Parses content between two other parsers.</td><td><code>between (char &#39;(&#39;) (char &#39;)&#39;) digit</code></td></tr>
+<tr><td><code>chainl1</code></td><td><code>Parser a -&gt; Parser (a -&gt; a -&gt; a) -&gt; a</code></td><td>Parses left-associative chains (e.g., addition or subtraction).</td><td><code>digit `chainl1` (char &#39;+&#39; &gt;&gt; return (+))</code></td></tr>
+<tr><td><code>chainr1</code></td><td><code>Parser a -&gt; Parser (a -&gt; a -&gt; a) -&gt; a</code></td><td>Parses right-associative chains (e.g., exponentiation).</td><td><code>digit `chainr1` (char &#39;^&#39; &gt;&gt; return (^))</code></td></tr>
+<tr><td><code>lookAhead</code></td><td><code>Parser a -&gt; Parser a</code></td><td>Peeks at input without consuming it.</td><td><code>lookAhead (string &quot;test&quot;)</code></td></tr>
+<tr><td><code>notFollowedBy</code></td><td><code>Parser a -&gt; Parser ()</code></td><td>Ensures a parser does not match at a given position.</td><td><code>notFollowedBy (char &#39;x&#39;)</code></td></tr>
+<tr><td><code>eof</code></td><td><code>Parser ()</code></td><td>Ensures the end of input has been reached.</td><td><code>digit &gt;&gt; eof</code></td></tr>
+<tr><td><code>anyChar</code></td><td><code>Parser Char</code></td><td>Matches any single character.</td><td><code>anyChar</code></td></tr>
+<tr><td><code>noneOf</code></td><td><code>[Char] -&gt; Parser Char</code></td><td>Matches any character not in the given list.</td><td><code>noneOf &quot;aeiou&quot;</code></td></tr>
+<tr><td><code>oneOf</code></td><td><code>[Char] -&gt; Parser Char</code></td><td>Matches any character in a given list.</td><td><code>oneOf &quot;aeiou&quot;</code></td></tr>
+<tr><td><code>char</code></td><td><code>Char -&gt; Parser Char</code></td><td>Matches a specific character.</td><td><code>char &#39;a&#39;</code></td></tr>
+<tr><td><code>string</code></td><td><code>String -&gt; Parser String</code></td><td>Matches a specific string.</td><td><code>string &quot;hello&quot;</code></td></tr>
+<tr><td><code>digit</code></td><td><code>Parser Char</code></td><td>Matches a single digit (<code>0-9</code>).</td><td><code>digit</code></td></tr>
+<tr><td><code>letter</code></td><td><code>Parser Char</code></td><td>Matches a single alphabetic character (<code>a-z</code>, <code>A-Z</code>).</td><td><code>letter</code></td></tr>
+<tr><td><code>spaces</code></td><td><code>Parser ()</code></td><td>Matches zero or more whitespace characters.</td><td><code>spaces</code></td></tr>
+<tr><td><code>&lt;?&gt;</code></td><td><code>Parser a -&gt; String -&gt; Parser a</code></td><td>Adds a label to a parser for better error messages.</td><td><code>digit &lt;?&gt; &quot;a digit&quot;</code></td></tr>
+</tbody>
+</table>
+<p>This cheat sheet provides a comprehensive overview of the most useful Parsec functions, making it easier to reference and use them in your parsing projects.</p>
+<p>More Parsec functions can be explored via the Hackage package explorer:
+https://hackage.haskell.org/package/parsec</p>
+<h2 id="5-building-more-complex-parsers">5. Building More Complex Parsers</h2>
+<p>As we explore Parsec further, let’s build parsers that showcase the composability and power of parser combinators for real-world scenarios. These examples will illustrate how Parsec can handle structured data, nested inputs, and error reporting.</p>
+<h4 id="example-1-parsing-keyvalue-pairs"><strong>Example 1: Parsing Key-Value Pairs</strong></h4>
+<p>Key-value pairs are a common structure in configuration files or query strings (e.g., <code>key=value</code>).</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Parse a key-value pair</span><span>
+</span><span class="va">keyValuePair</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">(</span><span class="cr">String</span><span class="sy">,</span><span> </span><span class="cr">String</span><span class="sy">)</span><span>
+</span><span class="va">keyValuePair</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">key</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="va">letter</span><span>
+    </span><span class="va">char</span><span> </span><span class="ch">&#39;=&#39;</span><span>
+    </span><span class="va">value</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="sy">(</span><span class="va">noneOf</span><span> </span><span class="st">&quot;n&quot;</span><span class="sy">)</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">key</span><span class="sy">,</span><span> </span><span class="va">value</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Parse multiple key-value pairs separated by newlines</span><span>
+</span><span class="va">keyValuePairs</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">[</span><span class="sy">(</span><span class="cr">String</span><span class="sy">,</span><span> </span><span class="cr">String</span><span class="sy">)</span><span class="sy">]</span><span>
+</span><span class="va">keyValuePairs</span><span> </span><span class="sy">=</span><span> </span><span class="va">keyValuePair</span><span> </span><span class="sy">`</span><span class="va">sepBy</span><span class="sy">`</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;n&#39;</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">input</span><span> </span><span class="sy">=</span><span> </span><span class="st">&quot;username=adminnpassword=1234ntimeout=30&quot;</span><span>
+    </span><span class="kw">case</span><span> </span><span class="va">parse</span><span> </span><span class="va">keyValuePairs</span><span> </span><span class="st">&quot;&quot;</span><span> </span><span class="va">input</span><span> </span><span class="kw">of</span><span>
+        </span><span class="cr">Left</span><span> </span><span class="va">err</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parse error: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">err</span><span>
+        </span><span class="cr">Right</span><span> </span><span class="va">pairs</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">print</span><span> </span><span class="va">pairs</span><span>
+</span></code></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ol>
+<li>
+<strong>keyValuePair</strong>:
+<ul>
+<li>
+Parses a key (sequence of letters) followed by <code>=</code> and then a value (anything except a newline).
+</li>
+</ul>
+</li>
+<li>
+<strong>keyValuePairs</strong>:
+<ul>
+<li>
+Combines multiple <code>keyValuePair</code> parsers using <code>sepBy</code>, which ensures pairs are separated by a newline.
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>Output</strong>:</p>
+<pre><code>[(&quot;username&quot;, &quot;admin&quot;), (&quot;password&quot;, &quot;1234&quot;), (&quot;timeout&quot;, &quot;30&quot;)]
+</code></pre>
+<h4 id="example-2-parsing-nested-jsonlike-data"><strong>Example 2: Parsing Nested JSON-Like Data</strong></h4>
+<p>Let’s parse a simplified JSON structure, focusing on key-value pairs with nested objects.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="dt">Text.Parsec</span>
+<span class="kw">import</span><span> </span><span class="dt">Text.Parsec.String</span><span> (</span><span class="dt">Parser</span><span>)</span>
+
+<span class="co">-- A parser for keys</span>
+<span class="ot">key ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>key </span><span class="ot">=</span><span> between (char </span><span class="ch">&#39;&quot;&#39;</span><span>) (char </span><span class="ch">&#39;&quot;&#39;</span><span>) (many1 letter)</span>
+
+<span class="co">-- A parser for string values</span>
+<span class="ot">stringValue ::</span><span> </span><span class="dt">Parser</span><span> </span><span class="dt">String</span>
+<span>stringValue </span><span class="ot">=</span><span> between (char </span><span class="ch">&#39;&quot;&#39;</span><span>) (char </span><span class="ch">&#39;&quot;&#39;</span><span>) (many (noneOf </span><span class="st">&quot;&quot;&quot;))</span>
+
+<span class="st">-- A parser for key-value pairs</span>
+<span class="st">keyValue :: Parser (String, String)</span>
+<span class="st">keyValue = do</span>
+<span class="st">    k &lt;- key</span>
+<span class="st">    char &#39;:&#39;</span>
+<span class="st">    v &lt;- stringValue</span>
+<span class="st">    return (k, v)</span>
+
+<span class="st">-- A parser for objects (curly-brace enclosed key-value pairs)</span>
+<span class="st">jsonObject :: Parser [(String, String)]</span>
+<span class="st">jsonObject = between (char &#39;{&#39;) (char &#39;}&#39;) (keyValue `sepBy` char &#39;,&#39;)</span>
+
+<span class="st">main :: IO ()</span>
+<span class="st">main = do</span>
+<span class="st">    let input = &quot;</span><span>{</span><span class="st">&quot;name&quot;</span><span class="op">:</span><span class="st">&quot;John&quot;</span><span>, </span><span class="st">&quot;age&quot;</span><span class="op">:</span><span class="st">&quot;30&quot;</span><span>, </span><span class="st">&quot;city&quot;</span><span class="op">:</span><span class="st">&quot;New York&quot;</span><span>}</span><span class="st">&quot;</span>
+<span class="st">    case parse jsonObject &quot;&quot; input of</span>
+<span class="st">        Left err -&gt; putStrLn $ &quot;</span><span class="dt">Parse</span><span> </span><span class="fu">error</span><span class="op">:</span><span> </span><span class="st">&quot; ++ show err</span>
+<span class="st">        Right obj -&gt; print obj</span>
+</code></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ol>
+<li>
+<strong>Key Parser</strong>:
+<ul>
+<li>
+Uses <code>between</code> to match keys enclosed in double quotes.
+</li>
+</ul>
+</li>
+<li>
+<strong>Value Parser</strong>:
+<ul>
+<li>
+Parses string values similarly.
+</li>
+</ul>
+</li>
+<li>
+<strong>Object Parser</strong>:
+<ul>
+<li>
+Parses key-value pairs enclosed in curly braces and separated by commas.
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>Output</strong>:</p>
+<pre><code>[(&quot;name&quot;, &quot;John&quot;), (&quot;age&quot;, &quot;30&quot;), (&quot;city&quot;, &quot;New York&quot;)]
+</code></pre>
+<h4 id="example-handling-errors-in-json-parsing">Example: Handling Errors in JSON Parsing</h4>
+<p>If the input is malformed (e.g., <code>{&quot;name&quot;:John}</code>), Parsec produces:</p>
+<pre><code>Parse error at (line 1, column 8): unexpected &quot;J&quot; expecting &quot;&quot;&quot;
+</code></pre>
+<p>This error clearly indicates where the issue lies (<code>column 8</code>) and what the parser expected (<code>&quot;&quot;&quot;</code>).</p>
+<h3 id="realworld-use-cases-for-parsec">Real-World Use Cases for Parsec</h3>
+<ol>
+<li>
+<strong>Configuration Parsing</strong>: Parse complex configurations for applications, such as <code>.ini</code> files or <code>.yaml</code> files.
+</li>
+<li>
+<strong>Language Parsing</strong>: Build parsers for custom programming languages, scripts, or DSLs.
+</li>
+<li>
+<strong>Data Transformation</strong>: Parse and transform structured data formats like JSON, XML, or CSV.
+</li>
+</ol>
+<h2 id="6-advanced-error-handling-in-parsec">6. Advanced Error Handling in Parsec</h2>
+<p>One of the strengths of Parsec is its ability to provide detailed and meaningful error messages. This is essential for debugging complex parsers or giving users helpful feedback when input is invalid.</p>
+<h3 id="improving-error-messages-with-labels">Improving Error Messages with Labels</h3>
+<p>Parsec allows you to label parts of the parser using the <code>&lt;?&gt;</code> operator. This makes error messages more descriptive when parsing fails.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="co">-- A parser for integers</span><span>
+</span><span class="va">integer</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">integer</span><span> </span><span class="sy">=</span><span> </span><span class="va">read</span><span> </span><span class="op">&lt;$&gt;</span><span> </span><span class="va">many1</span><span> </span><span class="va">digit</span><span> </span><span class="op">&lt;?&gt;</span><span> </span><span class="st">&quot;an integer&quot;</span><span>
+
+</span><span class="co">-- A parser for comma-separated integers</span><span>
+</span><span class="va">commaSeparatedIntegers</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">[</span><span class="cr">Int</span><span class="sy">]</span><span>
+</span><span class="va">commaSeparatedIntegers</span><span> </span><span class="sy">=</span><span> </span><span class="va">integer</span><span> </span><span class="sy">`</span><span class="va">sepBy</span><span class="sy">`</span><span> </span><span class="sy">(</span><span class="va">char</span><span> </span><span class="ch">&#39;,&#39;</span><span> </span><span class="op">&lt;?&gt;</span><span> </span><span class="st">&quot;a comma&quot;</span><span class="sy">)</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">input</span><span> </span><span class="sy">=</span><span> </span><span class="st">&quot;123,456,abc,789&quot;</span><span>
+    </span><span class="kw">case</span><span> </span><span class="va">parse</span><span> </span><span class="va">commaSeparatedIntegers</span><span> </span><span class="st">&quot;&quot;</span><span> </span><span class="va">input</span><span> </span><span class="kw">of</span><span>
+        </span><span class="cr">Left</span><span> </span><span class="va">err</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parse error: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">err</span><span>
+        </span><span class="cr">Right</span><span> </span><span class="va">nums</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">print</span><span> </span><span class="va">nums</span><span>
+</span></code></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ol>
+<li>
+The <code>&lt;?&gt;</code> operator adds a label to a parser. For example, <code>integer &lt;?&gt; &quot;an integer&quot;</code> makes it clear what kind of input the parser expects.
+</li>
+<li>
+When parsing fails, the error message includes the label.
+</li>
+</ol>
+<p><strong>Output for Invalid Input</strong>:</p>
+<pre><code>Parse error at (line 1, column 9): unexpected &quot;a&quot; expecting an integer
+</code></pre>
+<h3 id="using-try-to-handle-ambiguities">Using <code>try</code> to Handle Ambiguities</h3>
+<p>In cases where multiple parsers overlap, you can use the <code>try</code> combinator to backtrack and test another parser without consuming input prematurely.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="co">-- A parser for &quot;hello&quot; or &quot;help&quot;</span><span>
+</span><span class="va">greeting</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">String</span><span>
+</span><span class="va">greeting</span><span> </span><span class="sy">=</span><span> </span><span class="va">try</span><span> </span><span class="sy">(</span><span class="va">string</span><span> </span><span class="st">&quot;hello&quot;</span><span class="sy">)</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">string</span><span> </span><span class="st">&quot;help&quot;</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">input</span><span> </span><span class="sy">=</span><span> </span><span class="st">&quot;help&quot;</span><span>
+    </span><span class="kw">case</span><span> </span><span class="va">parse</span><span> </span><span class="va">greeting</span><span> </span><span class="st">&quot;&quot;</span><span> </span><span class="va">input</span><span> </span><span class="kw">of</span><span>
+        </span><span class="cr">Left</span><span> </span><span class="va">err</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parse error: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">err</span><span>
+        </span><span class="cr">Right</span><span> </span><span class="va">result</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parsed: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">result</span><span>
+</span></code></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ol>
+<li>
+Without <code>try</code>, the <code>string &quot;hello&quot;</code> parser would consume part of the input, causing the <code>string &quot;help&quot;</code> parser to fail.
+</li>
+<li>
+The <code>try</code> combinator ensures that input isn’t consumed if the parser fails, allowing subsequent parsers to run.
+</li>
+</ol>
+<h3 id="combining-parsers-for-better-error-reporting">Combining Parsers for Better Error Reporting</h3>
+<p>You can combine parsers and provide detailed error messages for complex input.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="co">-- A parser for a custom command syntax</span><span>
+</span><span class="va">command</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">(</span><span class="cr">String</span><span class="sy">,</span><span> </span><span class="cr">String</span><span class="sy">)</span><span>
+</span><span class="va">command</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">cmd</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="sy">(</span><span class="va">string</span><span> </span><span class="st">&quot;run&quot;</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">string</span><span> </span><span class="st">&quot;stop&quot;</span><span class="sy">)</span><span> </span><span class="op">&lt;?&gt;</span><span> </span><span class="st">&quot;a command (&#39;run&#39; or &#39;stop&#39;)&quot;</span><span>
+    </span><span class="va">space</span><span>
+    </span><span class="va">arg</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="va">letter</span><span> </span><span class="op">&lt;?&gt;</span><span> </span><span class="st">&quot;an argument&quot;</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">cmd</span><span class="sy">,</span><span> </span><span class="va">arg</span><span class="sy">)</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">input</span><span> </span><span class="sy">=</span><span> </span><span class="st">&quot;run123&quot;</span><span>
+    </span><span class="kw">case</span><span> </span><span class="va">parse</span><span> </span><span class="va">command</span><span> </span><span class="st">&quot;&quot;</span><span> </span><span class="va">input</span><span> </span><span class="kw">of</span><span>
+        </span><span class="cr">Left</span><span> </span><span class="va">err</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parse error: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">err</span><span>
+        </span><span class="cr">Right</span><span> </span><span class="va">result</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">print</span><span> </span><span class="va">result</span><span>
+</span></code></pre></div>
+<p><strong>Output for Invalid Input</strong>:</p>
+<pre><code>Parse error at (line 1, column 4): unexpected &quot;1&quot; expecting a space
+</code></pre>
+<h3 id="benefits-of-advanced-error-handling">Benefits of Advanced Error Handling</h3>
+<ol>
+<li>
+<strong>Clear Feedback</strong>:
+<ul>
+<li>
+Users can quickly identify what went wrong and where.
+</li>
+<li>
+For developers, debugging is faster and more efficient.
+</li>
+</ul>
+</li>
+<li>
+<strong>Input Validation</strong>:
+<ul>
+<li>
+Parsec ensures inputs are validated at every step.
+</li>
+<li>
+Incorrect or incomplete inputs fail early, preventing downstream errors.
+</li>
+</ul>
+</li>
+<li>
+<strong>Customizable Errors</strong>:
+<ul>
+<li>
+Using labels and combinators, you can make error messages user-friendly.
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="realworld-example-parsing-a-simple-dsl">Real-World Example: Parsing a Simple DSL</h4>
+<p>Let’s build a parser for a small domain-specific language (DSL), like a configuration file.</p>
+<p><strong>Input</strong>:</p>
+<div class="source-code"><pre><code class="language-yaml"><span class="at">server {</span>
+<span class="at">    host = &quot;localhost&quot;</span>
+<span class="at">    port = 8080</span>
+<span class="at">}</span>
+</code></pre></div>
+<p><strong>Parser</strong>:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="co">-- A parser for key-value pairs</span><span>
+</span><span class="va">keyValue</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">(</span><span class="cr">String</span><span class="sy">,</span><span> </span><span class="cr">String</span><span class="sy">)</span><span>
+</span><span class="va">keyValue</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">key</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="va">letter</span><span>
+    </span><span class="va">spaces</span><span>
+    </span><span class="va">char</span><span> </span><span class="ch">&#39;=&#39;</span><span>
+    </span><span class="va">spaces</span><span>
+    </span><span class="va">value</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="sy">(</span><span class="va">noneOf</span><span> </span><span class="st">&quot;n&quot;</span><span class="sy">)</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">key</span><span class="sy">,</span><span> </span><span class="va">value</span><span class="sy">)</span><span>
+
+</span><span class="co">-- A parser for a configuration block</span><span>
+</span><span class="va">configBlock</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="sy">[</span><span class="sy">(</span><span class="cr">String</span><span class="sy">,</span><span> </span><span class="cr">String</span><span class="sy">)</span><span class="sy">]</span><span>
+</span><span class="va">configBlock</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">string</span><span> </span><span class="st">&quot;server&quot;</span><span> </span><span class="op">&lt;?&gt;</span><span> </span><span class="st">&quot;a &#39;server&#39; block&quot;</span><span>
+    </span><span class="va">spaces</span><span>
+    </span><span class="va">char</span><span> </span><span class="ch">&#39;{&#39;</span><span>
+    </span><span class="va">spaces</span><span>
+    </span><span class="va">pairs</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">keyValue</span><span> </span><span class="sy">`</span><span class="va">sepBy</span><span class="sy">`</span><span> </span><span class="va">spaces</span><span>
+    </span><span class="va">spaces</span><span>
+    </span><span class="va">char</span><span> </span><span class="ch">&#39;}&#39;</span><span>
+    </span><span class="va">return</span><span> </span><span class="va">pairs</span><span>
+
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="kw">let</span><span> </span><span class="va">input</span><span> </span><span class="sy">=</span><span> </span><span class="st">&quot;server { host = &quot;</span><span class="va">localhost</span><span class="st">&quot; port = 8080 }&quot;</span><span>
+    </span><span class="kw">case</span><span> </span><span class="va">parse</span><span> </span><span class="va">configBlock</span><span> </span><span class="st">&quot;&quot;</span><span> </span><span class="va">input</span><span> </span><span class="kw">of</span><span>
+        </span><span class="cr">Left</span><span> </span><span class="va">err</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="st">&quot;Parse error: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">err</span><span>
+        </span><span class="cr">Right</span><span> </span><span class="va">config</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="va">print</span><span> </span><span class="va">config</span><span>
+</span></code></pre></div>
+<p><strong>Output</strong>:</p>
+<pre><code>[(&quot;host&quot;, &quot;&quot;localhost&quot;&quot;), (&quot;port&quot;, &quot;8080&quot;)]
+</code></pre>
+<table>
+<thead>
+<tr><th><strong>Feature</strong></th><th><strong>Benefit</strong></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Labels (<code>&lt;?&gt;</code>)</strong></td><td>Makes error messages descriptive.</td></tr>
+<tr><td><strong><code>try</code> Combinator</strong></td><td>Handles overlapping parsers without consuming input prematurely.</td></tr>
+<tr><td><strong>Combinators and Modularity</strong></td><td>Enables robust error handling even in complex parsing scenarios.</td></tr>
+</tbody>
+</table>
+<h2 id="7-parse-dont-validate">7. Parse, Don&#39;t Validate</h2>
+<p>One of the most powerful principles in Haskell is <strong>Parse, Don’t Validate</strong>, a concept popularized by Alexis King in their blog post of the same name. This principle emphasizes transforming unstructured input data (like user input, JSON, or text files) into structured and valid types as early as possible. By doing so, you eliminate invalid states and ensure that your program works with only well-formed data.</p>
+<hr>
+<h3 id="the-core-idea">The Core Idea</h3>
+<h3 id="whats-the-problem-with-validation">What’s the Problem with Validation?</h3>
+<p>In many programming paradigms, data validation happens at runtime, typically in functions or methods that check if input is valid before processing it. This leaves room for errors:</p>
+<ul>
+<li>
+Validation can be missed or inconsistent across the codebase. This has been popularized as &quot;Shotgun Parsing&quot; by the LangSec committee. See <a href="https://deepspec.org/event/dsss17/studenttalks/17-metzger.pdf">Shotgun Parsing</a>.
+</li>
+<li>
+Invalid data might sneak into parts of the system that assume all data is valid.
+</li>
+<li>
+Logic becomes cluttered with checks, decreasing readability, safety, and maintainability. <a href="http://spw16.langsec.org/papers/underwood-android-shotgun-parsers.pdf">See this analysis of <strong>tainted paths</strong></a> in common android applications.
+</li>
+</ul>
+<h3 id="2-what-does-parsing-solve">2. <strong>What Does Parsing Solve?</strong></h3>
+<p>Instead of validating data everywhere, <strong>parsing transforms raw input into valid types upfront</strong>. By using Haskell’s type system, you can encode constraints at the type level, guaranteeing that only valid data is ever represented by a given type.</p>
+<p>For example, rather than validating a string as an email address in multiple places, you can parse it once into an <code>Email</code> type. If the parsing succeeds, you’re guaranteed the value is valid.</p>
+<hr>
+<h3 id="smart-constructors-a-tool-for-parsing">Smart Constructors: A Tool for Parsing</h3>
+<p>The <strong>smart constructor pattern</strong> is a common way to implement this strategy. A smart constructor is a function that ensures only valid values can be constructed for a type.</p>
+<h4 id="example-validating-an-email-address">Example: Validating an Email Address</h4>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">module</span><span> </span><span class="cr">Email</span><span> </span><span class="sy">(</span><span class="cr">Email</span><span class="sy">,</span><span> </span><span class="va">mkEmail</span><span class="sy">)</span><span> </span><span class="kw">where</span><span>
+
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Parsec.String</span><span> </span><span class="sy">(</span><span class="cr">Parser</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Define the Email type (constructor is hidden from the outside)</span><span>
+</span><span class="kw">newtype</span><span> </span><span class="cr">Email</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Email</span><span> </span><span class="cr">String</span><span> </span><span class="kw">deriving</span><span> </span><span class="sy">(</span><span class="cr">Show</span><span class="sy">,</span><span> </span><span class="cr">Eq</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Smart constructor for Email</span><span>
+</span><span class="va">mkEmail</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">Email</span><span>
+</span><span class="va">mkEmail</span><span> </span><span class="va">input</span><span> </span><span class="sy">=</span><span>
+    </span><span class="kw">case</span><span> </span><span class="va">parse</span><span> </span><span class="va">emailParser</span><span> </span><span class="st">&quot;&quot;</span><span> </span><span class="va">input</span><span> </span><span class="kw">of</span><span>
+        </span><span class="cr">Left</span><span> </span><span class="sy">_</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Left</span><span> </span><span class="st">&quot;Invalid email address&quot;</span><span>
+        </span><span class="cr">Right</span><span> </span><span class="va">email</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Right</span><span> </span><span class="sy">(</span><span class="cr">Email</span><span> </span><span class="va">email</span><span class="sy">)</span><span>
+
+</span><span class="co">-- Parsec parser for email validation</span><span>
+</span><span class="va">emailParser</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Parser</span><span> </span><span class="cr">String</span><span>
+</span><span class="va">emailParser</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">local</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="sy">(</span><span class="va">letter</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">digit</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">oneOf</span><span> </span><span class="st">&quot;!#$%&amp;&#39;*+/=?^_`{|}~-&quot;</span><span class="sy">)</span><span>
+    </span><span class="va">char</span><span> </span><span class="ch">&#39;@&#39;</span><span>
+    </span><span class="va">domain</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">many1</span><span> </span><span class="sy">(</span><span class="va">letter</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">digit</span><span> </span><span class="op">&lt;|&gt;</span><span> </span><span class="va">char</span><span> </span><span class="ch">&#39;.&#39;</span><span class="sy">)</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">local</span><span> </span><span class="op">++</span><span> </span><span class="st">&quot;@&quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">domain</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>
+The <code>Email</code> type constructor is hidden, so it can only be created using the <code>mkEmail</code> smart constructor.
+</li>
+<li>
+The <code>mkEmail</code> function validates the input once, ensuring only valid email addresses are represented as <code>Email</code>.
+</li>
+</ul>
+<hr>
+<h3 id="benefits-of-parsing-over-validation">Benefits of Parsing Over Validation</h3>
+<ol>
+<li>
+<strong>Invalid States Are Impossible</strong>:
+<ul>
+<li>
+Once data is parsed into a valid type, you don’t need to check its validity elsewhere in your code.
+</li>
+</ul>
+</li>
+<li>
+<strong>Centralized Logic</strong>:
+<ul>
+<li>
+Parsing logic is centralized in the smart constructor, making it easier to maintain and extend.
+</li>
+</ul>
+</li>
+<li>
+<strong>Type-Safe Guarantees</strong>:
+<ul>
+<li>
+Functions working with the <code>Email</code> type are guaranteed to operate on valid email addresses, thanks to the type system.
+</li>
+</ul>
+</li>
+<li>
+<strong>Improved Readability</strong>:
+<ul>
+<li>
+Your application logic becomes cleaner and more focused, as validation checks are no longer scattered throughout the code.
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="suggested-readings">Suggested Readings</h3>
+<ol>
+<li>
+<p>To dive deeper into this concept, <strong>read Alexis King&#39;s blog post, <a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">&quot;Parse, Don’t Validate&quot;</a></strong>. This blog post explores the philosophy behind this approach, its advantages, and practical examples. It’s an essential read for any Haskell developer looking to write safer and more reliable code.</p>
+</li>
+<li>
+<p>There is a new field of study called LangSec (short for Language-Theoretic Security) which discusses the best practices for writing code that is secure from the perspective of language theory. It is based on type theory and highlights many of the antipatterns currently used in the industry and how they create unsafe code. Familiarizing yourself with this topic is critical for your success in becoming a lead developer. Read <a href="http://langsec.org/papers/langsec-cwes-secdev2016.pdf">The Seven Turrets of Babel: A Taxonomy of LangSec Errors and How to Expunge Them</a> and then familiarize yourself with their <a href="https://langsec.org">other publications</a> on their website.</p>
+</li>
+<li>
+<p>If you didn&#39;t read this above, familiarize yourself with the concept of <strong>tainted paths</strong> with this <a href="http://spw16.langsec.org/papers/underwood-android-shotgun-parsers.pdf">analysis of shotgun parsing in Android applications</a> done by the LangSec team.</p>
+</li>
+</ol>
+<p><strong>Do not</strong> overlook the importance of these articles. Too much of the industry is guilty of not following these rules and they end up paying for it later by having too many edge cases, leading to runtime failures and tons of money wasted on writing complex and comprehensive unit testing suites.</p>
+<p>Understanding and practicing these techniques are the keys to success in writing software that doesn&#39;t fail at runtime, ultimately making you lead developer material.</p>
+<p>By adopting the <strong>Parse, Don’t Validate</strong> principle, you leverage Haskell’s type system to eliminate invalid states at compile time, reducing runtime errors and making your codebase more robust.</p>
+<h2 id="8-recap-exercises">8. Recap &amp; Exercises</h2>
+<h3 id="recap">Recap</h3>
+<p>In this chapter, we explored the power of <strong>Parsec</strong> for string parsing and how it stands out compared to traditional regular expressions. Here’s a summary of the key points covered:</p>
+<h4 id="introduction-to-parsing-with-parsec">Introduction to Parsing with Parsec</h4>
+<ul>
+<li>
+Parsing is the process of transforming unstructured input into structured and meaningful data.
+</li>
+<li>
+Parsec is a Haskell library that allows you to build composable and type-safe parsers.
+</li>
+<li>
+Unlike regular expressions, Parsec focuses on <strong>readability, maintainability, and safety</strong>.
+</li>
+</ul>
+<h4 id="advantages-of-parsec-over-regex">Advantages of Parsec Over Regex</h4>
+<ul>
+<li>
+<strong>Type Safety</strong>: Parsec parsers work with types, ensuring correctness at compile time.
+</li>
+<li>
+<strong>Readability</strong>: Parsers are modular and composable, making them easier to understand and maintain.
+</li>
+<li>
+<strong>Error Reporting</strong>: Parsec provides detailed error messages, pinpointing exactly where parsing fails.
+</li>
+<li>
+<strong>Deterministic Parsing</strong>: Avoids the pitfalls of ambiguity and backtracking common in regex.
+</li>
+</ul>
+<h4 id="parsec-syntax-cheat-sheet">Parsec Syntax Cheat Sheet</h4>
+<ul>
+<li>
+Covered a comprehensive list of Parsec functions like <code>try</code>, <code>choice</code>, <code>many</code>, <code>sepBy</code>, <code>chainl1</code>, and more.
+</li>
+<li>
+Provided clear descriptions and examples of each function for quick reference.
+</li>
+</ul>
+<h4 id="building-complex-parsers">Building Complex Parsers</h4>
+<ul>
+<li>
+Demonstrated how to parse nested structures and real-world inputs like key-value pairs and JSON-like data.
+</li>
+<li>
+Showcased Parsec’s ability to handle structured input with nested rules elegantly.
+</li>
+</ul>
+<h4 id="advanced-error-handling">Advanced Error Handling</h4>
+<ul>
+<li>
+Explored techniques for improving error messages using the <code>&lt;?&gt;</code> operator and the <code>try</code> combinator.
+</li>
+<li>
+Highlighted the importance of precise feedback for debugging and user experience.
+</li>
+</ul>
+<h4 id="parse-dont-validate">Parse, Don’t Validate</h4>
+<ul>
+<li>
+Discussed the principle of transforming unstructured data into valid types early in the pipeline.
+</li>
+<li>
+Introduced the smart constructor pattern to guarantee data validity through type safety.
+</li>
+<li>
+Emphasized the importance of eliminating invalid states for cleaner, safer code.
+</li>
+<li>
+Suggested essential readings on the <strong>Parse, Don’t Validate</strong> philosophy and <strong>LangSec</strong> principles
+</li>
+</ul>
+<h3 id="exercises">Exercises</h3>
+<p>Try implementing the <strong>Parse, Don’t Validate</strong> principle for other real-world types:</p>
+<h4 id="exercise-1">Exercise 1</h4>
+<p>Create a <code>NonEmptyString</code> type that ensures a string is never empty.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">mkNonEmptyString</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">NonEmptyString</span><span>
+</span><span class="va">mkNonEmptyString</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span>
+  </span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<h4 id="exercise-2">Exercise 2</h4>
+<p>Design a <code>PositiveInt</code> type that guarantees only positive integers.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">mkPositiveInt</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">PositiveInt</span><span>
+</span><span class="va">mkPositiveInt</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span>
+  </span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<h4 id="exercise-3">Exercise 3</h4>
+<p>Implement a <code>PhoneNumber</code> type for validating phone numbers.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">mkPhoneNumber</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">PhoneNumber</span><span>
+</span><span class="va">mkPhoneNumber</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span>
+  </span><span class="co">-- Your implementation here</span><span>
+</span></code></pre></div>
+<p><a href="/landing/Blog/Chapter4">Previous Chapter</a> |
+<a href="/landing/Blog/Chapter6">Next Chapter</a></p>
+</div></div></body></html>

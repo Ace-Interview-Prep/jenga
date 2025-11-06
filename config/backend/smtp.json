@@ -1,0 +1,9 @@
+{ "_emailConfig_emailAuth" :
+   { "_emailAuth_authType" : "LOGIN"
+   , "_emailAuth_username" : "yourApiUser"
+   , "_emailAuth_password" : "<your api key>"
+   }
+, "_emailConfig_hostname" : "smtp.sendgrid.net"
+, "_emailConfig_port" : 587
+, "_emailConfig_protocol" : "SMTPProtocol_Plain"
+}

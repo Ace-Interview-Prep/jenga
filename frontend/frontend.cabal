@@ -1,0 +1,137 @@
+name: frontend
+version: 0.1
+cabal-version: >= 1.8
+build-type: Simple
+
+library
+  if os(android)
+    cpp-options: -Dandroid_HOST_OS
+    c-sources: csrc/native_camera.c
+    include-dirs: csrc
+    build-tools: hsc2hs
+    --extra-libraries: camera2ndk mediandk log
+    -- !!If we dont set ld-options then the app crashes on startup!
+    ld-options: -lcamera2ndk -llog -lmediandk -laaudio
+    --ghc-options: -fPIC -no-hs-main -optl-shared -optl-fPIC
+    --ghc-options: -optl-lcamera2ndk -optl-lmediandk -optl-llog
+  hs-source-dirs: src
+  build-depends: base
+
+               --, staticSite
+               -- , markdownFiles
+               , aeson
+               , beam-core
+               , bimap
+               , bytestring
+               , bytestring-aeson-orphans
+               , ClasshSS
+               , common
+               , containers
+               , cookie
+               , data-default
+               , email-validate
+               , filepath
+               , ghcjs-dom
+--               , ghcjs-dom-ffi
+               , haskell-src-meta
+               , IStr
+               , jenga-auth-common
+               , jenga-auth-frontend
+               , jsaddle
+               --
+-- NEVER USE: jsaddle-dom, use ghcjs-dom instead
+--  jsaddle-dom Couldn't match type ‘JSDOM.Types.Document’ with ‘GHCJS.Document
+               -- , commonmark
+               , lens
+               , lucid
+               -- TODO
+               , megaparsec
+               , mmark
+               , mmark-ext
+               -- , ghc-lib-parser == 8.10.7.20220219
+
+               -- , ghc-syntax-highlighter
+
+               , obelisk-executable-config-lookup
+               , obelisk-frontend
+               , staticAssets
+               , obelisk-route
+               , parsec
+               , random
+               , raw-strings-qq
+               , reflex
+               , reflex-dom
+               , reflex-dom-echarts
+               , reflex-classhss
+               , rhyolite-account-types
+               , rhyolite-common
+               , rhyolite-frontend
+               , signed-data
+               , scrappy-core
+               , template-haskell
+               , templates
+               , text
+               , these
+               , time
+               , transformers
+               , uuid-types
+               , case-insensitive
+               , vessel
+               -- For FAFO (feel free 2 DEL)
+
+               , ref-tf
+               , reflex-dom-core
+               , witherable
+               , data-default
+
+  exposed-modules:
+    Frontend
+  ghc-options: -Wall -O -fno-show-valid-hole-fits
+               -- unsafe code
+               -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields
+               -- unneeded code
+               -Widentities -Wredundant-constraints
+               -Werror
+  default-extensions:
+    ConstraintKinds
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    LambdaCase
+    MultiParamTypeClasses
+    -- OverloadedStrings
+    RankNTypes
+    RecursiveDo
+    ScopedTypeVariables
+    TemplateHaskell
+    TypeApplications
+  if impl(ghc >= 8.8)
+    ghc-options:
+               -Wmissing-deriving-strategies
+
+executable frontend
+  main-is: main.hs
+  hs-source-dirs: src-bin
+  build-depends: base
+               , common
+               , frontend
+               , obelisk-frontend
+               , obelisk-route
+               , reflex-dom
+  ghc-options: -Wall -O -fno-show-valid-hole-fits -threaded
+               -- unsafe code
+               -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields
+               -- unneeded code
+               -Widentities -Wredundant-constraints
+  if impl(ghc >= 8.8)
+    ghc-options:
+               -Wmissing-deriving-strategies
+  if impl(ghcjs)
+    ghc-options: -dedupe
+    cpp-options: -DGHCJS_BROWSER
+  if os(darwin)
+    ghc-options: -dynamic
+  if os(android)
+     -- For our own awareness
+    cpp-options: -Dandroid_HOST_OS

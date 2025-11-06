@@ -1,0 +1,165 @@
+cabal-version:      3.0
+name:               landing-page
+version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            MIT
+license-file:       LICENSE
+author:             lazyLambda
+maintainer:         galen.sprout@gmail.com
+-- copyright:
+category:           Data
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall -Werror -O -fno-show-valid-hole-fits
+
+library
+    import:           warnings
+    exposed-modules:  Landing
+                      Landing.Impl
+                      Landing.MyShell
+                      Landing.Utils
+                      Landing.Markdown
+                      Landing.Pages.Html.About
+                      Landing.Pages.Html.Blog
+                      Landing.Pages.Html.Index
+                      Landing.Pages.Html.Scripts
+                      Landing.Pages.Html.Style
+                      Landing.Pages.Html.Head
+                      Landing.Pages.Html.Elems
+
+                      Landing.Pages.Markdown.FirstProgram
+                      Landing.Pages.Markdown.W1
+
+    -- other-modules:
+    -- other-extensions:
+    build-depends: aeson
+                 , aeson-gadt-th
+                 , async
+                 , base
+                 , base64-bytestring
+                 , bytestring
+                 , case-insensitive
+                 , clientsession
+                 , common
+                 , containers
+                 , csv
+                 , cryptonite
+                 , data-default
+                 , dependent-sum
+                 , dependent-map
+                 , directory
+                 , email-validate
+                 , exceptions
+                 , extra
+                 , filepath
+                 , file-embed
+                 , http-client
+                 , http-client-tls
+                 , http-types
+                 , HaskellNet
+                 , IStr
+                 , lamarckian
+                 , lens
+                 , lifted-base
+                 , lucid
+                 , megaparsec
+                 , mime-mail
+                 , mmark
+                 , mtl
+                 , mmark-ext
+                 , monad-logger
+                 , monoidal-containers
+                 , network-uri
+                 , staticAssets
+                 , staticSite
+                 , obelisk-executable-config-lookup
+                 , obelisk-route
+                 , parsec
+                 , postgresql-lo-stream
+                 , postgresql-simple
+                 , postgresql-simple-interpolate
+                 , process
+                 , psql-simple-beam
+                 , psql-simple-class
+                 , random
+                 , reflex-dom
+                 , rhyolite-common
+                 , rhyolite-email
+                 , scrappy-core
+                 , scrappy-template
+                 , semialign
+                 , semimap
+                 , signed-data
+                 , signed-data-clientsession
+                 , snap
+                 , snap-core
+                 , snap-extras
+                 , templates
+                 , temporary
+                 , text
+                 , these
+                 , time
+                 , transformers
+                 , uuid
+                 , vessel
+                 , vector
+                 , witherable-class
+                 , which
+
+                 , template-haskell
+                 , ClasshSS
+                 , reflex-classhss
+                 , obelisk-asset-serve-snap
+                 , haskell-src-meta
+
+    hs-source-dirs:   src
+    default-language: Haskell2010
+    default-extensions:
+      AllowAmbiguousTypes
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      EmptyCase
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      PolyKinds
+      QuasiQuotes
+      RankNTypes
+      RecursiveDo
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+
+      DeriveGeneric
+      FlexibleContexts
+      FlexibleInstances
+      GADTs
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      QuasiQuotes
+      RankNTypes
+      ScopedTypeVariables
+      TemplateHaskell
+      TypeFamilies

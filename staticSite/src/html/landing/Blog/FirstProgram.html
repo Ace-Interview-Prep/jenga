@@ -1,0 +1,142 @@
+<html lang="en"><head><style>a { color: #00B9DA; text-decoration: none; }</style></head><body><div class="fixed top-0 left-0 w-full h-full overflow-auto z-10 scroll-smooth"><div class="containerBlog"><h1 id="running-our-first-haskell-program">Running our first Haskell program</h1>
+<p>In this lesson we are going to be looking at a very simple Haskell command-line program that takes our command-line args and runs a program.</p>
+<p>A program in haskell is roughly a synonym of a function or more officially, an IO action. If you do not know what that is, no worry, just know that it is ultimately a function that has the distinction through Haskell&#39;s type-system to handle real-world data as input, as well as produce real-world outputs and you could argue that this distinction is the most important feature of Haskell.</p>
+<p>The program is already written in a way that you can immediately test how the code works, as long as you have ghc installed.</p>
+<p>We recommend following <a href="https://acetalent.io/landing/Blog/SetupInstructions">our Setup Instructions</a> so that you are set-up for any project however sometimes this can be a challenge and we want to provide a way to get started ASAP so that you can feel like a Haskell master ASAP 🥷</p>
+<p>However the way to get set-up in under one minute is as follows:</p>
+<h2 id="quick-setup">Quick Setup</h2>
+<p>we can get set-up ASAP by using GHCup</p>
+<h3 id="windows">Windows</h3>
+<p>For Windows, run this in a PowerShell session:</p>
+<div class="source-code"><pre><code class="language-powershell"><span class="fu">Set-ExecutionPolicy</span><span> Bypass -Scope </span><span class="kw">Process</span><span> -Force;[System.</span><span class="fu">Net</span><span>.</span><span class="fu">ServicePointManager</span><span>]::SecurityProtocol = [System.</span><span class="fu">Net</span><span>.</span><span class="fu">ServicePointManager</span><span>]::SecurityProtocol -bor 3072; </span><span class="kw">try</span><span> { &amp; ([ScriptBlock]::Create((</span><span class="fu">Invoke-WebRequest</span><span> https://www.</span><span class="fu">haskell</span><span>.</span><span class="fu">org</span><span>/ghcup/sh/bootstrap-haskell.</span><span class="fu">ps1</span><span> -UseBasicParsing))) -Interactive -DisableCurl } </span><span class="kw">catch</span><span> { </span><span class="fu">Write-Error</span><span> </span><span class="va">$_</span><span> }</span>
+</code></pre></div>
+<p>You can find a walkthrough here: https://www.youtube.com/watch?v=bB4fmQiUYPw</p>
+<p>Alternatively, you can run the Linux style command in a git bash terminal</p>
+<h3 id="linux-macos">Linux &amp; MacOS</h3>
+<p>For Linux, macOS, FreeBSD or Windows Subsystem 2 for Linux, run this in a terminal:</p>
+<div class="source-code"><pre><code class="language-bash"><span class="ex">curl</span><span> </span><span class="at">--proto</span><span> </span><span class="st">&#39;=https&#39;</span><span> </span><span class="at">--tlsv1.2</span><span> </span><span class="at">-sSf</span><span> https://get-ghcup.haskell.org </span><span class="kw">|</span><span> </span><span class="fu">sh</span>
+</code></pre></div>
+<h3 id="through-nix-from-setup-instructions">Through Nix (from Setup Instructions)</h3>
+<div class="source-code"><pre><code class="language-bash"><span class="ex">nix-shell</span><span> </span><span class="at">-p</span><span> ghc</span>
+</code></pre></div>
+<h3 id="confirm-setup">Confirm setup</h3>
+<p>Run the command</p>
+<div class="source-code"><pre><code class="language-bash"><span class="ex">ghci</span>
+</code></pre></div>
+<p>This should enter an interactive REPL that you can exit by running:</p>
+<div class="source-code"><pre><code class="language-bash"><span class="ex">ghci</span><span class="op">&gt;</span><span> :quit</span>
+</code></pre></div>
+<h2 id="our-first-program">Our First Program</h2>
+<p>Copy paste the following code block into a file named CLI.hs</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="kw">module</span><span> </span><span class="cr">Main</span><span> </span><span class="kw">where</span><span>
+
+</span><span class="co">-- Try me!</span><span>
+</span><span class="co">-- with ghc in your shell/environment run:</span><span>
+</span><span class="co">-- (on Windows: Use git bash)</span><span>
+</span><span class="co">--</span><span>
+</span><span class="co">-- ghc CLI.hs -o magical-sentence-maker-cli</span><span>
+</span><span class="co">-- ./magical-sentence-maker-cli</span><span>
+</span><span class="co">-- ./magical-sentence-maker-cli --dev</span><span>
+</span><span class="co">-- ./magical-sentence-maker-cli --dev --spoke</span><span>
+</span><span class="co">-- ./magical-sentence-maker-cli --dev --speak --opt &quot;hey&quot;</span><span>
+</span><span class="co">--</span><span>
+</span><span class="co">-- As a *magical* sentence maker, I am quite communicative</span><span>
+</span><span class="co">-- and verbose so that you can follow along with my behaviour</span><span>
+</span><span class="co">--</span><span>
+</span><span class="co">-- You can run a Haskell function by editing the function `myPureLogic`</span><span>
+
+</span><span class="kw">import</span><span> </span><span class="cr">Prelude</span><span> </span><span class="co">-- haskell&#39;s base library</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Data.Maybe</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">Text.Read</span><span>
+</span><span class="kw">import</span><span> </span><span class="cr">System.Environment</span><span> </span><span class="sy">(</span><span class="va">getArgs</span><span class="sy">)</span><span>
+
+</span><span class="co">-- | The magical sentence maker :O -- from standard in (stdin) -- it takes 3 elements and generates MYSTERY logs :O :O :O</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">::</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">main</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="va">args</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">getArgs</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="st">&quot;I&#39;m the magical sentence maker!&quot;</span><span>
+  </span><span class="kw">let</span><span> </span><span class="va">dev</span><span>   </span><span class="sy">=</span><span> </span><span class="st">&quot;--dev&quot;</span><span>   </span><span class="sy">`</span><span class="va">elem</span><span class="sy">`</span><span> </span><span class="va">args</span><span>
+      </span><span class="va">spoke</span><span> </span><span class="sy">=</span><span> </span><span class="st">&quot;--speak&quot;</span><span> </span><span class="sy">`</span><span class="va">elem</span><span class="sy">`</span><span> </span><span class="va">args</span><span>
+      </span><span class="va">optVal</span><span> </span><span class="sy">=</span><span> </span><span class="va">getOptValue</span><span> </span><span class="st">&quot;--opt&quot;</span><span> </span><span class="va">args</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="sy">(</span><span class="st">&quot;Development mode: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">dev</span><span class="sy">)</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="sy">(</span><span class="st">&quot;Speak mode: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">show</span><span> </span><span class="va">spoke</span><span class="sy">)</span><span>
+
+  </span><span class="kw">let</span><span> </span><span class="va">myArgString</span><span> </span><span class="sy">=</span><span> </span><span class="va">fromMaybe</span><span> </span><span class="st">&quot;empty string&quot;</span><span> </span><span class="va">optVal</span><span>
+  </span><span class="kw">let</span><span> </span><span class="va">lengthOfArg</span><span> </span><span class="sy">=</span><span> </span><span class="va">length</span><span> </span><span class="va">myArgString</span><span>
+  </span><span class="kw">let</span><span> </span><span class="va">lengthAsString</span><span> </span><span class="sy">=</span><span> </span><span class="va">show</span><span> </span><span class="va">lengthOfArg</span><span>
+  </span><span class="kw">let</span><span> </span><span class="va">log</span><span> </span><span class="sy">=</span><span>
+        </span><span class="st">&quot;My custom arg: &quot;</span><span> </span><span class="op">++</span><span> </span><span class="va">myArgString</span><span>
+        </span><span class="op">++</span><span> </span><span class="st">&quot; has length == &quot;</span><span> </span><span class="op">++</span><span> </span><span class="sy">(</span><span class="va">show</span><span> </span><span class="va">lengthOfArg</span><span class="sy">)</span><span>
+
+
+  </span><span class="co">-- Run your custom logic</span><span>
+  </span><span class="va">myFunction</span><span> </span><span class="va">myArgString</span><span>
+  </span><span class="va">pure</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+
+</span><span class="co">-- | Run your custom logic</span><span>
+</span><span class="va">myFunction</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">myFunction</span><span> </span><span class="va">myArgString</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="co">-- write logic here</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="st">&quot;Output:&quot;</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="op">$</span><span> </span><span class="va">myPureLogic</span><span> </span><span class="va">myArgString</span><span>
+  </span><span class="va">myImpureLogic</span><span> </span><span class="va">myArgString</span><span>
+
+  </span><span class="va">pure</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+
+
+</span><span class="va">myPureLogic</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">String</span><span>
+</span><span class="va">myPureLogic</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span> </span><span class="va">str</span><span>
+
+</span><span class="va">myImpureLogic</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">myImpureLogic</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="st">&quot;myImpureLogic&quot;</span><span>
+
+</span><span class="co">-- | HELPER FUNCTIONS -- -- Helper to find a value after a flag</span><span>
+</span><span class="va">getOptValue</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="sy">[</span><span class="cr">String</span><span class="sy">]</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Maybe</span><span> </span><span class="cr">String</span><span>
+</span><span class="va">getOptValue</span><span> </span><span class="va">flag</span><span> </span><span class="va">args</span><span> </span><span class="sy">=</span><span> </span><span class="kw">case</span><span> </span><span class="va">dropWhile</span><span> </span><span class="sy">(</span><span class="op">/=</span><span> </span><span class="va">flag</span><span class="sy">)</span><span> </span><span class="va">args</span><span> </span><span class="kw">of</span><span>
+  </span><span class="sy">(</span><span class="sy">_</span><span class="sy">:</span><span class="va">val</span><span class="sy">:</span><span class="sy">_</span><span class="sy">)</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Just</span><span> </span><span class="va">val</span><span>
+  </span><span class="sy">_</span><span>         </span><span class="sy">-&gt;</span><span> </span><span class="cr">Nothing</span><span>
+</span></code></pre></div>
+<h2 id="run-this-script">Run this script</h2>
+<p>First we must compile our program</p>
+<div class="source-code"><pre><code class="language-bash"><span class="ex">ghc</span><span> CLI.hs </span><span class="at">-o</span><span> magical-sentence-maker-cli</span>
+</code></pre></div>
+<p>Then we can run the generated binary with any of the following individual commands</p>
+<div class="source-code"><pre><code class="language-bash"><span class="ex">./magical-sentence-maker-cli</span>
+<span class="ex">./magical-sentence-maker-cli</span><span> </span><span class="at">--dev</span>
+<span class="ex">./magical-sentence-maker-cli</span><span> </span><span class="at">--dev</span><span> </span><span class="at">--spoke</span>
+<span class="ex">./magical-sentence-maker-cli</span><span> </span><span class="at">--dev</span><span> </span><span class="at">--speak</span><span> </span><span class="at">--opt</span><span> </span><span class="st">&quot;hey&quot;</span>
+</code></pre></div>
+<p>We will see how to work with larger projects later on, but for now this is all we need for a single .hs file with only the basic libraries</p>
+<p>we can edit this program by changing either the function <code>myPureLogic</code> or <code>myImpureLogic</code> and get quick easy feedback on our logic</p>
+<p>For example, let&#39;s say the user will give us an Integer in the arg string we can parse it and multiply it by 2. Let&#39;s see how that looks:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">myPureLogic</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">String</span><span>
+</span><span class="va">myPureLogic</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span> </span><span class="kw">case</span><span> </span><span class="va">readMaybe</span><span> </span><span class="va">str</span><span> </span><span class="kw">of</span><span>
+  </span><span class="cr">Just</span><span> </span><span class="sy">(</span><span class="va">anInteger</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Integer</span><span class="sy">)</span><span> </span><span class="sy">-&gt;</span><span>
+    </span><span class="kw">let</span><span>
+      </span><span class="va">times2</span><span> </span><span class="sy">=</span><span> </span><span class="va">anInteger</span><span> </span><span class="sy">*</span><span> </span><span class="it">2</span><span>
+    </span><span class="kw">in</span><span>
+      </span><span class="va">show</span><span> </span><span class="va">times2</span><span> </span><span class="co">-- turn to String</span><span>
+</span></code></pre></div>
+<p>and for our more flexible &quot;impure&quot; code</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">myImpureLogic</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="sy">(</span><span class="sy">)</span><span>
+</span><span class="va">myImpureLogic</span><span> </span><span class="va">str</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+  </span><span class="va">putStrLn</span><span> </span><span class="st">&quot;myImpureLogic&quot;</span><span>
+  </span><span class="kw">case</span><span> </span><span class="va">readMaybe</span><span> </span><span class="va">str</span><span> </span><span class="kw">of</span><span>
+    </span><span class="cr">Just</span><span> </span><span class="sy">(</span><span class="va">anInteger</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Integer</span><span class="sy">)</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="kw">do</span><span>
+      </span><span class="kw">let</span><span> </span><span class="va">times2</span><span> </span><span class="sy">=</span><span> </span><span class="va">anInteger</span><span> </span><span class="sy">*</span><span> </span><span class="it">2</span><span>
+      </span><span class="va">writeFile</span><span> </span><span class="st">&quot;test.txt&quot;</span><span> </span><span class="sy">(</span><span class="va">show</span><span> </span><span class="va">times2</span><span class="sy">)</span><span>
+      </span><span class="co">-- turn input to a string and then print it</span><span>
+      </span><span class="va">print</span><span> </span><span class="va">times2</span><span>
+    </span><span class="cr">Nothing</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="kw">do</span><span>
+      </span><span class="va">print</span><span> </span><span class="st">&quot;failed&quot;</span><span>
+</span></code></pre></div>
+<p>We have given two different function stubs to get you familiar with the important distinction between functions that have what we call &quot;side effects&quot; (impure) and one that unlike pharmaceuticals (😬) guarantees zero side effects (pure).</p>
+<p>In this short snippet, you have seen all of the basic &quot;syntax&quot; of the language which is surprisingly small. You may not grasp any of it yet and it may feel overwhelming, but we assure you this is because it is new. It is a major departure from typical OOP languages like Python or JavaScript and as we will see in further chapters, there are many reasons why this is so important and awesome. For example, the Haskell code to render this page from a Markdown format is remarkably easy to understand.</p>
+<p><strong>Haskell is the best language for our brains that I have ever seen.</strong> It has been said that Haskell programmers feel like they need to code with rubber gloves when using other languages. It is backed by over 30 years of research and design through Programming Language Theory and more simply put, it doesn&#39;t overcomplicate and it doesn&#39;t oversimplify. You may have taken a course in object-oriented that teaches that the above code is ugly or some similar argument, but this is actually much easier to follow and inspect than a python or Java function which ensures that every possible case is handled correctly, such as if our assumption is wrong and the user accidentally gives their name instead of an Integer. In fact, there are cases where it is literally impossible to ensure a function will never have a bug and these cases usually become apparent when a company is looking to scale.</p>
+<p>Haskell teaches us how to be brilliant software engineers who can construct a problem, solve a problem, and have that solution be so easy to understand for our later self and others. No matter how complex the reality that a program is meant to handle, like a video game, AI, or a robot&#39;s behaviour, Haskell teaches us how to compose our logic together and keep it easy to immediately tell what a program or function does.</p>
+<p>Most developers for some reason believe that if they code in Haskell they need to create every library that JavaScript has themselves. However not only will that never be the case, but Haskell is such a powerfully expressive language that the best Haskellers have written libraries that far exceed what any object-oriented ecosystem can do, despite being a tiny group. <a href="https://hackage.haskell.org/package/reflex-dom-core">Reflex-Dom</a> is a great example as not only has it made me 100x more productive than with React or Angular due to leveraging Haskell&#39;s typesystem, but we can use it to easily swap out what platform where are going to run on whether thats JavaScript, Web-Assembly, or even iOS and Android!</p>
+<p>You will find that after learning Haskell you will find you have a shockingly strong intuition for how software works and capacity to solve large undefined problems.</p>
+<p>We hope you enjoy the next Chapters (do I dare say pun intended?) and we are here to help you thrive.</p>
+<p><a href="https://acetalent.io/landing/Blog/Introduction">Next Chapter</a></p>
+</div></div></body></html>

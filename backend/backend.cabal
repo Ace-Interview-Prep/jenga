@@ -1,0 +1,197 @@
+name: backend
+version: 0.1
+cabal-version: >= 1.8
+build-type: Simple
+
+library
+  hs-source-dirs: src
+  if impl(ghcjs)
+    buildable: False
+  build-depends: aeson
+               , gloss
+               , aeson-gadt-th
+               , async
+               , base
+               , base64-bytestring
+               , beam-automigrate
+               , beam-core
+               , beam-postgres
+               , bytestring
+               , case-insensitive
+               , clientsession
+               , common
+               , constraints-extras
+               , containers
+               , csv
+               , constraints
+               , cryptonite
+               , data-default
+               , dependent-sum
+               , dependent-map
+               , directory
+               , email-validate
+               , exceptions
+               , extra
+               , filepath
+               , frontend
+               , gargoyle-postgresql-connect
+               , ghc-prim
+               , http-client
+               , http-client-tls
+               , http-types
+               , HaskellNet
+               , io-streams
+               , IStr
+               , jenga-auth-common
+               , jenga-auth-backend
+               , lens
+               , lifted-base
+               , lucid
+               , landing-page
+               , megaparsec
+               , mime-mail
+               , mime-mail-orphans
+               , mmark
+               , mtl
+               , mmark-ext
+               , monad-logger
+               , monoidal-containers
+               , network-uri
+               , obelisk-backend
+               , staticAssets
+               , staticSite
+               , obelisk-executable-config-lookup
+               , obelisk-route
+               , parsec
+               , postgresql-lo-stream
+               , postgresql-simple
+               , postgresql-simple-interpolate
+               , process
+               , psql-simple-beam
+               , psql-simple-class
+               , random
+               , reflex-dom-core
+               , resource-pool
+               , rhyolite-account-backend
+               , rhyolite-account-types
+               , rhyolite-backend
+               , rhyolite-beam-db
+               , rhyolite-beam-task-worker-backend
+               , rhyolite-beam-task-worker-types
+               , rhyolite-common
+               , rhyolite-email
+               , rhyolite-notify-listen
+               , rhyolite-notify-listen-beam
+               , safe-exceptions
+               , scrappy-core
+               , scrappy-template
+               , semialign
+               , semimap
+               , signed-data
+               , signed-data-clientsession
+               , snap
+               , snap-core
+               , snap-extras
+               , templates
+               , temporary
+               , text
+               , these
+               , time
+               , transformers
+               , uuid
+               , vessel
+               , vector
+               , witherable-class
+               , which
+               , template-haskell
+               , ClasshSS
+               , reflex-classhss
+               , obelisk-asset-serve-snap
+               , haskell-src-meta
+               , lamarckian
+
+  exposed-modules:
+    Backend
+    RhyConcurrent
+    Backend.Config
+    Backend.Types
+
+    Backend.DB
+    Backend.DB.Migrations
+    Backend.DB.Auth
+
+    Backend.Handlers.Names
+    Backend.Handlers.Auth.Login
+    Backend.Handlers.Auth.ResetPassword
+    Backend.Handlers.Auth.RequestPasswordReset
+    Backend.Handlers.Auth.Signup
+
+    Backend.Utils.HttpJson
+    Backend.Utils.Email
+
+    Backend.Websockets.Request
+    Backend.Websockets.View
+    Backend.Websockets.Notify
+
+    Backend.Workers.SendEmail
+
+  ghc-options: -Wall -Werror -O -threaded -fno-show-valid-hole-fits
+               -- -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -O -fno-show-valid-hole-fits -Werror=incomplete-patterns
+  default-extensions:
+      AllowAmbiguousTypes
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      EmptyCase
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      PolyKinds
+      QuasiQuotes
+      RankNTypes
+      RecursiveDo
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+
+      DeriveGeneric
+      FlexibleContexts
+      FlexibleInstances
+      GADTs
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      QuasiQuotes
+      RankNTypes
+      ScopedTypeVariables
+      TemplateHaskell
+      TypeFamilies
+
+executable backend
+  main-is: main.hs
+  hs-source-dirs: src-bin
+  ghc-options: -Wall -Werror -O -threaded -fno-show-valid-hole-fits
+               -- -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -O -threaded -fno-show-valid-hole-fits -Werror=incomplete-patterns
+  if impl(ghcjs)
+    buildable: False
+  build-depends: base
+               , backend
+               , common
+               , frontend
+               , obelisk-backend

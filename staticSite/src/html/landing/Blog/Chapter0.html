@@ -1,0 +1,450 @@
+<html lang="en"><head><style>
+/* Markdown Shell */
+.containerBlog {
+   padding: 200px;
+   background-color: black;
+   color: white;
+   font-size: 20px;
+   font-family: Georgia, serif;
+}
+
+.containerBlog ol {
+   list-style-type: decimal;
+   padding-left: 2.5rem;
+}
+.containerBlog ul {
+   list-style-type: disc;
+   padding-left: 2.5rem;
+}
+
+.containerBlog td {
+   padding: 3px;
+   border-color: #888;
+}
+
+.containerBlog li {
+   padding: 5px 10px;
+}
+
+.containerBlog p {
+   padding: 10px 0px;
+}
+
+.containerBlog a {
+   color: #00B9DA;
+   text-decoration: none;
+}
+
+.containerBlog p code {
+  background-color: #D3D3D3;
+  padding: 0px 3px;
+  border-radius: 0.5rem;
+}
+
+.containerBlog h1 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 2em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h2 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h3 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size:1.17em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h4 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 1em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+.containerBlog h5 {
+  padding: 25px 0px;
+  font-weight: bold;
+  font-size: 0.83em;
+  color: #fff4f4;
+  text-decoration: underline;
+}
+
+
+
+/* Otherwise comments can go on into infinity */
+span.co {
+  word-break: break-word;        /* Safe wrap on words */
+  overflow-wrap: anywhere;       /* Force wrap anywhere if needed */
+  white-space: normal;           /* Allow wrapping */
+}
+
+
+code:not([class]) {
+  /* your styles here */
+  background-color: white;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+code span {
+  display: inline;
+  white-space: pre;
+}
+
+.source-code {
+  padding: 8px;
+  border-color: white;
+  background-color: black;
+}
+
+}
+/* One off haskell constructs */
+code {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+div.source-code {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+code.language-haskell {
+  overflow-x:auto;
+  max-width:100%;
+}
+
+/* Haskell Syntax */
+.pr {
+   color: #F8E473;
+}
+.op {
+   color: gold;
+}
+.sy {
+   color: #FADA5E;
+}
+.co {
+   color: green;
+}
+.cr {
+   color: #af64ff;
+}
+.va {
+   color: #6693F5; 
+}
+.kw {
+    color: #f0883e;
+}
+
+/* Haskell Syntax - Literals */
+.st {
+  color: #a5d6ff;
+}
+.ch {
+  color: #2E3A59;
+}
+.it {}
+.ra {}
+
+
+/* Other Languages Via Skylighting Tokenizer */
+
+.pp {
+  color: blue;
+}
+.im {
+  color: green;
+}
+.dt {
+  color: green;
+}
+.cf {
+  color: orange;
+}
+/*Like char */
+.sc {
+  color: orange;
+}
+/* java func */
+.fu {
+  color: #6693F5;
+}
+
+/* base color C lang */
+.language-c {
+  color: #6693F5;
+}
+
+.language-bash {
+  color: #154dcb;
+  font-weight: bold;
+}
+
+.language-nix {
+  color: grey;
+  font-weight: bold;
+}
+
+.language-java {
+  color: #6693F5;
+}
+.language-csharp {
+  color: #E3B778;
+}
+.language-python {
+  color: #E3B778;
+}
+</style><style>a { color: #00B9DA; text-decoration: none; }</style></head><body><div class="fixed top-0 left-0 w-full h-full overflow-auto z-10 scroll-smooth"><div class="containerBlog"><h1 id="chapter-0-think-like-a-functional-programmer">Chapter 0: Think Like a Functional Programmer</h1>
+<ol>
+<li>
+<a href="/landing/Blog/Chapter0#introduction">Introduction</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#how-to-approach-problem-solving-every-problem-is-the-same">How to Approach Problem Solving: Every Problem is the Same</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#taking-baby-steps">Taking Baby Steps</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#small-components-big-impact">Small Components, Big Impact</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#functional-programming-mindset">Functional Programming Mindset</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#demystifying-type-theory-and-its-motivations-for-functional-programming">Demystifying Type Theory and its Motivations for Functional Programming</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#how-to-build-an-application-what-is-a-functional-application">How to Build an Application: What is a Functional Application?</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#different-types-of-applications-have-different-requirements-for-safety">Different Types of Applications Have Different Requirements for Safety</a>
+</li>
+<li>
+<a href="/landing/Blog/Chapter0#conclusion">Conclusion</a>
+</li>
+</ol>
+<h2 id="introduction">Introduction</h2>
+<p>Before diving into Haskell, we need to shift our mindset to think like a functional programmer. This mindset is different from what you might be used to if you come from a procedural or object-oriented programming background. How you approach problem-solving as a programmer can dramatically affect your outcomes. In the world of functional programming (FP), the way we think about problems is fundamentally different. The essence of FP is to break down problems into their most basic elements, using mathematical principles to guide us toward clean, reliable solutions. Every problem, no matter how complex, can be simplified when we apply first principles analysis.</p>
+<h2 id="how-to-approach-problem-solving-every-problem-is-the-same">How to Approach Problem Solving: Every Problem is the Same</h2>
+<p>The best way to tackle problem-solving is by using <strong>first principles analysis</strong>. This means breaking down a problem into its most basic, fundamental truths, and building up from there. By modeling the ground-roots information about the space the problem exists within, we can greatly increase our understanding and, as a result, simplify our implementation. This ensures that what we build not only works but is also maintainable and scalable.</p>
+<h3 id="example-first-principles-in-action">Example: First Principles in Action</h3>
+<p>Let&#39;s start with a simple problem. Imagine you&#39;re building a system to handle payments. What are the first principles here?</p>
+<ol>
+<li>
+<p><strong>Identify the Inputs</strong>: We start by identifying the basic inputs to our problem. In this case, our inputs might be a cart of items, each with an ID, name, and price, and a payment method, which could be an encrypted reference to the user&#39;s payment details on a platform like Stripe or PayPal.</p>
+</li>
+<li>
+<p><strong>Define the Outputs</strong>: Next, we define the outputs. What needs to happen? We need to process a payment, confirm that it went through, handle any failures, and then create an order and track its fulfillment.</p>
+</li>
+</ol>
+<p>By breaking it down like this, we’re not jumping straight to a solution. Instead, we’re mapping out the entire problem space. The solution, more often than not, becomes obvious once we’ve done this.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="co">-- Define the structure of an item in the cart</span><span>
+</span><span class="kw">data</span><span> </span><span class="cr">Item</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Item</span><span> </span><span class="sy">{</span><span> </span><span class="va">itemId</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span class="sy">,</span><span> </span><span class="va">itemName</span><span> </span><span class="sy">::</span><span> </span><span class="cr">String</span><span class="sy">,</span><span> </span><span class="va">itemPrice</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">}</span><span>
+
+</span><span class="co">-- Define the cart</span><span>
+</span><span class="kw">data</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">{</span><span> </span><span class="va">items</span><span> </span><span class="sy">::</span><span> </span><span class="sy">[</span><span class="cr">Item</span><span class="sy">]</span><span> </span><span class="sy">}</span><span>
+
+</span><span class="co">-- Example payment information</span><span>
+</span><span class="kw">data</span><span> </span><span class="cr">PaymentMethod</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Stripe</span><span> </span><span class="cr">String</span><span> </span><span class="sy">|</span><span> </span><span class="cr">PayPal</span><span> </span><span class="cr">String</span><span>
+
+</span><span class="co">-- Function to calculate total cost</span><span>
+</span><span class="va">calculateTotal</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Double</span><span>
+</span><span class="va">calculateTotal</span><span> </span><span class="sy">(</span><span class="cr">Cart</span><span> </span><span class="va">items</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">sum</span><span> </span><span class="sy">[</span><span class="va">itemPrice</span><span> </span><span class="va">item</span><span> </span><span class="sy">|</span><span> </span><span class="va">item</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">items</span><span class="sy">]</span><span>
+
+</span><span class="co">-- Function to process payment</span><span>
+</span><span class="va">processPayment</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">PaymentMethod</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">Order</span><span>
+</span><span class="va">processPayment</span><span> </span><span class="va">cart</span><span> </span><span class="va">paymentMethod</span><span> </span><span class="sy">=</span><span>
+  </span><span class="kw">let</span><span> </span><span class="va">total</span><span> </span><span class="sy">=</span><span> </span><span class="va">calculateTotal</span><span> </span><span class="va">cart</span><span>
+  </span><span class="kw">in</span><span> </span><span class="kw">case</span><span> </span><span class="va">paymentMethod</span><span> </span><span class="kw">of</span><span>
+       </span><span class="cr">Stripe</span><span> </span><span class="va">token</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="co">-- Process Stripe payment here</span><span>
+       </span><span class="cr">PayPal</span><span> </span><span class="va">account</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="co">-- Process PayPal payment here</span><span>
+</span></code></pre></div>
+<h2 id="taking-baby-steps">Taking Baby Steps</h2>
+<p>Once we&#39;ve modeled the problem space by identifying the inputs and outputs, the next step is to actually solve the problem. This is where the concept of <strong>taking baby steps</strong> comes into play. The idea is to break down the problem into the smallest, most consumable pieces you can think of and then write the code that performs those transformations. It’s about constantly asking yourself:</p>
+<ul>
+<li>
+Do I understand what needs to be done next?
+</li>
+<li>
+Can this be broken down further?
+</li>
+<li>
+Is there any domain knowledge missing that I need to understand before proceeding?
+</li>
+</ul>
+<p>By approaching a problem in this way, you ensure that you never get overwhelmed by complexity. Each step is simple, understandable, and can be implemented without too much cognitive overhead.</p>
+<h3 id="applying-baby-steps-to-the-payment-example">Applying Baby Steps to the Payment Example</h3>
+<p>Let’s go back to our payment processing example. We’ve already identified the inputs (the cart of items and the payment method) and the outputs (a successful payment and an order). Now we need to figure out how to go from input to output, one small step at a time.</p>
+<p><strong>Step 1: Calculate the Total Cost</strong></p>
+<p>The first transformation we need is to calculate the total cost of the items in the cart. This is a simple, isolated task that can be easily understood. Let’s break it down:</p>
+<ul>
+<li>
+<strong>Understand the task</strong>: We need to sum up the price of each item in the cart, taking into account the quantity of each item.
+</li>
+<li>
+<strong>Missing knowledge</strong>: None, this is straightforward.
+</li>
+<li>
+<strong>Write the function</strong>:
+</li>
+</ul>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">calculateTotal</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Double</span><span>
+</span><span class="va">calculateTotal</span><span> </span><span class="sy">(</span><span class="cr">Cart</span><span> </span><span class="va">items</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">sum</span><span> </span><span class="sy">[</span><span class="va">itemPrice</span><span> </span><span class="va">item</span><span> </span><span class="sy">*</span><span> </span><span class="va">fromIntegral</span><span> </span><span class="sy">(</span><span class="va">itemQuantity</span><span> </span><span class="va">item</span><span class="sy">)</span><span> </span><span class="sy">|</span><span> </span><span class="va">item</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">items</span><span class="sy">]</span><span>
+</span></code></pre></div>
+<p>Here, the calculateTotal function is doing just one thing: summing up the total cost of all items in the cart. It’s a single, small step, but it’s essential to the overall solution.</p>
+<p><strong>Step 2: Process the Payment</strong></p>
+<p>Now that we have the total cost, the next step is to process the payment. This is a bit more complex, so let’s break it down further:</p>
+<ul>
+<li>
+<strong>Understand the task</strong>: We need to use the total cost and the payment method to attempt a transaction.
+</li>
+<li>
+<strong>Missing knowledge</strong>: How does the specific payment method work? Do we need to handle different payment methods differently?
+</li>
+<li>
+<strong>Write the function</strong>:
+</li>
+</ul>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">processPayment</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">PaymentMethod</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">PaymentResult</span><span>
+</span><span class="va">processPayment</span><span> </span><span class="va">total</span><span> </span><span class="sy">(</span><span class="cr">Stripe</span><span> </span><span class="va">token</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">processStripePayment</span><span> </span><span class="va">total</span><span> </span><span class="va">token</span><span>
+</span><span class="va">processPayment</span><span> </span><span class="va">total</span><span> </span><span class="sy">(</span><span class="cr">PayPal</span><span> </span><span class="va">account</span><span class="sy">)</span><span> </span><span class="sy">=</span><span> </span><span class="va">processPayPalPayment</span><span> </span><span class="va">total</span><span> </span><span class="va">account</span><span>
+</span></code></pre></div>
+<p>In this step, we’ve broken down the task into the act of processing a payment using either Stripe or PayPal. Notice how we didn’t try to solve everything at once. Instead, we created a function that delegates the actual payment processing to other functions (processStripePayment and processPayPalPayment), which might look something like this:</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">processStripePayment</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">PaymentResult</span><span>
+</span><span class="va">processStripePayment</span><span> </span><span class="va">total</span><span> </span><span class="va">token</span><span> </span><span class="sy">=</span><span> </span><span class="co">-- logic to interact with Stripe&#39;s API</span><span>
+
+</span><span class="va">processPayPalPayment</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">String</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">PaymentResult</span><span>
+</span><span class="va">processPayPalPayment</span><span> </span><span class="va">total</span><span> </span><span class="va">account</span><span> </span><span class="sy">=</span><span> </span><span class="co">-- logic to interact with PayPal&#39;s API</span><span>
+</span></code></pre></div>
+<p><strong>Step 3: Generate an Order</strong></p>
+<p>After processing the payment, we need to generate an order. Again, let’s break it down:</p>
+<ul>
+<li>
+<strong>Understand the task</strong>: We need to create an order record that includes details like the items purchased, the total cost, and the status of the payment.
+</li>
+<li>
+<strong>Missing knowledge</strong>: What information needs to be included in the order? How should we handle failed payments?
+</li>
+<li>
+<strong>Write the function</strong>:
+</li>
+</ul>
+<div class="source-code"><pre><code class="language-haskell"><span class="va">generateOrder</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">PaymentResult</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Order</span><span>
+</span><span class="va">generateOrder</span><span> </span><span class="va">cart</span><span> </span><span class="va">paymentResult</span><span> </span><span class="sy">=</span><span> </span><span class="cr">Order</span><span> </span><span class="sy">{</span><span>
+    </span><span class="va">orderItems</span><span> </span><span class="sy">=</span><span> </span><span class="va">items</span><span> </span><span class="va">cart</span><span class="sy">,</span><span>
+    </span><span class="va">orderTotal</span><span> </span><span class="sy">=</span><span> </span><span class="va">calculateTotal</span><span> </span><span class="va">cart</span><span class="sy">,</span><span>
+    </span><span class="va">orderStatus</span><span> </span><span class="sy">=</span><span> </span><span class="kw">if</span><span> </span><span class="va">paymentSucceeded</span><span> </span><span class="va">paymentResult</span><span> </span><span class="kw">then</span><span> </span><span class="st">&quot;Confirmed&quot;</span><span> </span><span class="kw">else</span><span> </span><span class="st">&quot;Failed&quot;</span><span>
+</span><span class="sy">}</span><span>
+</span></code></pre></div>
+<p>Here, generateOrder takes the cart and the result of the payment process to create an order. Notice how the orderStatus depends on whether the payment succeeded or failed, which is determined by inspecting the PaymentResult.</p>
+<p><strong>The Thinking Process: Breaking Down a Problem into Steps</strong></p>
+<p>The key to successfully applying this “baby steps” approach is to always keep breaking the problem down until you reach a point where each step is small enough that you can confidently implement it. If you encounter something you don’t fully understand, that’s a signal to stop and dig deeper into that specific part of the problem before proceeding.</p>
+<p>For example, if you were unsure how to interact with Stripe’s API, you’d break that down further:</p>
+<ul>
+<li>
+What API endpoints do you need to call?
+</li>
+<li>
+What authentication does Stripe require?
+</li>
+<li>
+What does a successful or failed transaction response look like?
+</li>
+</ul>
+<p>Each of these questions can lead to a smaller, more manageable task that you can then solve individually.</p>
+<p>In the end, the entire payment processing problem is solved by implementing a series of small, well-defined functions, each responsible for a specific aspect of the overall process. By focusing on one tiny piece at a time, you avoid getting overwhelmed and ensure that each part of your program is understandable, testable, and reliable.</p>
+<p>This is the essence of functional programming: breaking problems down into manageable, bite-sized pieces, writing pure functions to handle those pieces, and then composing them together to solve the larger problem. With this approach, you can tackle even the most complex programming challenges with confidence.</p>
+<h2 id="small-components-big-impact">Small Components, Big Impact</h2>
+<p>When creating functions, it’s best to think about them in small, reusable components. The less they do, the more useful they are across different parts of your application. Haskell excels at allowing us to compose functions together in meaningful ways, and as you progress through this guide, you&#39;ll learn a bunch of neat ways to do this.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="co">-- Compose small functions to achieve bigger tasks</span><span>
+</span><span class="va">applyDiscount</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Double</span><span>
+</span><span class="va">applyDiscount</span><span> </span><span class="va">discount</span><span> </span><span class="va">total</span><span> </span><span class="sy">=</span><span> </span><span class="va">total</span><span> </span><span class="sy">*</span><span> </span><span class="sy">(</span><span class="it">1</span><span> </span><span class="op">-</span><span> </span><span class="va">discount</span><span class="sy">)</span><span>
+
+</span><span class="va">totalWithDiscount</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Double</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Cart</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Double</span><span>
+</span><span class="va">totalWithDiscount</span><span> </span><span class="va">discount</span><span> </span><span class="sy">=</span><span> </span><span class="va">applyDiscount</span><span> </span><span class="va">discount</span><span> </span><span class="op">.</span><span> </span><span class="va">calculateTotal</span><span>
+</span></code></pre></div>
+<p>Remember, Haskell is actually very simple at its core. Complexity arises from the many ways you can compose and modify functions, but if you understand the basics, you&#39;ll be able to build anything.</p>
+<h2 id="functional-programming-mindset">Functional Programming Mindset</h2>
+<p>You might be thinking, &quot;This all sounds great, but how does it help me build a real application?&quot; Good question. The FP mindset is all about leveraging these small, composable functions to build up complex behavior in a controlled, predictable way. It’s like building a house out of LEGO bricks—each brick is simple, but the combinations are limitless.</p>
+<p>Take the time to understand the function signatures of unfamiliar functions. They’re your roadmap, guiding you through the complex landscape of Haskell. Approach each function one property at a time, and before you know it, you&#39;ll be solving problems with elegance and ease.</p>
+<h2 id="demystifying-type-theory-and-its-motivations-for-functional-programming">Demystifying Type Theory and its Motivations for Functional Programming</h2>
+<p>Before we dive deeper, let’s touch on something that often confuses newcomers: terms like Monoids, Functors, Monads, and Semigroups. These might sound intimidating, but they’re just mathematical concepts that we use to structure our programs in a more reliable and predictable way.</p>
+<ul>
+<li>
+<p><strong>Monoids</strong>: Think of Monoids as a way to combine things. If you’ve ever added numbers or concatenated strings, you’ve already used a Monoid. It’s just a way of saying, &quot;Here’s how you combine two things to get another thing of the same type.&quot;</p>
+</li>
+<li>
+<p><strong>Functors</strong>: Functors are about applying a function to something within a context. For example, if you have a value wrapped in a <code>Maybe</code>, a Functor lets you apply a function to that value without having to unwrap it first.</p>
+</li>
+<li>
+<p><strong>Monads</strong>: Monads are about chaining operations that are context-aware. If you’ve ever worked with <code>IO</code> in Haskell, you’ve used a Monad. They allow us to sequence operations that involve side effects in a controlled manner.</p>
+</li>
+<li>
+<p><strong>Semigroups</strong>: These are like Monoids, but without the need for an identity element. They’re still about combining things, but in a slightly less restrictive way.</p>
+</li>
+</ul>
+<p>Don’t worry if these concepts don’t fully click right away. We’ll be exploring them in more detail as we progress. For now, just remember that these are mathematical terms that help us reason about how to combine, apply, and manage contexts in our programs.</p>
+<p>The reason we still use these names is to show respect to the mathematicians who developed these ideas. In the FP world, everyone uses these terms and you will learn to use them as well!</p>
+<h2 id="how-to-build-an-application-what-is-a-functional-application">How to Build an Application: What is a Functional Application?</h2>
+<p>What does it mean to build a functional application? In essence, an application is a sequence of instructions that runs along a timeline. But in functional programming, we treat this timeline very differently from traditional procedural or object-oriented approaches.</p>
+<h3 id="traditional-vs-functional-approaches">Traditional vs. Functional Approaches</h3>
+<p>In traditional programming, especially in procedural and object-oriented paradigms, applications often involve hidden states and side effects. This can lead to a slew of issues during runtime that are difficult to track down and fix.</p>
+<p>Functional programming, on the other hand, abides by the laws of mathematics. Your entire application is like one massive math equation, where everything is pure and predictable. This might seem like a hassle at first, but trust me, the benefits far outweigh the initial learning curve.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="co">-- Pure function: always returns the same output for the same input</span><span>
+</span><span class="va">add</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">add</span><span> </span><span class="va">x</span><span> </span><span class="va">y</span><span> </span><span class="sy">=</span><span> </span><span class="va">x</span><span> </span><span class="op">+</span><span> </span><span class="va">y</span><span>
+
+</span><span class="co">-- Impure function: might return different outputs depending on external factors</span><span>
+</span><span class="va">getCurrentTimeAndAdd</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Int</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">IO</span><span> </span><span class="cr">Int</span><span>
+</span><span class="va">getCurrentTimeAndAdd</span><span> </span><span class="va">x</span><span> </span><span class="sy">=</span><span> </span><span class="kw">do</span><span>
+    </span><span class="va">currentTime</span><span> </span><span class="sy">&lt;-</span><span> </span><span class="va">getCurrentTime</span><span>
+    </span><span class="va">return</span><span> </span><span class="sy">(</span><span class="va">x</span><span> </span><span class="op">+</span><span> </span><span class="va">round</span><span> </span><span class="va">currentTime</span><span class="sy">)</span><span>
+</span></code></pre></div>
+<p>Notice how the pure function add will always give the same result for the same inputs, while getCurrentTimeAndAdd depends on an external factor, making it impure.</p>
+<p>In Haskell, we must explicitly define impure functions by using the IO Monad. This is part of what makes functional programming so powerful.</p>
+<h3 id="the-identity-of-a-functional-program">The Identity of a Functional Program</h3>
+<p>Here’s a fun thought experiment: imagine your entire application as one massive mathematical equation, filling a chalkboard. When it’s done, it compiles down to a single function. That function, given the same input, will always produce the same output. That’s the identity of a functional program—it’s self-contained and predictable.</p>
+<p>For those who have slogged through procedural or object-oriented codebases, particularly in dynamically typed languages, you know how frustrating it can be when your program behaves unpredictably. In FP, you can sidestep many of these headaches. If you’re just starting out now, count yourself lucky!</p>
+<h3 id="functional-programming-in-the-real-world">Functional Programming in the Real World</h3>
+<p>FP isn’t just for academics and hobbyists. It’s a powerful tool for building real-world applications, especially in industries where precision, reliability, and scalability are paramount. Let’s dive into why FP is hands down better for risky codebases.</p>
+<h2 id="different-types-of-applications-have-different-requirements-for-safety">Different Types of Applications Have Different Requirements for Safety</h2>
+<p>Not all applications are created equal. Some need more safety guarantees than others. Functional programming provides these guarantees, making it an excellent choice for industries where the cost of failure is high—like healthcare, finance, aerospace, and more.</p>
+<h3 id="why-fp-is-ideal-for-highstakes-applications">Why FP is Ideal for High-Stakes Applications</h3>
+<p>FP gives us a special guarantee: over the entire program flow of our application, we will not receive an unexpected result. This is because the pure nature of the compiler forces us to turn exceptions into expectations.</p>
+<p>Let’s break that down with an example.</p>
+<div class="source-code"><pre><code class="language-haskell"><span class="co">-- Handling risky operations with Either</span><span>
+</span><span class="va">processTrade</span><span> </span><span class="sy">::</span><span> </span><span class="cr">Trade</span><span> </span><span class="sy">-&gt;</span><span> </span><span class="cr">Either</span><span> </span><span class="cr">String</span><span> </span><span class="cr">Confirmation</span><span>
+</span><span class="va">processTrade</span><span> </span><span class="va">trade</span><span> </span><span class="sy">=</span><span>
+    </span><span class="kw">if</span><span> </span><span class="va">tradeAmount</span><span> </span><span class="va">trade</span><span> </span><span class="op">&gt;</span><span> </span><span class="it">0</span><span> </span><span class="kw">then</span><span> </span><span class="cr">Right</span><span> </span><span class="cr">Confirmation</span><span>
+    </span><span class="kw">else</span><span> </span><span class="cr">Left</span><span> </span><span class="st">&quot;Invalid trade amount&quot;</span><span>
+</span></code></pre></div>
+<p>In this snippet, we’re processing a trade. Notice how we’re explicitly handling the possibility of an invalid trade. FP forces us to think about these edge cases upfront, making our code safer and more reliable.</p>
+<h3 id="fp-in-action-case-studies">FP in Action: Case Studies</h3>
+<p>Let’s take a look at some real-world examples where FP is making a difference:</p>
+<ol>
+<li>
+<p><strong>Finance</strong>: Major financial institutions are using Haskell to build trading systems. Why? Because when billions of dollars are on the line, you can’t afford unexpected bugs.</p>
+</li>
+<li>
+<p><strong>Aerospace</strong>: NASA uses functional programming principles to ensure that their software systems are fault-tolerant and reliable. Imagine if a bug in the code caused a spacecraft to malfunction—FP helps prevent that.</p>
+</li>
+<li>
+<p><strong>Healthcare</strong>: In the medical field, software bugs can literally be a matter of life and death. Functional programming’s strong safety guarantees make it a natural fit.</p>
+</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>You’ve made it through the first lesson, and hopefully, you’re starting to see the power of thinking like a functional programmer. By focusing on first principles, breaking down problems into small components, and embracing the mathematical nature of FP, you’re setting yourself up for success.</p>
+<p>Remember, this is just the beginning. As we continue, you’ll learn more about how to apply these principles to build robust, scalable, and maintainable applications.</p>
+<p><a href="/landing/Blog/Introduction">Previous Chapter</a> |
+<a href="/landing/Blog/SetupInstructions">Next Chapter</a></p>
+</div></div></body></html>

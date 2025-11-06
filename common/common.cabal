@@ -1,0 +1,99 @@
+name: common
+version: 0.1
+cabal-version: >= 1.8
+build-type: Simple
+
+library
+  hs-source-dirs: src
+  build-depends: base
+---               , beam-postgres
+
+               , staticAssets
+
+               , aeson
+               , aeson-gadt-th
+               , attoparsec
+               , base64-bytestring
+               , ClasshSS
+               , reflex-classhss
+               , beam-core
+               , bytestring
+               , bytestring-aeson-orphans
+               , constraints-extras
+               , containers
+               , data-default
+               , dependent-monoidal-map
+               , dependent-sum-template
+               , directory
+               , email-validate
+               , http-media
+               , jenga-auth-common
+               , lens
+               , mime-mail
+               , mime-mail-orphans
+               , monoidal-containers
+               , mtl
+               , obelisk-route
+               , parsec
+               , patch
+               , templates
+               , protolude
+               , rhyolite-common
+               , rhyolite-account-types
+               , reflex-dom-core
+               , semimap
+               , signed-data
+               , template-haskell
+               , haskell-src-meta
+               , text
+               , time
+               , universe
+               , uuid-types
+               , vessel
+               , witherable
+  if !impl(ghcjs)
+     build-depends: unicode-transforms
+
+  exposed-modules:
+      Common.ChatSchema
+      Common.SchemaHelpers
+      Common.Constants
+      Common.Request
+      Common.Route
+      Common.Schema
+      Common.Types
+      Common.View
+
+      Data.Map.Monoidal.Extras
+
+  ghc-options: -Wall -Werror -O -fno-show-valid-hole-fits
+               -- -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -O -fno-show-valid-hole-fits -Werror=incomplete-patterns
+
+  default-extensions:
+      DeriveGeneric
+      EmptyDataDecls
+      FlexibleContexts
+      FlexibleInstances
+      GADTs
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      RankNTypes
+      TemplateHaskell
+      TypeFamilies
+      UndecidableInstances
+      ConstraintKinds
+      FunctionalDependencies
+      RecursiveDo
+      ConstraintKinds
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      LambdaCase
+      MultiParamTypeClasses
+    -- OverloadedStrings
+      RankNTypes
+      RecursiveDo
+      ScopedTypeVariables
+      TemplateHaskell
