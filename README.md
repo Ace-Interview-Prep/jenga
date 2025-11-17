@@ -1,6 +1,10 @@
-![jenga](./jenga.png)
-
+<!-- ![jenga](./jenga.png) -->
+<!-- <img src="./jenga.png" width="48"> -->
 # Jenga Stack
+
+[![Haskell Programming Language](https://img.shields.io/badge/language-Haskell-blue.svg)](http://www.haskell.org)
+
+<p align="center"><img src="jenga.png" width="50%" alt="Jenga Logo"></p>
 
 Jenga is
 
