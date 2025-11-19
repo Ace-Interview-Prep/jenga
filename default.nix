@@ -68,6 +68,7 @@ project ./. ({ pkgs, hackGet, ... }@args:
           IStr = super.callPackage thunkSet.IStr {};
           lamarckian = self.callCabal2nix "lamarckian" (hackGet thunkSet.lamarckian) {};
           bytestring-aeson-orphans = doJailbreak (super.bytestring-aeson-orphans);
+          beam-automigrate = doHaddock (super.beam-automigrate);
           rhyolite-beam-task-worker-backend = dontCheck (super.rhyolite-beam-task-worker-backend);
           network-uri = super.callCabal2nix "network-uri" (network-uriSrc) {};
           ClasshSS = super.callPackage (thunkSet.ClasshSS) {};
