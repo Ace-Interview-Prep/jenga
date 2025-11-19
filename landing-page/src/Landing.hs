@@ -79,3 +79,11 @@ selectLandingPage r = case r of
   where
     serve :: MonadSnap m => FilePath -> m ()
     serve = void . serveCompressed
+
+readIMMarkFile :: FilePath -> IO (Either String T.Text)
+readIMMarkFile fp = do
+  _contents <- liftIO $ readFile fp
+--   _ <- error $ show $ Prelude.length _contents
+  case MMark.parse fp $ T.pack _contents of
+    Left (e) -> pure . Left $ MP.errorBundlePretty e
+    Right bundle -> pure . Right $ LT.toStrict . renderText $ MMark.render $ useExtensions extensions bundle
