@@ -1,3 +1,4 @@
+
 <!-- ![jenga](./jenga.png) -->
 <!-- <img src="./jenga.png" width="48"> -->
 # Jenga Stack
@@ -16,8 +17,7 @@ It's also my dog's name.
 
 # To Learn Jenga
 
-==> Talk tutorials
-==> See #documentations
+See "Learn Jenga" under [Tutorials](#Tutorials)
 
 A good few tips for learning Jenga are to let Hoogle and compiler errors be your guiding light. While the compiler errors may feel overwhelming to read at first, they are the best tool that Haskell has. When you are comfortable with an area of programming it feels like working through a TODO list of changes you need to make for a new feature to function perfectly well with respect to the rest of the existing code.
 
@@ -82,7 +82,7 @@ nix-build iOS.nix
   - [Associated Libraries](#associated-library-list)
 
 # Documentation
-## tutorials
+## Tutorials
 
 - tutorial 1
 - tutorial 2
@@ -197,7 +197,7 @@ f = do
   return ()
 ```
 
-This is a very simple demonstration of FRP and we encourage you to learn more about reflex, see the [Tutorials](#tutorials) section for more
+This is a very simple demonstration of FRP and we encourage you to learn more about reflex, see the [Tutorials](#Tutorials) section for more
 
 ## Static Landing Pages
 
@@ -290,13 +290,13 @@ To see how to provide functionality behind this auth framework and only for appr
 
 For apps that require payment we also provide helper functions for this, to manage subscriptions. This of course requires an API key to be managed by your jenga app under `configs/backend/` directory
 
-See [tutorials](#tutorials) for how to setup stripe.
+See [tutorials](#Tutorials) for how to setup stripe.
 
 ### Role Based Access Control
 
 As long as you use certain database tables defined by Jenga and Rhyolite, you are able to differentiate users by `Self` (controls no other users) and `Admin` (controls other users, ie ones they have added). We then make it easy to restrict functionality based on user type, through JSON+Auth Handlers.
 
-See [tutorials](#tutorials) for how to setup role-based access control.
+See [tutorials](#Tutorials) for how to setup role-based access control.
 
 ## APIs
 
@@ -417,7 +417,7 @@ func = do
 
 This pseudo-looking `func` is actually the function `renderFullRouteBE` from Jenga.Common.HasJengaConfig and it guarantees that we are properly building a link, such as a one-time-password (OTP) link.
 
-You might notice that we `asksM` twice but it returns two different types. This is ultimately possible because the compiler knows what type that value *must* be. For example, renderBackendRoute is a function we call here which expects a `FullRouteEncoder` and a `URI`, so even if we didn't explicitly label them, the compiler would know how to handle this code. `asksM` provides a simple way to use the environment and even build Jenga-based libraries that can be used by the community to perform generic functions like authentication or emailing.
+You might notice that we use `asksM` twice but it returns two different types. This is ultimately possible because the compiler knows what type that value *must* be. For example, renderBackendRoute is a function we call here which expects a `FullRouteEncoder` and a `URI`, so even if we didn't explicitly label them, the compiler would know how to handle this code. `asksM` provides a simple way to use the environment and even build Jenga-based libraries that can be used by the community to perform generic functions like authentication or emailing.
 
 In practice, our generalizing of config operates through a newtype like this:
 
@@ -555,7 +555,7 @@ CallStack (from HasCallStack):
 
 We see it automatically created the Table, then it failed to remove it. We can explicitly 'OK' this Action and it will function as one should expect.
 
-See docs/Migrations.md for more
+See migrations.md for more
 
 # Server Deployment
 
