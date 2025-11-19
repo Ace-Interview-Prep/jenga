@@ -25,9 +25,9 @@ A good few tips for learning Jenga are to let Hoogle and compiler errors be your
 
 ### Setup
 
-We are using [Obelisk](https://github.com/obsidiansystems/obelisk) and [nix](https://nixos.org/) to build our project. See setup.md for more information on how to install Jenga. For further info on how we build for mobile, web app and static builds, see compilers.md.
+We are using [Obelisk](https://github.com/obsidiansystems/obelisk) and [nix](https://nixos.org/) to build our project. See [setup.md](./setup.md) for more information on how to install Jenga. For further info on how we build for mobile, web app and static builds, see compilers.md.
 
-Jenga also requires various configs to be placed in the config directory, the instructions for this also exist in setup.md
+Jenga also requires various configs to be placed in the config directory, the instructions for this also exist in [setup.md](./setup.md)
 
 ### Run Jenga project
 ```bash
@@ -98,11 +98,27 @@ Hoogle, which we show how to setup in [Run Hoogle section](#run-hoogle-server) i
 
 `Classh` and `Classh.Reflex` are modules that help to create visually-appealing, correct-by-construction, and geometrically-aware Tailwind that can be used for components. It can also be used for easier composition of classh-made components.
 
-(TODO: link to Classh examples)
+The syntax is generally "attribute set to attributesType". For example, a div with `bg-color: #50d71e`
+
+```haskell
+  elClass "div" $(classh' [bgColor .~~ hex "50d71e"]) $ do
+```
+
+But we can easily adapt it to make this responsive:
+```haskell
+  elClass "div" $(classh' [bgColor .~+ (hex <$> ["50d71e", "7C0A02", "0EA5E9"] ]) $ do
+```
+
+That's the core idea. ClasshSS' types are also delineated between text, text position and "Boxes" (aka elements and containers). They reshape the API to set styling but keep the same underlying types (eg `Color`). For convenience we can still use the example above expect that `bgColor` wouldn't exist for text, but `text_color` absolutely will.
+
+We also implicitly run a check when compiling your code to ensure you're style expression is not ambiguous. For example we didnt realize padding on large screens has been set twice. This has lead to a great deal of organization amongst CSS usage and even lead to the Classh.Reflex.\* modules which are a collection of tools for building elements (or templates) quickly and well.
+
 
 ### templates package
 
 Much like a React component library, these are [reflex-dom](https://github.com/reflex-frp/reflex-dom) and [Classh](#classh) based components to be used out of the box. We welcome contributions.
+
+[(templates)](https://github.com/Ace-Interview-Prep/templates/tree/master)
 
 ### staticAssets
 
@@ -118,7 +134,7 @@ This guarantees that "images/favicon.png" can be found at ./static/src/images/fa
 
 ## Web App
 
-The web application is built through GHC 8.10 and and GHCJS 8.10 (see compilers.md for more details). This will soon improve to the Javascript and WebAssembly backends of GHC 9.\*
+The web application is built through GHC 8.10 and and GHCJS 8.10 (see [compilers.md](./compilers.md) for more details). This will soon improve to the Javascript and WebAssembly backends of GHC 9.\*
 
 ### JavaScript Capable
 
@@ -380,12 +396,35 @@ We choose logical cases for errors that can happen, give it JSON instances, defi
 
 ## Views + Notify: Websockets for Real-Time Updates
 
-TODO: write this
-- Vessel
-- page load ==> View ==> Notify ==> Notify ...
+A typical websocket dataflow looks something like
+
+```bash
+ first req ==>  /listen        ==> first response  ==> store new value ==> do something else
+                                     ^^^|^^^
+NewChange ==> DbNotification  ==> nth response
+```
+
+In Rhyolite, which we use for this websocket functionality, this maps to
+
+```bash
+ first req ==>  /listen        ==> first response  ==> holdDyn ==> Dynamic t a ==> Perform (SomeEvent `or` DomAction)
+                                     ^^^|^^^
+NewChange ==> DbNotification  ==> nth response
+```
+
+Additionally:
+
+- first req ==> /listen -> Set up in Common.Route using Obelisk.Route
+- NewChange ==> DbNotification -> Using Rhyolite, we provide the backend a way to respond to specific DB notifications and feed websocket pipelines
+- the Reflex library easily fits this dataflow to it's [event system](https://docs.reflex-frp.org/en/latest/reflex_docs.html#frp-basics) on the frontend application.
+
+Through Rhyolite we can create anything from one subscription to a tree of typed subscriptions using the [Vessel package](https://github.com/obsidiansystems/vessel). On each leaf of this API, a Rhyolite 'View' describes what a user sees on page load, and a Rhyolite 'Notify' changes that value as time goes on.
+
+There is a [vessel tutorial here](https://github.com/obsidiansystems/vessel/blob/develop/tutorial/Tutorial.md) which assumes proficiency with haskell, reflex-dom and advanced haskell concepts like GADTs and monad transformers.
 
 ## Workers
 
+Easily spawn tasks on an interval. see Backend.Workers.\* for examples
 
 ## Config Utils
 
@@ -555,11 +594,11 @@ CallStack (from HasCallStack):
 
 We see it automatically created the Table, then it failed to remove it. We can explicitly 'OK' this Action and it will function as one should expect.
 
-See migrations.md for more
+See [migrations.md](./migrations.md) for more
 
 # Server Deployment
 
-Deployments are ridiculously easy to set up.
+Deployments are ridiculously easy.
 
 See [Obelisk - Deploying](https://github.com/obsidiansystems/obelisk?tab=readme-ov-file#deploying) for setup
 
@@ -599,7 +638,7 @@ When you're done, tested and satisfied with your change, just commit and push al
 ob thunk pack thunks/lamarckian
 ```
 
-If you are adding another package as a thunk see nix.md for how to do so with nix.
+If you are adding another package as a thunk see [nix.md](./nix.md) for how to do so with nix.
 
 # Associated Library List
 
@@ -651,7 +690,8 @@ One of the core goals of Jenga is to make the Haskell ecosystem ridiculously eas
   - Typified conversations with LLMs
 
 ## Tricks and Extensions used
-==> link to extensions.md
+
+See [extensions.md](./extensions.md)
 
 # Contributing
 
