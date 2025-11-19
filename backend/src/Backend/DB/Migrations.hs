@@ -36,14 +36,5 @@ whitelistedUnsafeMigrations edits =
     reviewSteps :: WithPriority Edit -> WithPriority Edit
     reviewSteps (WithPriority (edit, priority)) = WithPriority ( fromUnexpectedUnsafe edit, priority )
 
-    fromUnexpectedUnsafe :: Edit -> Edit -- Maybe [Edit]
+    fromUnexpectedUnsafe :: Edit -> Edit
     fromUnexpectedUnsafe this = this
-
-markSafe :: Edit -> Edit
-markSafe e = e { _editCondition = Right Safe }
-
-markSafeWhen :: Edit -> Bool -> Edit
-markSafeWhen this_ b = if b then markSafe this_ else markUnsafe this_
-
-markUnsafe :: Edit -> Edit
-markUnsafe e = e { _editCondition = Right Unsafe }
