@@ -118,7 +118,7 @@ library
 
     Backend.DB
     Backend.DB.Migrations
-    Backend.DB.Auth
+    --Backend.DB.Auth
 
     Backend.Handlers.Names
     Backend.Handlers.Auth.Login
