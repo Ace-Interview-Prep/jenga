@@ -118,16 +118,8 @@ library
 
     Backend.DB
     Backend.DB.Migrations
-    --Backend.DB.Auth
 
     Backend.Handlers.Names
-    Backend.Handlers.Auth.Login
-    Backend.Handlers.Auth.ResetPassword
-    Backend.Handlers.Auth.RequestPasswordReset
-    Backend.Handlers.Auth.Signup
-
-    Backend.Utils.HttpJson
-    Backend.Utils.Email
 
     Backend.Websockets.Request
     Backend.Websockets.View
