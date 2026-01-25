@@ -207,21 +207,47 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
           -- serve all other landing pages under landing/
           runEnvT configEnv $ selectLandingPage landingRoute
 
--- Build a welcome letter as HTML through Reflex
-chooseWelcomeLetter :: UserType -> Auth.ResetPassword.PasswordState -> (Auth.ResetPassword.Subject, StaticWidget x ())
+-- -- Build a welcome letter as HTML through Reflex
+-- chooseWelcomeLetter :: UserType -> Auth.ResetPassword.PasswordState -> (Auth.ResetPassword.Subject, StaticWidget x ())
+-- chooseWelcomeLetter userType passState = case (passState, userType) of
+--   (Auth.ResetPassword.HasPassword, _) ->
+--     (Auth.ResetPassword.Subject "Youre password has been reset"
+--     , divClass "Your password has been reset" $ do
+--         text "Your Password was just reset, please let us know at \
+--              \lauren@acetalent.io if you did not request this."
+--     )
+--   (Auth.ResetPassword.NoPassword, Self) ->
+--     (Auth.ResetPassword.Subject "Welcome to Jenga", resetPasswordNewUserWelcomeLetter)
+--   (Auth.ResetPassword.NoPassword, Admin) ->
+--     (Auth.ResetPassword.Subject "Welcome to Jenga", text adminWelcomeLetter)
+--   (Auth.ResetPassword.NoPassword, SuperUser) ->
+--     (Auth.ResetPassword.Subject "Welcome to Jenga", text adminWelcomeLetter)
+
+chooseWelcomeLetter :: UserType -> Auth.ResetPassword.PasswordState -> MkEmail x
 chooseWelcomeLetter userType passState = case (passState, userType) of
   (Auth.ResetPassword.HasPassword, _) ->
-    (Auth.ResetPassword.Subject "Youre password has been reset"
-    , divClass "Your password has been reset" $ do
+    MkEmail
+    { _mkEmail_subject = "Your password has been reset"
+    , _mkEmail_body =
+      divClass "Your password has been reset" $ do
         text "Your Password was just reset, please let us know at \
-             \lauren@acetalent.io if you did not request this."
-    )
+             \galen.sprout@gmail.com if you did not request this."
+    }
   (Auth.ResetPassword.NoPassword, Self) ->
-    (Auth.ResetPassword.Subject "Welcome to Jenga", resetPasswordNewUserWelcomeLetter)
+    MkEmail
+    { _mkEmail_subject = "Welcome"
+    , _mkEmail_body = resetPasswordNewUserWelcomeLetter
+    }
   (Auth.ResetPassword.NoPassword, Admin) ->
-    (Auth.ResetPassword.Subject "Welcome to Jenga", text adminWelcomeLetter)
+    MkEmail
+    { _mkEmail_subject = "Welcome"
+    , _mkEmail_body = text adminWelcomeLetter
+    }
   (Auth.ResetPassword.NoPassword, SuperUser) ->
-    (Auth.ResetPassword.Subject "Welcome to Jenga", text adminWelcomeLetter)
+    MkEmail
+    { _mkEmail_subject = "Welcome"
+    , _mkEmail_body = text adminWelcomeLetter
+    }
 
 adminWelcomeLetter :: T.Text
 adminWelcomeLetter = "Welcome to your Jenga admin account!\n With your newly gained admin access, you are now equipped to enable user accounts, monitor signups, and track user progress—all from a user-friendly dashboard designed to simplify your user management tasks.\nShould you have any questions or require assistance, our dedicated support team is here to help. Feel free to reach out; Jenga is always ready to assist you.\nThank you for choosing Jenga."

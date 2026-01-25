@@ -27,7 +27,16 @@ import GHC.Generics
 -- import qualified Data.ByteString.Base64 as B64
 -- import qualified Data.ByteString.Lazy as LBS
 -- import Data.Text.Encoding (decodeUtf8, encodeUtf8)
+import Text.Email.Validate
+import Data.Aeson (ToJSON(..), FromJSON(..), withText)
+import qualified Data.ByteString as BS
+import qualified Data.Text.Encoding as TE
 
+instance ToJSON BS.ByteString where
+  toJSON = toJSON . TE.decodeUtf8
+
+instance FromJSON BS.ByteString where
+  parseJSON = withText "ByteString" (pure . TE.encodeUtf8)
 
 -- -- TODO: consolidate, I know that we have this in backend
 
@@ -79,7 +88,8 @@ data NameError = NotFound | NameError T.Text deriving (Show, Eq, Generic)
 --   showUser Reset_NoUserTypeFound = "No user type found"
 --   showUser NoEmailSent = "Unable to send email"
 
-
+instance ToJSON EmailAddress
+instance FromJSON EmailAddress
 -- data RequestPasswordResetError
 --   = InvalidEmail
 --   | NotSignedUp

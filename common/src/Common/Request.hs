@@ -11,7 +11,7 @@ import Data.Aeson.GADT.TH
 import Data.Constraint.Extras.TH
 
 import Common.Types
---import Text.Email.Validate
+import Text.Email.Validate
 
 -- | 'PrivateRequest's are those which require the user to be logged in.
 data PrivateRequest a where
@@ -34,7 +34,7 @@ data PublicRequest a where
   PublicRequest_RequestResetPassword
     :: Email
     -> PublicRequest (Either (BackendError RequestPasswordResetError) ())
-  PublicRequest_Signup :: Email -> PublicRequest (Either (BackendError UserSignupError) ())
+  PublicRequest_Signup :: EmailAddress -> PublicRequest (Either (BackendError UserSignupError) ())
 
 deriveArgDict ''PrivateRequest
 deriveJSONGADT ''PrivateRequest

@@ -6,7 +6,7 @@
 module Landing.Pages.Html.Elems where
 
 -- import Landing.Pages.Elems
-import Landing.Pages.Html.Scripts
+--import Landing.Pages.Html.Scripts
 import Common.Route
 import Obelisk.Route
 import Reflex.Dom.Core
