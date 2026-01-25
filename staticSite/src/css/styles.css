@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-
 @layer components {
   .t_login input[type=text], .t_login input[type=password] {
     @apply focus:outline-none  text-label placeholder-light p-4 bg-inset rounded shadow-input transition-all focus:ring-4 ring-opacity-50 ring-primary; /* font-facit */
@@ -76,60 +72,4 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/sarabun/v15/DtVjJx26TKEr37c9aBVJnw.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-
-/* Markdown Shell */
-.containerBlog {
-   padding: 200px;
-   background-color: black;
-   color: white;
-   font-size: 20px;
-}
-
-li a {
-   color: #00B9DA;
-   text-decoration: none;
-}
-
-.source-code {
-  padding: 8px;
-  border-color: white;
-  background-color: black;
-}
-
-code {
-
-  color: #154dcb;
-  font-weight: bold;
-}
-h1 {
-  padding: 25px 0px;
-  font-weight: bold;
-  color: #fff4f4;
-  text-decoration: underline;
-}
-h2 {
-  padding: 25px 0px;
-  font-weight: bold;
-  color: #fff4f4;
-  text-decoration: underline;
-}
-h3 {
-  padding: 25px 0px;
-  font-weight: bold;
-  color: #fff4f4;
-  text-decoration: underline;
-}
-h4 {
-  padding: 25px 0px;
-  font-weight: bold;
-  color: #fff4f4;
-  text-decoration: underline;
-}
-h5 {
-  padding: 25px 0px;
-  font-weight: bold;
-  color: #fff4f4;
-  text-decoration: underline;
 }

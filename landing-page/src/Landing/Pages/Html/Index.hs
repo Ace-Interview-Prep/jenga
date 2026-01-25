@@ -4,6 +4,7 @@
 
 module Landing.Pages.Html.Index where
 
+import Landing.Static (static)
 -- import Classh
 -- import Classh.Reflex
 import Reflex.Dom
@@ -18,7 +19,7 @@ indexHtml :: DomBuilder t m => m ()
 indexHtml = 
   elAttr "div" ("lang" =: "en") $ do
     indexHead
-    elAttr "body" ("class" =: "font-sans text-gray-700 bg-white") $ do
+    elAttr "body" ("class" =: "font-sans text-[#374151] bg-white") $ do
       navSection
       heroSection
       aboutSection
@@ -34,33 +35,17 @@ indexHead = el "head" $ do
   elAttr "meta" ("name" =: "viewport" <> "content" =: "width=device-width, initial-scale=1.0") blank
   elAttr "meta" ("name" =: "description" <> "content" =: "Your trusted locksmith in Gray Bruce. Emergency lockout assistance, key duplication, lock installation for homes and businesses.") blank
   el "title" $ text "Innisfil Locksmith Services"
-  elAttr "script" ("src" =: "https://cdn.tailwindcss.com") blank
-  el "script" $
-    text $ T.unlines
-      [ "tailwind.config = {"
-      , "  theme: {"
-      , "    extend: {"
-      , "      colors: {"
-      , "        primary: {"
-      , "          DEFAULT: '#1a365d',"
-      , "          dark: '#0d1b2a',"
-      , "        },"
-      , "        accent: {"
-      , "          DEFAULT: '#d69e2e',"
-      , "          hover: '#b7791f',"
-      , "        },"
-      , "      },"
-      , "    },"
-      , "  },"
-      , "}"
-      ]
-  el "style" $ text "html { scroll-behavior: smooth; }"
+  elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank
+  -- No tailwind config, so we omit the <script> for tailwind.config.
+  el "style" $ text $ T.unlines
+    [ "html { scroll-behavior: smooth; }"
+    ]
 
 navSection :: DomBuilder t m => m ()
 navSection =
-  elAttr "nav" ("class" =: "fixed top-0 left-0 right-0 bg-primary-dark py-4 z-50 shadow-md") $
+  elAttr "nav" ("class" =: "fixed top-0 left-0 right-0 bg-[#0d1b2a] py-4 z-50 shadow-md") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4") $ do
-      elAttr "a" ("href" =: "#home" <> "class" =: "text-2xl font-bold text-white hover:text-accent transition-colors") $
+      elAttr "a" ("href" =: "#home" <> "class" =: "text-2xl font-bold text-white hover:text-[#d69e2e] transition-colors") $
         text "innisfillocksmith.ca"
       elAttr "ul" ("class" =: "flex flex-wrap justify-center gap-4 md:gap-8") $ do
         elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsHome $ text "Home"
@@ -71,15 +56,16 @@ navSection =
 
 heroSection :: DomBuilder t m => m ()
 heroSection =
-  elAttr "section" ("id" =: "home" <> "class" =: "relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-dark to-primary overflow-hidden") $ do
+  elAttr "section" ("id" =: "home" <> "class" =: "relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0d1b2a] to-[#1a365d] overflow-hidden") $ do
     elAttr "div" ("class" =: "absolute inset-0 bg-black/20") blank
     elAttr "div" ("class" =: "absolute inset-0 opacity-30" <> "style" =: "background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 40%), radial-gradient(circle at 40% 80%, rgba(255,255,255,0.04) 0%, transparent 45%);") blank
     elAttr "div" ("class" =: "relative z-10 text-center text-white px-8 max-w-4xl") $ do
       elAttr "h1" ("class" =: "text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight") $
         text "Your Trusted Locksmith in Gray Bruce"
-      elAttr "h2" ("class" =: "text-xl md:text-2xl font-light mb-8 opacity-90") $
-        text "Reliable solutions for all your lock needs"
-      elAttr "a" ("href" =: "#contact" <> "class" =: "inline-block bg-accent text-primary-dark font-semibold px-8 py-4 rounded hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-lg transition-all mb-12") $
+      -- 20 years in business badge
+      elAttr "h2" ("class" =: "pt-4 text-xl md:text-2xl font-light mb-8 opacity-90") $
+        text "Over 20 years of proudly delivering reliable solutions for all your lock needs"
+      elAttr "a" ("href" =: "#contact" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all mb-12") $
         text "Get Help Now"
       elAttr "div" ("class" =: "flex flex-col gap-3 mt-8") $ do
         elAttr "p" ("class" =: "flex items-center justify-center gap-2 text-lg") $ do
@@ -90,28 +76,28 @@ heroSection =
           text "519-993-LOCK (5625)"
         elAttr "p" ("class" =: "flex items-center justify-center gap-2 text-lg") $ do
           elAttr "span" ("class" =: "text-xl") $ text "✉️"
-          elAttr "a" ("href" =: "mailto:info@innisfillocksmith.ca" <> "class" =: "text-accent hover:underline") $
+          elAttr "a" ("href" =: "mailto:info@innisfillocksmith.ca" <> "class" =: "text-[#d69e2e] hover:underline") $
             text "info@innisfillocksmith.ca"
 
 aboutSection :: DomBuilder t m => m ()
 aboutSection =
   elAttr "section" ("id" =: "about" <> "class" =: "py-24 bg-white") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
-      elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-primary-dark mb-8 text-center") $
+      elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-8 text-center") $
         text "About Innisfil Locksmith"
       elAttr "div" ("class" =: "max-w-3xl mx-auto text-center") $ do
-        elAttr "p" ("class" =: "text-lg text-gray-600 mb-6 leading-relaxed") $
+        elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-6 leading-relaxed") $
           text "At Innisfil Locksmith, we are your trusted local locksmith service dedicated to providing reliable and prompt solutions for all your lock needs. Whether you require emergency lockout assistance, key duplication, or lock installation for your home or business, our professional team is here to help you feel secure."
-        elAttr "p" ("class" =: "text-lg text-gray-600 mb-8 leading-relaxed") $
+        elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-8 leading-relaxed") $
           text "With years of experience and dedication to our customers, we ensure that your safety is our priority."
-        elAttr "a" ("href" =: "#services" <> "class" =: "inline-block border-2 border-primary text-primary font-semibold px-8 py-4 rounded hover:bg-primary hover:text-white transition-all") $
+        elAttr "a" ("href" =: "#services" <> "class" =: "inline-block border-2 border-[#1a365d] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#1a365d] hover:text-white transition-all") $
           text "Learn More About Us"
 
 servicesSection :: DomBuilder t m => m ()
 servicesSection =
-  elAttr "section" ("id" =: "services" <> "class" =: "py-24 bg-gray-50") $
+  elAttr "section" ("id" =: "services" <> "class" =: "py-24 bg-[#f9fafb]") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
-      elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-primary-dark mb-12 text-center") $
+      elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-12 text-center") $
         text "Our Services"
       elAttr "div" ("class" =: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8") $ do
         serviceCard "🔓" "Emergency Lockout Assistance" "Fast response when you're locked out of your home, car, or business."
@@ -123,20 +109,20 @@ servicesSection =
 
 ctaSection :: DomBuilder t m => m ()
 ctaSection =
-  elAttr "section" ("id" =: "cta" <> "class" =: "py-20 bg-gradient-to-br from-primary to-primary-dark text-white text-center") $
+  elAttr "section" ("id" =: "cta" <> "class" =: "py-20 bg-gradient-to-br from-[#1a365d] to-[#0d1b2a] text-white text-center") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold mb-4") $
         text "Need Immediate Lock Assistance?"
       elAttr "p" ("class" =: "text-xl opacity-90 mb-8") $
         text "We're just a call away for all your locksmith needs."
-      elAttr "a" ("href" =: "#contact" <> "class" =: "inline-block bg-accent text-primary-dark font-semibold px-8 py-4 rounded hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-lg transition-all") $
+      elAttr "a" ("href" =: "#contact" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all") $
         text "Contact Us"
 
 contactSection :: DomBuilder t m => m ()
 contactSection =
   elAttr "section" ("id" =: "contact" <> "class" =: "py-24 bg-white") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
-      elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-primary-dark mb-12 text-center") $
+      elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-12 text-center") $
         text "Get in Touch With Us"
       elAttr "form" ("class" =: "max-w-xl mx-auto" <> "onsubmit" =: "handleSubmit(event)") $ do
         --gridCol Col2 $ do
@@ -155,7 +141,7 @@ contactInput t_ name ph req =
      <> "name" =: name
      <> "placeholder" =: ph
      <> (if req then "required" =: "required" else mempty)
-     <> "class" =: "w-full px-4 py-4 border border-gray-200 rounded text-base focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+     <> "class" =: "w-full px-4 py-4 border border-[#e5e7eb] rounded text-base focus:outline-none focus:border-[#1a365d] focus:ring-2 focus:ring-[#1a365d]/10 transition-all"
       ) blank
 
 contactTextArea :: DomBuilder t m => m ()
@@ -166,7 +152,7 @@ contactTextArea =
      <> "placeholder" =: "Your Message"
      <> "rows" =: "5"
      <> "required" =: "required"
-     <> "class" =: "w-full px-4 py-4 border border-gray-200 rounded text-base resize-y min-h-32 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+     <> "class" =: "w-full px-4 py-4 border border-[#e5e7eb] rounded text-base resize-y min-h-32 focus:outline-none focus:border-[#1a365d] focus:ring-2 focus:ring-[#1a365d]/10 transition-all"
       ) $ text ""
 
 contactCheckbox :: DomBuilder t m => m ()
@@ -179,33 +165,33 @@ contactCheckbox = do
      <> "required" =: "required"
      <> "class" =: "cursor-pointer"
       ) blank
-    elAttr "label" ("for" =: "privacy" <> "class" =: "text-gray-500 cursor-pointer") $
+    elAttr "label" ("for" =: "privacy" <> "class" =: "text-[#6b7280] cursor-pointer") $
       text "I have read and understand the privacy policy."
 
 contactSubmitButton :: DomBuilder t m => m ()
 contactSubmitButton =
   elAttr "button"
     ( "type" =: "submit"
-   <> "class" =: "w-full bg-accent text-primary-dark font-semibold py-4 rounded text-lg hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-lg transition-all"
+   <> "class" =: "w-full bg-[#d69e2e] text-[#1a365d] font-semibold py-4 rounded text-lg hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all"
     ) $
       text "Submit Inquiry"
 
 footerSection :: DomBuilder t m => m ()
 footerSection =
-  elAttr "footer" ("class" =: "bg-primary-dark text-white py-12") $
+  elAttr "footer" ("class" =: "bg-[#0d1b2a] text-white py-12") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $
       elAttr "div" ("class" =: "flex flex-col items-center gap-8") $ do
         elAttr "nav" ("class" =: "flex flex-wrap justify-center gap-8") $ do
-          elAttr "a" ("href" =: "#home" <> "class" =: "opacity-80 hover:opacity-100 hover:text-accent transition-all") $ text "Home"
-          elAttr "a" ("href" =: "#about" <> "class" =: "opacity-80 hover:opacity-100 hover:text-accent transition-all") $ text "About Us"
-          elAttr "a" ("href" =: "#services" <> "class" =: "opacity-80 hover:opacity-100 hover:text-accent transition-all") $ text "Services"
-          elAttr "a" ("href" =: "#contact" <> "class" =: "opacity-80 hover:opacity-100 hover:text-accent transition-all") $ text "Contact"
+          elAttr "a" ("href" =: "#home" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Home"
+          elAttr "a" ("href" =: "#about" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "About Us"
+          elAttr "a" ("href" =: "#services" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Services"
+          elAttr "a" ("href" =: "#contact" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Contact"
         elAttr "div" mempty $
           elAttr "h3" ("class" =: "text-2xl font-bold") $ text "innisfillocksmith.ca"
         elAttr "div" ("class" =: "text-sm opacity-70") $ do
-          elAttr "a" ("href" =: "/legal-notice" <> "class" =: "hover:text-accent transition-colors") $ text "Legal Notice"
+          elAttr "a" ("href" =: "/legal-notice" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Legal Notice"
           elAttr "span" ("class" =: "mx-2") $ text "|"
-          elAttr "a" ("href" =: "/privacy" <> "class" =: "hover:text-accent transition-colors") $ text "Privacy Policy"
+          elAttr "a" ("href" =: "/privacy" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Privacy Policy"
 
 scriptSection :: DomBuilder t m => m ()
 scriptSection =
@@ -238,7 +224,7 @@ scriptSection =
       ]
 
 linkBaseClasses :: Text
-linkBaseClasses = "text-white font-medium hover:text-accent transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all hover:after:w-full"
+linkBaseClasses = "text-white font-medium hover:text-[#d69e2e] transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#d69e2e] after:transition-all hover:after:w-full"
 
 linkCommonAttrsHome :: Map.Map Text Text
 linkCommonAttrsHome     = "href" =: "#home"    <> "class" =: linkBaseClasses
@@ -259,5 +245,6 @@ serviceCard :: DomBuilder t m => Text -> Text -> Text -> m ()
 serviceCard icon title body =
   elAttr "div" ("class" =: "bg-white p-10 rounded-lg shadow hover:-translate-y-2 hover:shadow-xl transition-all text-center") $ do
     elAttr "div" ("class" =: "text-5xl mb-6") $ text icon
-    elAttr "h3" ("class" =: "text-xl font-bold text-primary-dark mb-4") $ text title
-    elAttr "p" ("class" =: "text-gray-500 leading-relaxed") $ text body
+    elAttr "h3" ("class" =: "text-xl font-bold text-[#0d1b2a] mb-4") $ text title
+    elAttr "p" ("class" =: "text-[#6b7280] leading-relaxed") $ text body
+
