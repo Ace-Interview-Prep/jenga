@@ -38,7 +38,7 @@ data BackendRoute :: * -> * where
   LandingR :: BackendRoute (R MainLandingRoute)
   Api_Login  :: BackendRoute ()
   Api_ResetPassword  :: BackendRoute ()
-
+  Api_Email :: BackendRoute ()
 -- | We have other landing pages, so this is our main one
 data MainLandingRoute :: * -> * where
   AboutUs :: MainLandingRoute ()
@@ -69,6 +69,7 @@ fullRouteEncoder = mkFullRouteEncoder
   -- When unrecognized route, send to landing page
   (FullRoute_Backend LandingBase :/ ())
   (\case
+      Api_Email -> plainR "email"
       Api_Login -> plainR "authenticate"
       Api_ResetPassword -> plainR "resetApi"
       LandingBase -> PathEnd $ unitEncoder mempty

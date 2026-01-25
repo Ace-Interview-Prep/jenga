@@ -24,6 +24,7 @@ import qualified Jenga.Backend.Handlers.Auth.Login as Auth.Login
 import qualified Jenga.Backend.Handlers.Auth.ResetPassword as Auth.ResetPassword
 import Jenga.Backend.Utils.HasConfig
 import Jenga.Backend.Utils.HttpJson
+import Jenga.Backend.Utils.Email
 import Jenga.Backend.Utils.Snap
 import Jenga.Common.Auth
 import Jenga.Common.BeamExtras
@@ -45,6 +46,7 @@ import Data.Pool (Pool, withResource)
 import Control.Exception.Safe (finally)
 import Data.Coerce (coerce)
 import Control.Monad.IO.Class
+import Control.Monad
 
 import Network.Mail.Mime
 import Data.Signed.ClientSession
@@ -55,6 +57,10 @@ import qualified Data.Map as Map
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.ByteString as BS
+
+import Jenga.Common.Errors
+import GHC.Generics hiding (R)
+import Data.Aeson
 
 backend :: Backend BackendRoute FrontendRoute
 backend =
@@ -119,6 +125,25 @@ mkPureConfigsOrAbort dbPool configsDir = do
     , _domainName = domain
     }
 
+
+data ContactUs = ContactUs
+  { name :: T.Text
+  , email :: T.Text
+  , phone :: T.Text
+  , message :: T.Text
+  } deriving (Generic, Show)
+instance FromJSON ContactUs
+displayContactUs :: ContactUs -> Rfx.StaticWidget x ()
+displayContactUs contact = do
+  el "div" $ do
+    el "h3" $ text "Contact Information"
+    el "p" $ text $ "Name: " <> name contact
+    el "p" $ text $ "Email: " <> email contact
+    el "p" $ text $ "Phone: " <> phone contact
+    el "div" $ do
+      el "strong" $ text "Message:"
+      el "p" $ text $ message contact
+  
 backendRun
   :: ((R BackendRoute -> Snap.Snap ()) -> IO a)
   -> IO a
@@ -147,7 +172,19 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
       RhyoliteApp.vesselPipeline
     flip finally wsFinalizer $ do
       liftIO $ serve $ \case
-
+        Api_Email :/ () -> do
+          runEnvT configEnv $ withPublicJSONRequestResponse @Db $ \(contact :: ContactUs) -> do
+            liftIO $ print contact
+            when False $ do
+              mails <- buildNewEmailHtml
+                [Address (Just "Ward Caven") "wardcaven@gmail.com"]
+                "New Contact Us Submission"
+                (displayContactUs contact)
+                
+              forM_ mails $ \m -> sendEmailIfNotLocal (_emailConfig configEnv) m
+            pure $ (Right () :: Either (BackendError ()) ())
+            --Auth.Login.loginHandler @Db email_pass
+          
         BackendRoute_Missing :/ _ ->
           -- routeEncoder was not matched
           Snap.writeText "404 Page not found"
