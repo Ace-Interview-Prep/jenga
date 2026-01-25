@@ -175,13 +175,12 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
         Api_Email :/ () -> do
           runEnvT configEnv $ withPublicJSONRequestResponse @Db $ \(contact :: ContactUs) -> do
             liftIO $ print contact
-            when False $ do
-              mails <- buildNewEmailHtml
-                [Address (Just "Ward Caven") "wardcaven@gmail.com"]
-                "New Contact Us Submission"
-                (displayContactUs contact)
+            mails <- buildNewEmailHtml
+              [Address (Just "Ward Caven") "wardcaven@gmail.com"]
+              "New Contact Us Submission"
+              (displayContactUs contact)
                 
-              forM_ mails $ \m -> sendEmailIfNotLocal (_emailConfig configEnv) m
+            forM_ mails $ \m -> sendEmailIfNotLocal (_emailConfig configEnv) m
             pure $ (Right () :: Either (BackendError ()) ())
             --Auth.Login.loginHandler @Db email_pass
           
