@@ -67,7 +67,7 @@ project ./. ({ pkgs, hackGet, ... }@args:
           ghc-syntax-highlighter = dontHaddock (self.callHackage "ghc-syntax-highlighter" "0.0.6.0" {});
           IStr = super.callPackage thunkSet.IStr {};
           lamarckian = self.callCabal2nix "lamarckian" (hackGet thunkSet.lamarckian) {};
-          lamarckian-core = self.callCabal2nix "lamarckian-core" (hackGet thunkSet.lamarckian) {};
+          lamarckian-core = self.callCabal2nix "lamarckian-core" (hackGet thunkSet.lamarckian-core) {};
           bytestring-aeson-orphans = doJailbreak (super.bytestring-aeson-orphans);
           beam-automigrate = doHaddock (super.beam-automigrate);
           rhyolite-beam-task-worker-backend = dontCheck (super.rhyolite-beam-task-worker-backend);
