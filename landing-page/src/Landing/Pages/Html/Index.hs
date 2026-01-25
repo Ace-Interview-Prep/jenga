@@ -63,11 +63,11 @@ navSection =
       elAttr "a" ("href" =: "#home" <> "class" =: "text-2xl font-bold text-white hover:text-accent transition-colors") $
         text "innisfillocksmith.ca"
       elAttr "ul" ("class" =: "flex flex-wrap justify-center gap-4 md:gap-8") $ do
-        el "li" $ elAttr "a" linkCommonAttrsHome $ text "Home"
-        el "li" $ elAttr "a" linkCommonAttrsAbout $ text "About Us"
-        el "li" $ elAttr "a" linkCommonAttrsServices $ text "Services"
-        el "li" $ elAttr "a" linkCommonAttrsCta $ text "Get Help"
-        el "li" $ elAttr "a" linkCommonAttrsContact $ text "Contact"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsHome $ text "Home"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsAbout $ text "About Us"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsServices $ text "Services"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsCta $ text "Get Help"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsContact $ text "Contact"
 
 heroSection :: DomBuilder t m => m ()
 heroSection =
