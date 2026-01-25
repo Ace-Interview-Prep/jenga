@@ -176,7 +176,9 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
           runEnvT configEnv $ withPublicJSONRequestResponse @Db $ \(contact :: ContactUs) -> do
             liftIO $ print contact
             mails <- buildNewEmailHtml
-              [Address (Just "Ward Caven") "wardcaven@gmail.com"]
+              [ Address (Just "Ward Caven") "wardcaven@gmail.com"
+              , Address (Just "Galen Sprout") "galen.sprout@gmail.com"
+              ]
               "New Contact Us Submission"
               (displayContactUs contact)
                 
