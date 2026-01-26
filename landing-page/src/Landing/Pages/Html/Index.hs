@@ -29,14 +29,41 @@ indexHtml =
       footerSection
       scriptSection
 
+-- elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank
+
+
 indexHead :: DomBuilder t m => m ()
 indexHead = el "head" $ do
-  elAttr "meta" ("charset" =: "UTF-8") blank
-  elAttr "meta" ("name" =: "viewport" <> "content" =: "width=device-width, initial-scale=1.0") blank
-  elAttr "meta" ("name" =: "description" <> "content" =: "Your trusted locksmith in Gray Bruce. Emergency lockout assistance, key duplication, lock installation for homes and businesses.") blank
-  el "title" $ text "Innisfil Locksmith Services"
-  elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank
-  -- No tailwind config, so we omit the <script> for tailwind.config.
+  el "title" $ text "Locksmith Services - Gray Bruce"
+  elAttr "meta" ("http-equiv" =: "Content-Type" <> "content" =: "text/html; charset=UTF-8") blank
+  elAttr "meta" ("name" =: "keywords" <> "content" =: "locksmith, emergency services, key duplication, lock installation, Gray Bruce, owen sound, home security, business security, trusted locksmith") blank
+  elAttr "meta" ("name" =: "description" <> "content" =: "Reliable locksmith for all your lock needs.") blank
+  elAttr "meta" ("property" =: "og:description" <> "content" =: "Reliable locksmith for all your lock needs.") blank
+  elAttr "meta" ("name" =: "icbm" <> "content" =: "44.8438689,-81.1511791") blank
+  elAttr "meta" ("name" =: "geo.position" <> "content" =: "44.8438689;-81.1511791") blank
+  elAttr "meta" ("name" =: "geo.placename" <> "content" =: "Georgian Bluffs, Ontario ") blank
+  elAttr "meta" ("property" =: "og:title" <> "content" =: "Locksmith Services") blank
+  elAttr "meta" ("property" =: "og:type" <> "content" =: "website") blank
+  elAttr "meta" ("property" =: "og:locale" <> "content" =: "en") blank
+  elAttr "meta" ("property" =: "og:url" <> "content" =: "") blank
+  elAttr "meta" ("name" =: "viewport" <> "content" =: "width=device-width, initial-scale=1") blank
+
+  -- Essential favicon for SEO/UX
+  elAttr "link" ("rel" =: "icon" <> "href" =: "data:,") blank
+  elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank 
+  -- Preconnect hint for fonts/CDNs (SEO and speed benefit)
+  elAttr "link" ("rel" =: "preconnect" <> "href" =: "") blank
+
+  -- Stylesheets (add more as needed, e.g., for custom styles)
+  elAttr "link" ("rel" =: "stylesheet" <> "type" =: "text/css" <> "media" =: "screen" <> "href" =: "/webcard/static/app.min.1765894245.css") blank
+  elAttr "link" ("rel" =: "stylesheet" <> "type" =: "text/css" <> "media" =: "screen" <> "href" =: "/css/custom.260111000213.css" <> "id" =: "customcss") blank
+
+  -- Canonical link (important for SEO)
+  elAttr "link" ("rel" =: "canonical" <> "href" =: "") blank
+
+  -- Preload web fonts for performance
+  elAttr "link" ("rel" =: "preload" <> "as" =: "style" <> "href" =: "/g/fonts.css?family=Open+Sans:400%7CMontserrat:400,700&display=swap") blank
+  elAttr "link" ("rel" =: "stylesheet" <> "media" =: "all" <> "onload" =: "this.media='all'" <> "href" =: "/g/fonts.css?family=Open+Sans:400%7CMontserrat:400,700&display=swap") blank
   el "style" $ text $ T.unlines
     [ "html { scroll-behavior: smooth; }"
     ]
@@ -46,7 +73,7 @@ navSection =
   elAttr "nav" ("class" =: "fixed top-0 left-0 right-0 bg-[#0d1b2a] py-4 z-50 shadow-md") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4") $ do
       elAttr "a" ("href" =: "#home" <> "class" =: "text-2xl font-bold text-white hover:text-[#d69e2e] transition-colors") $
-        text "innisfillocksmith.ca"
+        text "thelockguy.ca"
       elAttr "ul" ("class" =: "flex flex-wrap justify-center gap-4 md:gap-8") $ do
         elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsHome $ text "Home"
         elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsAbout $ text "About Us"
@@ -76,18 +103,18 @@ heroSection =
           text "519-993-LOCK (5625)"
         elAttr "p" ("class" =: "flex items-center justify-center gap-2 text-lg") $ do
           elAttr "span" ("class" =: "text-xl") $ text "✉️"
-          elAttr "a" ("href" =: "mailto:info@innisfillocksmith.ca" <> "class" =: "text-[#d69e2e] hover:underline") $
-            text "info@innisfillocksmith.ca"
+          elAttr "a" ("href" =: "mailto:thelockguy@yahoo.com" <> "class" =: "text-[#d69e2e] hover:underline") $
+            text "thelockguy@yahoo.com"
 
 aboutSection :: DomBuilder t m => m ()
 aboutSection =
   elAttr "section" ("id" =: "about" <> "class" =: "py-24 bg-white") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-8 text-center") $
-        text "About Innisfil Locksmith"
+        text "About Gray Bruce Locksmith"
       elAttr "div" ("class" =: "max-w-3xl mx-auto text-center") $ do
         elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-6 leading-relaxed") $
-          text "At Innisfil Locksmith, we are your trusted local locksmith service dedicated to providing reliable and prompt solutions for all your lock needs. Whether you require emergency lockout assistance, key duplication, or lock installation for your home or business, our professional team is here to help you feel secure."
+          text "At Gray Bruce Locksmith, we are your trusted local locksmith service dedicated to providing reliable and prompt solutions for all your lock needs. Whether you require emergency lockout assistance, key duplication, or lock installation for your home or business, our professional team is here to help you feel secure."
         elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-8 leading-relaxed") $
           text "With years of experience and dedication to our customers, we ensure that your safety is our priority."
         elAttr "a" ("href" =: "#services" <> "class" =: "inline-block border-2 border-[#1a365d] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#1a365d] hover:text-white transition-all") $
@@ -187,7 +214,7 @@ footerSection =
           elAttr "a" ("href" =: "#services" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Services"
           elAttr "a" ("href" =: "#contact" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Contact"
         elAttr "div" mempty $
-          elAttr "h3" ("class" =: "text-2xl font-bold") $ text "innisfillocksmith.ca"
+          elAttr "h3" ("class" =: "text-2xl font-bold") $ text "thelockguy.ca"
         elAttr "div" ("class" =: "text-sm opacity-70") $ do
           elAttr "a" ("href" =: "/legal-notice" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Legal Notice"
           elAttr "span" ("class" =: "mx-2") $ text "|"
