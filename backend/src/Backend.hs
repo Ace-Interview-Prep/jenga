@@ -181,8 +181,9 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
               ]
               "New Contact Us Submission"
               (displayContactUs contact)
-                
-            forM_ mails $ \m -> sendEmailIfNotLocal (_emailConfig configEnv) m
+            liftIO $ print mails
+            x <- forM mails $ \m -> sendEmailIfNotLocal (_emailConfig configEnv) m
+            liftIO $ print x
             pure $ (Right () :: Either (BackendError ()) ())
             --Auth.Login.loginHandler @Db email_pass
           
