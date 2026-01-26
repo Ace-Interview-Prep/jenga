@@ -72,6 +72,43 @@ indexHead = el "head" $ do
     [ "html { scroll-behavior: smooth; }"
     ]
 
+  elAttr "script" ("type" =: "application/ld+json") $ text $ T.unlines
+    [ "{"
+    , "  \"@context\": \"https://schema.org\","
+    , "  \"@type\": \"Locksmith\","
+    , "  \"name\": \"Gray Bruce Locksmith\","
+    , "  \"url\": \"https://thelockguy.ca\","
+    , "  \"telephone\": \"+1-519-993-5625\","
+    , "  \"email\": \"thelockguy@yahoo.com\","
+    , "  \"address\": {"
+    , "    \"@type\": \"PostalAddress\","
+    , "    \"streetAddress\": \"381067 Concession 17\","
+    , "    \"addressLocality\": \"Georgian Bluffs\","
+    , "    \"addressRegion\": \"ON\","
+    , "    \"addressCountry\": \"CA\""
+    , "  },"
+    , "  \"areaServed\": {"
+    , "    \"@type\": \"Place\","
+    , "    \"name\": \"Gray Bruce\""
+    , "  },"
+    , "  \"description\": \"Your trusted local locksmith service in Gray Bruce providing emergency lockout assistance, key duplication, lock installation, and rekeying services.\","
+    , "  \"openingHours\": \"Mo-Su 00:00-23:59\","
+    , "  \"priceRange\": \"$$\","
+    , "  \"hasOfferCatalog\": {"
+    , "    \"@type\": \"OfferCatalog\","
+    , "    \"name\": \"Locksmith Services\","
+    , "    \"itemListElement\": ["
+    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Emergency Lockout Assistance\"}},"
+    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Key Duplication\"}},"
+    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Lock Installation for Homes\"}},"
+    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Lock Installation for Businesses\"}},"
+    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Rekeying Services\"}},"
+    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"High-Security Lock Solutions\"}}"
+    , "    ]"
+    , "  }"
+    , "}"
+    ]
+
 navSection :: DomBuilder t m => m ()
 navSection =
   elAttr "nav" ("class" =: "fixed top-0 left-0 right-0 bg-[#0d1b2a] py-4 z-50 shadow-md") $
