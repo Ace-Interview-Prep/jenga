@@ -44,6 +44,7 @@ import Database.Beam.Postgres (Connection)
 
 import Data.Pool (Pool, withResource)
 import Control.Exception.Safe (finally)
+import Control.Exception (try, SomeException)
 import Data.Coerce (coerce)
 import Control.Monad.IO.Class
 import Control.Monad
@@ -174,16 +175,19 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
       liftIO $ serve $ \case
         Api_Email :/ () -> do
           runEnvT configEnv $ withPublicJSONRequestResponse @Db $ \(contact :: ContactUs) -> do
-            liftIO $ print contact
-            mails <- buildNewEmailHtml
-              [ Address (Just "Ward Caven") "wardcaven@gmail.com"
-              , Address (Just "Galen Sprout") "galen.sprout@gmail.com"
-              ]
-              "New Contact Us Submission"
-              (displayContactUs contact)
-            liftIO $ print mails
-            x <- forM mails $ \m -> sendEmailIfNotLocal (_emailConfig configEnv) m
-            liftIO $ print x
+            do 
+              liftIO $ print contact
+              mails <- buildNewEmailHtml
+                [ Address (Just "Ward Caven") "wardcaven@gmail.com"
+                , Address (Just "Galen Sprout") "galen.sprout@gmail.com"
+                ]
+                "New Contact Us Submission"
+                (displayContactUs contact)
+              liftIO $ print mails
+              x <- forM mails $ \m -> do
+                _x_ :: (Either SomeException (Either T.Text ())) <- liftIO $ try $ runEnvT configEnv $ sendEmailIfNotLocal (_emailConfig configEnv) m
+                pure ()
+              liftIO $ print x
             pure $ (Right () :: Either (BackendError ()) ())
             --Auth.Login.loginHandler @Db email_pass
           
