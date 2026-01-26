@@ -186,7 +186,7 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
               liftIO $ print mails
               x <- forM mails $ \m -> do
                 _x_ :: (Either SomeException (Either T.Text ())) <- liftIO $ try $ runEnvT configEnv $ sendEmailIfNotLocal (_emailConfig configEnv) m
-                print _x_
+                liftIO $ print _x_
                 pure ()
               liftIO $ print x
             pure $ (Right () :: Either (BackendError ()) ())
