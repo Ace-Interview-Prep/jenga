@@ -37,7 +37,9 @@ data ConfigEnv = ConfigEnv
   , _baseURI :: URI
   , _domainName :: DomainOption
   -- Add more environment information here
+  , _sendGridAPIKey :: SGKey 
   }
+newtype SGKey = SGKey { getSGKey :: T.Text }
 type EnvT m a = ReaderT ConfigEnv m a
 
 instance HasConfig ConfigEnv (IEncoder (ObR.R (FullRoute BackendRoute FrontendRoute)) PageName) where

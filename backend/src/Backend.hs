@@ -44,10 +44,8 @@ import Database.Beam.Postgres (Connection)
 
 import Data.Pool (Pool, withResource)
 import Control.Exception.Safe (finally)
-import Control.Exception (try, SomeException)
 import Data.Coerce (coerce)
 import Control.Monad.IO.Class
-import Control.Monad
 
 import Network.Mail.Mime
 import Data.Signed.ClientSession
@@ -61,8 +59,17 @@ import qualified Data.ByteString as BS
 
 import Jenga.Common.Errors
 import GHC.Generics hiding (R)
-import Data.Aeson
+import Data.Aeson as Aeson
 
+import Network.HTTP.Types.Status
+-- {-# LANGUAGE OverloadedStrings #-}
+
+-- module SendGrid (sendEmail) where
+
+import Data.Text (Text)
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
+--import qualified Data.ByteString.Char8 as BS
 backend :: Backend BackendRoute FrontendRoute
 backend =
   Backend
@@ -102,6 +109,12 @@ mkPureConfigsOrAbort dbPool configsDir = do
       fileCnts <- T.unpack . T.strip . T.decodeUtf8 <$> configsDir Map.!? "common/ngrokRoute"
       URI.parseURI fileCnts
 
+    sendGridKey = 
+      case T.unpack . T.strip . T.decodeUtf8 <$> configsDir Map.!? "backend/sendgridkey" of
+        Nothing -> error "no email key"
+        Just k -> T.pack k
+    
+    
     domain :: DomainOption
     domain =
       fromMaybe (error "no domain we can set cookies for") $
@@ -124,8 +137,42 @@ mkPureConfigsOrAbort dbPool configsDir = do
     , _routeEncoder = checkedFullRouteEncoder
     , _baseURI = baseUri
     , _domainName = domain
+    , _sendGridAPIKey = SGKey sendGridKey
     }
 
+-- Can be HTML.
+sendEmailAPI :: SGKey -> Text -> Text -> Text -> Text -> IO (Either String ())
+sendEmailAPI (SGKey key_) toEmail toName subject bodyContent = do
+  manager <- newManager tlsManagerSettings
+  
+  let requestBody_ = object
+        [ "personalizations" .= 
+            [ object [ "to" .= [ object [ "email" .= toEmail, "name" .= toName ] ] ]
+            ]
+        , "from" .= object [ "email" .= ("galen@aceinterviewprep.io" :: Text) ]
+        , "subject" .= subject
+        , "content" .= 
+          [ object [ "type" .= ("text/plain" :: Text), "value" .= bodyContent ]
+          , object [ "type" .= ("text/html" :: Text), "value" .= bodyContent ]
+          ]
+        ]
+  
+  initialRequest <- parseRequest "https://api.sendgrid.com/v3/mail/send"
+  let request = initialRequest
+        { method = "POST"
+        , requestHeaders = 
+            [ ("Authorization", "Bearer " <> T.encodeUtf8 key_)
+            , ("Content-Type", "application/json")
+            ]
+        , requestBody = RequestBodyLBS (Aeson.encode requestBody_)
+        }
+  
+  response <- httpLbs request manager
+  let status = statusCode (responseStatus response)
+  
+  if status >= 200 && status < 300
+    then pure (Right ())
+    else pure (Left $ "SendGrid error: " <> show status)
 
 data ContactUs = ContactUs
   { name :: T.Text
@@ -177,18 +224,12 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
           runEnvT configEnv $ withPublicJSONRequestResponse @Db $ \(contact :: ContactUs) -> do
             do 
               liftIO $ print contact
-              mails <- buildNewEmailHtml
-                [ Address (Just "Ward Caven") "wardcaven@gmail.com"
-                , Address (Just "Galen Sprout") "galen.sprout@gmail.com"
-                ]
-                "New Contact Us Submission"
-                (displayContactUs contact)
-              liftIO $ print mails
-              x <- forM mails $ \m -> do
-                _x_ :: (Either SomeException (Either T.Text ())) <- liftIO $ try $ runEnvT configEnv $ sendEmailIfNotLocal (_emailConfig configEnv) m
-                liftIO $ print _x_
-                pure ()
-              liftIO $ print x
+              ((), bs) <- liftIO $ renderStatic $ displayContactUs contact
+              let html = T.decodeUtf8 bs
+
+              liftIO $ do
+                print =<< sendEmailAPI (_sendGridAPIKey configEnv) "wardcaven@gmail.com" "Ward Caven" "New Contact Us Submission" html
+                print =<< sendEmailAPI (_sendGridAPIKey configEnv) "galen.sprout@gmail.com" "Galen" "TheLockGuy: New Contact Us Submission" html
             pure $ (Right () :: Either (BackendError ()) ())
             --Auth.Login.loginHandler @Db email_pass
           
