@@ -5,8 +5,6 @@
 module Landing.Pages.Html.Index where
 
 import Landing.Static (static)
--- import Classh
--- import Classh.Reflex
 import Reflex.Dom
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -16,8 +14,8 @@ indexHs :: DomBuilder t m => m ()
 indexHs = indexHtml
 
 indexHtml :: DomBuilder t m => m ()
-indexHtml = 
-  elAttr "div" ("lang" =: "en") $ do
+indexHtml =
+  elAttr "html" ("lang" =: "en") $ do  -- use <html> instead of <div lang=...>
     indexHead
     elAttr "body" ("class" =: "font-sans text-[#374151] bg-white") $ do
       navSection
@@ -29,30 +27,36 @@ indexHtml =
       footerSection
       scriptSection
 
--- elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank
-
-
 indexHead :: DomBuilder t m => m ()
 indexHead = el "head" $ do
   el "title" $ text "Locksmith Services - Gray Bruce"
-  elAttr "meta" ("http-equiv" =: "Content-Type" <> "content" =: "text/html; charset=UTF-8") blank
-  elAttr "meta" ("name" =: "keywords" <> "content" =: "locksmith, emergency services, key duplication, lock installation, Gray Bruce, owen sound, home security, business security, trusted locksmith") blank
-  elAttr "meta" ("name" =: "description" <> "content" =: "Reliable locksmith for all your lock needs.") blank
-  elAttr "meta" ("property" =: "og:description" <> "content" =: "Reliable locksmith for all your lock needs.") blank
+  elAttr "meta"
+    ("http-equiv" =: "Content-Type" <>
+     "content" =: "text/html; charset=UTF-8") blank
+  -- SEO: Provide a real meta description (required for best practices)
+  elAttr "meta"
+    ("name" =: "description" <>
+     "content" =: "Gray Bruce Locksmith provides fast, reliable locksmith services including emergency lockout assistance, key duplication, lock installation, rekeying, and commercial security solutions in Georgian Bluffs, Owen Sound, and the entire Grey Bruce region. Over 20 years of trusted experience. Call 519-993-LOCK (5625) for your security needs.") blank
+  elAttr "meta"
+    ("name" =: "keywords" <>
+     "content" =: "locksmith, emergency services, key duplication, lock installation, Gray Bruce, Owen Sound, home security, business security, rekeying, commercial locksmith, Georgian Bluffs, trusted locksmith, 24 hour locksmith, lock repair, high-security locks") blank
+  elAttr "meta"
+    ("property" =: "og:description" <>
+     "content" =: "Gray Bruce Locksmith: expert lockout help, lock installation, rekeying, and more for homes and businesses with 20+ years experience.") blank
   elAttr "meta" ("name" =: "icbm" <> "content" =: "44.8438689,-81.1511791") blank
   elAttr "meta" ("name" =: "geo.position" <> "content" =: "44.8438689;-81.1511791") blank
-  elAttr "meta" ("name" =: "geo.placename" <> "content" =: "Georgian Bluffs, Ontario ") blank
-  elAttr "meta" ("property" =: "og:title" <> "content" =: "Locksmith Services") blank
+  elAttr "meta" ("name" =: "geo.placename" <> "content" =: "Georgian Bluffs, Ontario") blank
+  elAttr "meta" ("property" =: "og:title" <> "content" =: "Locksmith Services - Gray Bruce") blank
   elAttr "meta" ("property" =: "og:type" <> "content" =: "website") blank
-  elAttr "meta" ("property" =: "og:locale" <> "content" =: "en") blank
-  elAttr "meta" ("property" =: "og:url" <> "content" =: "") blank
+  elAttr "meta" ("property" =: "og:locale" <> "content" =: "en_CA") blank
+  elAttr "meta" ("property" =: "og:url" <> "content" =: "https://thelockguy.ca/") blank
   elAttr "meta" ("name" =: "viewport" <> "content" =: "width=device-width, initial-scale=1") blank
 
   -- Essential favicon for SEO/UX
   elAttr "link" ("rel" =: "icon" <> "href" =: "data:,") blank
-  elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank 
-  -- Preconnect hint for fonts/CDNs (SEO and speed benefit)
-  elAttr "link" ("rel" =: "preconnect" <> "href" =: "") blank
+  elAttr "link" ("rel" =: "stylesheet" <> "href" =: $(static "css/styles.css")) blank
+  elAttr "link" ("rel" =: "preconnect" <> "href" =: "https://fonts.googleapis.com") blank
+  elAttr "link" ("rel" =: "preconnect" <> "href" =: "https://fonts.gstatic.com" <> "crossorigin" =: "anonymous") blank
 
   -- Stylesheets (add more as needed, e.g., for custom styles)
   elAttr "link" ("rel" =: "stylesheet" <> "type" =: "text/css" <> "media" =: "screen" <> "href" =: "/webcard/static/app.min.1765894245.css") blank

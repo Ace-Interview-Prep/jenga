@@ -255,7 +255,9 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
         LandingR :/ landingRoute ->
           -- serve all other landing pages under landing/
           runEnvT configEnv $ selectLandingPage landingRoute
-
+        Api_RobotsTxt :/ () -> do
+          Snap.modifyResponse $ Snap.setContentType "text/plain"
+          Snap.writeText "User-agent: *\nAllow: /"
 -- -- Build a welcome letter as HTML through Reflex
 -- chooseWelcomeLetter :: UserType -> Auth.ResetPassword.PasswordState -> (Auth.ResetPassword.Subject, StaticWidget x ())
 -- chooseWelcomeLetter userType passState = case (passState, userType) of
