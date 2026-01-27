@@ -22,6 +22,12 @@ import qualified Reflex.Dom.Core as Rfx
 
 import Control.Monad.Trans.Reader
 
+--experimental
+-- import qualified Data.Text.Encoding as T
+-- import Text.Email.Validate
+
+
+
 requestHandler
   :: ConfigEnv
   -> RequestHandler
@@ -40,13 +46,14 @@ requestHandler cfgEnv = RequestHandler $ \case
           @BackendRoute
           @Notify
           FrontendRoute_ResetPassword
-          email
+          (email)
     PublicRequest_Signup newUserEmail -> do
       flip runReaderT cfgEnv $ do
-        withErrorReporting @Db $ Auth.Signup.userSignup
+        
+        withErrorReporting @Db $ Auth.Signup.userSignupHandler
           @Db
           @BackendRoute
-          (unEmail newUserEmail)
+          (newUserEmail)
           FrontendRoute_ResetPassword
           genericNewAccountMkEmail
   ApiRequest_Private authToken req -> do

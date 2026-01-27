@@ -11,7 +11,7 @@ module Frontend.Auth.Signup where
 
 import Common.Route
 
-import Jenga.Frontend.Auth.Signup
+import Jenga.Frontend.Auth.UserSignup
 import Classh
 import Classh.Reflex
 import Templates.Partials.Buttons
@@ -46,7 +46,7 @@ newSignup
   => m ()
 newSignup = mdo
   domData <- newSignup_TMPL domCfg
-  domCfg <- newSignup_FRP (ApiRequest_Public . PublicRequest_Signup) domData
+  domCfg <- newUserSignup_FRP (ApiRequest_Public . PublicRequest_Signup) domData
   pure () --- $ _resetPasswordConfig_result domCfg
 
 newSignup_TMPL
@@ -56,8 +56,8 @@ newSignup_TMPL
      , Prerender t m
      , Template t m
      )
-  => SignupConfig t
-  -> m (SignupData t m)
+  => UserSignupConfig t
+  -> m (UserSignupData t m)
 newSignup_TMPL cfg = authFormTemplate hectorRecommendation $ do
   authFormTitle "Create your account"
   elClass "p" "text-xl font-[Sarabun] mb-10 text-gray-400 text-center" $ text "Let's get started!"
@@ -93,8 +93,4 @@ newSignup_TMPL cfg = authFormTemplate hectorRecommendation $ do
       routeLink (FrontendRoute_RequestNewPassword :/ ()) $ text "Forgot password?"
 
 
-  pure $ SignupData email emailConfirm agreeToTerms submit
-
-seeTerms :: DomBuilder t m => m ()
-seeTerms = do
-  text "insert terms"
+  pure $ UserSignupData email emailConfirm agreeToTerms submit

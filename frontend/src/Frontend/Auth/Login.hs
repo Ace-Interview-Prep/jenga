@@ -54,7 +54,11 @@ login ::
   => ReaderT cfg m (Event t (AuthToken, UserType))
 login = mdo
   loginData <- loginTemplate' loginCfg
-  loginCfg <- login_FRP (Api_Login :/ ()) (FrontendRoute_RequestNewPassword :/ ()) loginData
+  loginCfg <- login_FRP
+    (Api_Login :/ ())
+    (FrontendRoute_RequestNewPassword :/ ())
+    (FrontendRoute_Signup :/ ())
+    loginData
   pure $ _loginConfig_token loginCfg
 
 loginTemplate'
@@ -81,4 +85,14 @@ loginTemplate' cfg = authFormTemplate hectorRecommendation $ do
                       , text_size .~~ Base
                       , custom .~ "cursor-pointer"
                       ]) "Forgot password?"
-  return $ LoginData username password submit forgotPassword
+  goSignup <- fmap (domEvent Click . fst) $ do
+    elClass' "div" $(classh' [w .~~ TWSize_Full
+                             , custom .~ "text-center"
+                             , mt .~~ TWSize 8
+                             ]) $
+      textS $(classh' [ text_font .~~ Font_Custom "Sarabun"
+                      , text_color .|~ [White, White, Gray C500]
+                      , text_size .~~ Base
+                      , custom .~ "cursor-pointer"
+                      ]) "Signup"
+  return $ LoginData username password submit forgotPassword goSignup

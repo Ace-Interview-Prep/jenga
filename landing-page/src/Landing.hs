@@ -21,10 +21,14 @@ import Common.Route
 import Obelisk.Route
 
 import Snap
+import qualified Text.MMark as MMark
+import qualified Text.Megaparsec.Error as MP
 import Control.Monad.IO.Class
 import Control.Monad (void)
 --import Control.Monad.IO.Class
+import Lucid.Base (renderText)
 import qualified Data.Map as Map
+import qualified Data.Text.Lazy as LT
 import qualified Data.Text as T
 --import Data.Char
 -- | Route Values/Literals still need to operate independently of each other
@@ -86,4 +90,4 @@ readIMMarkFile fp = do
 --   _ <- error $ show $ Prelude.length _contents
   case MMark.parse fp $ T.pack _contents of
     Left (e) -> pure . Left $ MP.errorBundlePretty e
-    Right bundle -> pure . Right $ LT.toStrict . renderText $ MMark.render $ useExtensions extensions bundle
+    Right bundle -> pure . Right $ LT.toStrict . renderText $ MMark.render $ MMark.useExtensions extensions bundle

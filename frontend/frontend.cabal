@@ -86,6 +86,11 @@ library
 
   exposed-modules:
     Frontend
+    Frontend.Auth.AuthShell
+    Frontend.Auth.Login
+    Frontend.Auth.RequestPasswordReset
+    Frontend.Auth.ResetPassword
+    Frontend.Auth.Signup
   ghc-options: -Wall -O -fno-show-valid-hole-fits
                -- unsafe code
                -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields

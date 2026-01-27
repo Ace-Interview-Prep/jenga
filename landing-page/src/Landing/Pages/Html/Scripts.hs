@@ -1,56 +1,12 @@
 module Landing.Pages.Html.Scripts where
 
-
+import Lamarckian.JS (Script (..))
 import Text.IStr
-import Data.Some (Some(..))
-
--- A simple indexed GADT
-data Value' a where
-  VInt    :: Int    -> Value' Int
-  VBool   :: Bool   -> Value' Bool
-  VString :: String -> Value' String
-
-deriving instance Show (Value' a)
-
--- Wrap examples into Some
-store :: [Some Value']
-store =
-  [ Some (VInt 1)
-  , Some (VBool False)
-  , Some (VString "hi")
-  ]
-
--- Apply one "step" to each case and return a *String* as result
-step :: Some Value' -> String
-step (Some v) = case v of
-  VInt n    -> "incremented: " ++ show (n + 1)
-  VBool b   -> "negated: " ++ show (not b)
-  VString s -> "shouted: " ++ map toUpper s
-  where
-    toUpper c
-      | 'a' <= c && c <= 'z' = toEnum (fromEnum c - 32)
-      | otherwise            = c
-
--- main :: IO ()
--- main = mapM_ (putStrLn . step) store
-
-newtype Script = Script String deriving (Semigroup, Monoid)
-
-
-
-data JSObject = JSObject String
--- | Collect a JS reference and do something with it
--- | Enforces referential transparency is the purpose
-data SyntaxJS a where
-  With :: SyntaxJS (JSObject, (JSObject -> a))
-  -- WithAPI :: ?
-
-
 
 -- Common scripts for all pages
 
 commonHeaderScrollScript :: Script
-commonHeaderScrollScript = Script [istr|
+commonHeaderScrollScript = Script  $ [istr|
   // Header scroll effect (common)
   window.addEventListener("scroll", function () {
     const header = document.getElementById("header");
@@ -69,7 +25,7 @@ commonHeaderScrollScript = Script [istr|
 |]
 
 commonMobileMenuScript :: Script
-commonMobileMenuScript = Script [istr|
+commonMobileMenuScript = Script  $ [istr|
   // Mobile menu functionality (common)
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");
   const mobileMenu = document.getElementById("mobile-menu");
@@ -125,7 +81,7 @@ commonMobileMenuScript = Script [istr|
 |]
 
 commonSwiperScript :: Script
-commonSwiperScript = Script [istr|
+commonSwiperScript = Script  $ [istr|
   // Swiper for testimonials (common)
   function initTestimonialSwiper() {
     if (typeof Swiper !== "undefined") {
@@ -146,7 +102,7 @@ commonSwiperScript = Script [istr|
 |]
 
 commonFadeInObserverScript :: Script
-commonFadeInObserverScript = Script [istr|
+commonFadeInObserverScript = Script  $ [istr|
   // Intersection Observer for fade-in animations (common)
   const observerOptions = {
     threshold: 0.1,
@@ -177,7 +133,7 @@ aboutUsScript = mconcat
   , commonMobileMenuScript
   , commonSwiperScript
   , commonFadeInObserverScript
-  , Script [istr|
+  , Script  $ [istr|
       // About Us: Counter animation for statistics
       function animateCounter(element) {
         const targetAttr = element.getAttribute("data-target") || "0";
@@ -236,7 +192,7 @@ blogScript = mconcat
   , commonMobileMenuScript
   , commonSwiperScript
   , commonFadeInObserverScript
-  , Script [istr|
+  , Script  $ [istr|
       // Blog: Testimonial navigation buttons
       const testimonialSwiper = document.querySelector('.testimonial-swiper') && typeof Swiper !== "undefined" ? new Swiper(".testimonial-swiper") : null;
       const testimonialPrev = document.getElementById("testimonial-prev");
@@ -300,7 +256,7 @@ contactScript = mconcat
   [ commonHeaderScrollScript
   , commonMobileMenuScript
   , commonFadeInObserverScript
-  , Script [istr|
+  , Script  $ [istr|
       // Contact: Form validation and submission
       const contactForm = document.getElementById("contact-form");
       const submitBtn = document.getElementById("submit-btn");
@@ -452,7 +408,7 @@ engineerScript =
       skill1_png = ""
       skill2_png = ""
       skill3_png = ""
-    in Script [istr|
+    in Script  $ [istr|
       // -------------------------------------
       // Header scroll effect
       // -------------------------------------
@@ -692,7 +648,7 @@ engineerScript_2 =
     [ commonHeaderScrollScript
     , commonMobileMenuScript
     , commonFadeInObserverScript
-    , Script [istr|
+    , Script  $ [istr|
         // Engineer: Skills tab functionality
         const skillsData = {
           communication: {
@@ -807,7 +763,7 @@ faqScript = mconcat
   [ commonHeaderScrollScript
   , commonMobileMenuScript
   , commonFadeInObserverScript
-  , Script [istr|
+  , Script  $ [istr|
 // FAQ: Accordion functionality
 document.querySelectorAll(".accordion-header").forEach((header) => {
   header.addEventListener("click", () => {
@@ -874,7 +830,7 @@ indexScript =
     , commonMobileMenuScript
     , commonSwiperScript
     , commonFadeInObserverScript
-    , Script [istr|
+    , Script  $ [istr|
         // Index: Skills tab functionality
         const skillsData = {
           communication: {
@@ -945,7 +901,7 @@ pricingScript = mconcat
   , commonMobileMenuScript
   , commonSwiperScript
   , commonFadeInObserverScript
-  , Script [istr|
+  , Script  $ [istr|
       // Pricing: Pricing data for different regions
       const pricingData = {
         us: {
