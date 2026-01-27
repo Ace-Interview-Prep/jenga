@@ -10,7 +10,7 @@ module Landing.Pages.Html.Elems where
 import Common.Route
 import Obelisk.Route
 import Reflex.Dom.Core
-import qualified Data.Text as T
+import Data.Text as T
 
 import System.IO.Unsafe
 
@@ -79,3 +79,18 @@ renderLandingR_ =
 
 -- simpleLinkFE :: DomBuilder t m => R FrontendRoute -> m a -> m a
 -- simpleLinkFE = Common.Elems.simpleLinkFE
+
+
+
+--------------------------------------------------------------------------------
+-- Color Palette
+--------------------------------------------------------------------------------
+
+navy, navyDark, navyLight, gold, goldLight, ivory, slate :: Text
+navy      = "0F1C2E"
+navyDark  = "0a1421"
+navyLight = "1a2a3f"
+gold      = "D4A84B"
+goldLight = "E8C876"
+ivory     = "F8F5F0"
+slate     = "64748B"
