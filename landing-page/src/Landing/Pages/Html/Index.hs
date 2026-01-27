@@ -77,8 +77,8 @@ indexHead = el "head" $ do
     , "  \"url\": \"\","
     , "  \"description\": \"Build SEO-optimized, type-safe landing pages and blogs in Haskell using Lamarckian & Jenga.\","
     , "  \"sameAs\": ["
-    , "    \"https://github.com/lazylambda/lamarckian\","
-    , "    \"https://github.com/lazylambda/jenga\""
+    , "    \"https://github.com/augyg/lamarckian\","
+    , "    \"https://github.com/Ace-Interivew-Prep/jenga\""
     , "  ]"
     , "}"
     ]
@@ -131,7 +131,7 @@ aboutSection =
           text "Growth by usage was Lamarckian’s formerly famous idea that strengths could be passed through generations. In the same way, Lamarckian (and Jenga) let you build landing pages that evolve by heavy user usage."
         elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-8 leading-relaxed") $
           text "A Haskell/Reflex.Dom static site library, Lamarckian brings compile-time safety, effortless markdown for blogs, SEO optimization, and ergonomic integration with modern CSS frameworks."
-        elAttr "a" ("href" =: "https://github.com/lazylambda/lamarckian" <> "class" =: "inline-block border-2 border-[#1a365d] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#1a365d] hover:text-white transition-all") $
+        elAttr "a" ("href" =: "https://github.com/augyg/lamarckian" <> "class" =: "inline-block border-2 border-[#1a365d] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#1a365d] hover:text-white transition-all") $
           text "View on GitHub"
 
 servicesSection :: DomBuilder t m => m ()
@@ -156,7 +156,7 @@ ctaSection =
         text "Ready to Grow Your Next Project?"
       elAttr "p" ("class" =: "text-xl opacity-90 mb-8") $
         text "Get started evolving your landing page, blog, or static site with Lamarckian & Jenga."
-      elAttr "a" ("href" =: "https://github.com/lazylambda/lamarckian" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all") $
+      elAttr "a" ("href" =: "https://github.com/augyg/lamarckian" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all") $
         text "GitHub • Lamarckian"
 
 contactSection :: DomBuilder t m => m ()
@@ -229,9 +229,9 @@ footerSection =
         elAttr "div" mempty $
           elAttr "h3" ("class" =: "text-2xl font-bold") $ text "Jenga • Lamarckian"
         elAttr "div" ("class" =: "text-sm opacity-70") $ do
-          elAttr "a" ("href" =: "https://github.com/lazylambda/lamarckian" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Lamarckian on GitHub"
+          elAttr "a" ("href" =: "https://github.com/augyg/lamarckian" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Lamarckian on GitHub"
           elAttr "span" ("class" =: "mx-2") $ text "|"
-          elAttr "a" ("href" =: "https://github.com/lazylambda/jenga" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Jenga on GitHub"
+          elAttr "a" ("href" =: "https://github.com/augyg/jenga" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Jenga on GitHub"
 
 scriptSection :: DomBuilder t m => m ()
 scriptSection =
