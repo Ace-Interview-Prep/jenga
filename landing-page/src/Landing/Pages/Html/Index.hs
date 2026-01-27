@@ -10,6 +10,7 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Map as Map
 
+-- | Entry-point for the Jenga/Lamarckian landing page example.
 indexHs :: DomBuilder t m => m ()
 indexHs = indexHtml
 
@@ -29,28 +30,24 @@ indexHtml =
 
 indexHead :: DomBuilder t m => m ()
 indexHead = el "head" $ do
-  el "title" $ text "Locksmith Services - Gray Bruce"
+  el "title" $ text "Jenga/Lamarckian - Example Landing Page"
   elAttr "meta"
     ("http-equiv" =: "Content-Type" <>
      "content" =: "text/html; charset=UTF-8") blank
-  -- SEO: Provide a real meta description (required for best practices)
   elAttr "meta"
     ("name" =: "description" <>
-     "content" =: "Gray Bruce Locksmith provides fast, reliable locksmith services including emergency lockout assistance, key duplication, lock installation, rekeying, and commercial security solutions in Georgian Bluffs, Owen Sound, and the entire Grey Bruce region. Over 20 years of trusted experience. Call 519-993-LOCK (5625) for your security needs.") blank
+     "content" =: "A sample SEO-optimized landing page built with Jenga and the Lamarckian library for Reflex.Dom. Effortlessly build static pages in Haskell with type safety and modern UX.") blank
   elAttr "meta"
     ("name" =: "keywords" <>
-     "content" =: "locksmith, emergency services, key duplication, lock installation, Gray Bruce, Owen Sound, home security, business security, rekeying, commercial locksmith, Georgian Bluffs, trusted locksmith, 24 hour locksmith, lock repair, high-security locks") blank
+     "content" =: "Jenga, Lamarckian, Reflex.Dom, Landing Page, Haskell, Static Site, SEO, Markdown, Blogging, Mockups, Web Framework") blank
   elAttr "meta"
     ("property" =: "og:description" <>
-     "content" =: "Gray Bruce Locksmith: expert lockout help, lock installation, rekeying, and more for homes and businesses with 20+ years experience.") blank
-  elAttr "meta" ("name" =: "icbm" <> "content" =: "44.8438689,-81.1511791") blank
-  elAttr "meta" ("name" =: "geo.position" <> "content" =: "44.8438689;-81.1511791") blank
-  elAttr "meta" ("name" =: "geo.placename" <> "content" =: "Georgian Bluffs, Ontario") blank
-  elAttr "meta" ("property" =: "og:title" <> "content" =: "Locksmith Services - Gray Bruce") blank
+     "content" =: "Growth by usage: Lamarckian and Jenga let you build SEO-optimized, type-safe landing pages and blogs that evolve with your needs!") blank
+  elAttr "meta" ("name" =: "viewport" <> "content" =: "width=device-width, initial-scale=1") blank
+  elAttr "meta" ("property" =: "og:title" <> "content" =: "Jenga/Lamarckian - Example Landing Page") blank
   elAttr "meta" ("property" =: "og:type" <> "content" =: "website") blank
   elAttr "meta" ("property" =: "og:locale" <> "content" =: "en_CA") blank
-  elAttr "meta" ("property" =: "og:url" <> "content" =: "https://thelockguy.ca/") blank
-  elAttr "meta" ("name" =: "viewport" <> "content" =: "width=device-width, initial-scale=1") blank
+  elAttr "meta" ("property" =: "og:url" <> "content" =: "") blank
 
   -- Essential favicon for SEO/UX
   elAttr "link" ("rel" =: "icon" <> "href" =: "data:,") blank
@@ -75,51 +72,29 @@ indexHead = el "head" $ do
   elAttr "script" ("type" =: "application/ld+json") $ text $ T.unlines
     [ "{"
     , "  \"@context\": \"https://schema.org\","
-    , "  \"@type\": \"Locksmith\","
-    , "  \"name\": \"Gray Bruce Locksmith\","
-    , "  \"url\": \"https://thelockguy.ca\","
-    , "  \"telephone\": \"+1-519-993-5625\","
-    , "  \"email\": \"thelockguy@yahoo.com\","
-    , "  \"address\": {"
-    , "    \"@type\": \"PostalAddress\","
-    , "    \"streetAddress\": \"381067 Concession 17\","
-    , "    \"addressLocality\": \"Georgian Bluffs\","
-    , "    \"addressRegion\": \"ON\","
-    , "    \"addressCountry\": \"CA\""
-    , "  },"
-    , "  \"areaServed\": {"
-    , "    \"@type\": \"Place\","
-    , "    \"name\": \"Gray Bruce\""
-    , "  },"
-    , "  \"description\": \"Your trusted local locksmith service in Gray Bruce providing emergency lockout assistance, key duplication, lock installation, and rekeying services.\","
-    , "  \"openingHours\": \"Mo-Su 00:00-23:59\","
-    , "  \"priceRange\": \"$$\","
-    , "  \"hasOfferCatalog\": {"
-    , "    \"@type\": \"OfferCatalog\","
-    , "    \"name\": \"Locksmith Services\","
-    , "    \"itemListElement\": ["
-    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Emergency Lockout Assistance\"}},"
-    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Key Duplication\"}},"
-    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Lock Installation for Homes\"}},"
-    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Lock Installation for Businesses\"}},"
-    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"Rekeying Services\"}},"
-    , "      {\"@type\": \"Offer\", \"itemOffered\": {\"@type\": \"Service\", \"name\": \"High-Security Lock Solutions\"}}"
-    , "    ]"
-    , "  }"
+    , "  \"@type\": \"WebSite\","
+    , "  \"name\": \"Jenga / Lamarckian Example\","
+    , "  \"url\": \"\","
+    , "  \"description\": \"Build SEO-optimized, type-safe landing pages and blogs in Haskell using Lamarckian & Jenga.\","
+    , "  \"sameAs\": ["
+    , "    \"https://github.com/lazylambda/lamarckian\","
+    , "    \"https://github.com/lazylambda/jenga\""
+    , "  ]"
     , "}"
     ]
+
 
 navSection :: DomBuilder t m => m ()
 navSection =
   elAttr "nav" ("class" =: "fixed top-0 left-0 right-0 bg-[#0d1b2a] py-4 z-50 shadow-md") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4") $ do
       elAttr "a" ("href" =: "#home" <> "class" =: "text-2xl font-bold text-white hover:text-[#d69e2e] transition-colors") $
-        text "thelockguy.ca"
+        text "Lamarckian / Jenga"
       elAttr "ul" ("class" =: "flex flex-wrap justify-center gap-4 md:gap-8") $ do
         elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsHome $ text "Home"
-        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsAbout $ text "About Us"
-        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsServices $ text "Services"
-        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsCta $ text "Get Help"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsAbout $ text "About"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsServices $ text "Features"
+        elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsCta $ text "Get Started"
         elClass "li" " md:block hidden" $ elAttr "a" linkCommonAttrsContact $ text "Contact"
 
 heroSection :: DomBuilder t m => m ()
@@ -129,74 +104,71 @@ heroSection =
     elAttr "div" ("class" =: "absolute inset-0 opacity-30" <> "style" =: "background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 40%), radial-gradient(circle at 40% 80%, rgba(255,255,255,0.04) 0%, transparent 45%);") blank
     elAttr "div" ("class" =: "relative z-10 text-center text-white px-8 max-w-4xl") $ do
       elAttr "h1" ("class" =: "text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight") $
-        text "Your Trusted Locksmith in Gray Bruce"
-      -- 20 years in business badge
+        text "Landing Pages that Evolve with Usage"
       elAttr "h2" ("class" =: "pt-4 text-xl md:text-2xl font-light mb-8 opacity-90") $
-        text "Over 20 years of proudly delivering reliable solutions for all your lock needs"
-      elAttr "a" ("href" =: "#contact" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all mb-12") $
-        text "Get Help Now"
+        text "Jenga + Lamarckian: Static site framework for growth by usage, SEO, and type-safety."
+      elAttr "a" ("href" =: "#cta" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all mb-12") $
+        text "Get Started"
       elAttr "div" ("class" =: "flex flex-col gap-3 mt-8") $ do
         elAttr "p" ("class" =: "flex items-center justify-center gap-2 text-lg") $ do
-          elAttr "span" ("class" =: "text-xl") $ text "📍"
-          text "381067 Concession 17, Georgian Bluffs, Ontario"
+          elAttr "span" ("class" =: "text-xl") $ text "🌱"
+          text "Growth by usage: landing pages that adapt and compile for your needs"
         elAttr "p" ("class" =: "flex items-center justify-center gap-2 text-lg") $ do
-          elAttr "span" ("class" =: "text-xl") $ text "📞"
-          text "519-993-LOCK (5625)"
+          elAttr "span" ("class" =: "text-xl") $ text "💡"
+          text "Full type-safety: errors at compile time, not in production"
         elAttr "p" ("class" =: "flex items-center justify-center gap-2 text-lg") $ do
-          elAttr "span" ("class" =: "text-xl") $ text "✉️"
-          elAttr "a" ("href" =: "mailto:thelockguy@yahoo.com" <> "class" =: "text-[#d69e2e] hover:underline") $
-            text "thelockguy@yahoo.com"
+          elAttr "span" ("class" =: "text-xl") $ text "🚀"
+          text "Jenga & Lamarckian: Modern Haskell static web frameworks"
 
 aboutSection :: DomBuilder t m => m ()
 aboutSection =
   elAttr "section" ("id" =: "about" <> "class" =: "py-24 bg-white") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-8 text-center") $
-        text "About Gray Bruce Locksmith"
+        text "About Lamarckian"
       elAttr "div" ("class" =: "max-w-3xl mx-auto text-center") $ do
         elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-6 leading-relaxed") $
-          text "At Gray Bruce Locksmith, we are your trusted local locksmith service dedicated to providing reliable and prompt solutions for all your lock needs. Whether you require emergency lockout assistance, key duplication, or lock installation for your home or business, our professional team is here to help you feel secure."
+          text "Growth by usage was Lamarckian’s formerly famous idea that strengths could be passed through generations. In the same way, Lamarckian (and Jenga) let you build landing pages that evolve by heavy user usage."
         elAttr "p" ("class" =: "text-lg text-[#4b5563] mb-8 leading-relaxed") $
-          text "With years of experience and dedication to our customers, we ensure that your safety is our priority."
-        elAttr "a" ("href" =: "#services" <> "class" =: "inline-block border-2 border-[#1a365d] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#1a365d] hover:text-white transition-all") $
-          text "Learn More About Us"
+          text "A Haskell/Reflex.Dom static site library, Lamarckian brings compile-time safety, effortless markdown for blogs, SEO optimization, and ergonomic integration with modern CSS frameworks."
+        elAttr "a" ("href" =: "https://github.com/lazylambda/lamarckian" <> "class" =: "inline-block border-2 border-[#1a365d] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#1a365d] hover:text-white transition-all") $
+          text "View on GitHub"
 
 servicesSection :: DomBuilder t m => m ()
 servicesSection =
   elAttr "section" ("id" =: "services" <> "class" =: "py-24 bg-[#f9fafb]") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-12 text-center") $
-        text "Our Services"
+        text "Lamarckian Features"
       elAttr "div" ("class" =: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8") $ do
-        serviceCard "🔓" "Emergency Lockout Assistance" "Fast response when you're locked out of your home, car, or business."
-        serviceCard "🔑" "Key Duplication" "Precise copies of your keys for family, employees, or backup."
-        serviceCard "🏠" "Lock Installation for Homes" "Secure your home with professional lock installation services."
-        serviceCard "🏢" "Lock Installation for Businesses" "Commercial-grade security solutions for your business."
-        serviceCard "🔄" "Rekeying Services" "Change your locks without replacing the hardware."
-        serviceCard "🛡️" "High-Security Lock Solutions" "Advanced security systems for maximum protection."
+        serviceCard "📝" "Effortless Blogging" "Markdown usage and integration in Reflex, an excellent static dom builder."
+        serviceCard "🗺️" "Static Landing Pages" "Routing and accurate link generation, SEO-optimized, without SPA performance cost."
+        serviceCard "⚡"  "Quick Mockups" "Easy compatibility with ClasshSS and reflex-classh for UI dev—use Haskell or JS."
+        serviceCard "🦾" "Compile-time Safety" "DOM composition and static page generation moved to the compiler, catching errors earlier."
+        serviceCard "🔒" "Type Safe & Flexible" "Get the full power of GHC, with strong types, functional composition and customizability."
+        serviceCard "🚦" "No Silent Failures" "Avoid indexing mistakes and argument mismatches in DOM layouts—the compiler helps!"
 
 ctaSection :: DomBuilder t m => m ()
 ctaSection =
   elAttr "section" ("id" =: "cta" <> "class" =: "py-20 bg-gradient-to-br from-[#1a365d] to-[#0d1b2a] text-white text-center") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold mb-4") $
-        text "Need Immediate Lock Assistance?"
+        text "Ready to Grow Your Next Project?"
       elAttr "p" ("class" =: "text-xl opacity-90 mb-8") $
-        text "We're just a call away for all your locksmith needs."
-      elAttr "a" ("href" =: "#contact" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all") $
-        text "Contact Us"
+        text "Get started evolving your landing page, blog, or static site with Lamarckian & Jenga."
+      elAttr "a" ("href" =: "https://github.com/lazylambda/lamarckian" <> "class" =: "inline-block bg-[#d69e2e] text-[#1a365d] font-semibold px-8 py-4 rounded hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all") $
+        text "GitHub • Lamarckian"
 
 contactSection :: DomBuilder t m => m ()
 contactSection =
   elAttr "section" ("id" =: "contact" <> "class" =: "py-24 bg-white") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-12 text-center") $
-        text "Get in Touch With Us"
+        text "Contact / Feedback"
       elAttr "form" ("class" =: "max-w-xl mx-auto" <> "onsubmit" =: "handleSubmit(event)") $ do
-        --gridCol Col2 $ do
         contactInput "text"    "name"    "Your Name"    True
         contactInput "email"   "email"   "Your Email"   True
-        contactInput "tel"     "phone"   "Your Phone"   False
+        contactInput "text"    "feedback"   "Feedback or questions about Lamarckian/Jenga"   True
         contactTextArea
         contactCheckbox
         contactSubmitButton
@@ -217,7 +189,7 @@ contactTextArea =
   elAttr "div" ("class" =: "mb-6") $
     elAttr "textarea"
       ( "name" =: "message"
-     <> "placeholder" =: "Your Message"
+     <> "placeholder" =: "Project details, suggestions, or feature requests"
      <> "rows" =: "5"
      <> "required" =: "required"
      <> "class" =: "w-full px-4 py-4 border border-[#e5e7eb] rounded text-base resize-y min-h-32 focus:outline-none focus:border-[#1a365d] focus:ring-2 focus:ring-[#1a365d]/10 transition-all"
@@ -242,7 +214,7 @@ contactSubmitButton =
     ( "type" =: "submit"
    <> "class" =: "w-full bg-[#d69e2e] text-[#1a365d] font-semibold py-4 rounded text-lg hover:bg-[#b7791f] hover:-translate-y-0.5 hover:shadow-lg transition-all"
     ) $
-      text "Submit Inquiry"
+      text "Send Message"
 
 footerSection :: DomBuilder t m => m ()
 footerSection =
@@ -251,15 +223,15 @@ footerSection =
       elAttr "div" ("class" =: "flex flex-col items-center gap-8") $ do
         elAttr "nav" ("class" =: "flex flex-wrap justify-center gap-8") $ do
           elAttr "a" ("href" =: "#home" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Home"
-          elAttr "a" ("href" =: "#about" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "About Us"
-          elAttr "a" ("href" =: "#services" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Services"
+          elAttr "a" ("href" =: "#about" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "About"
+          elAttr "a" ("href" =: "#services" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Features"
           elAttr "a" ("href" =: "#contact" <> "class" =: "opacity-80 hover:opacity-100 hover:text-[#d69e2e] transition-all") $ text "Contact"
         elAttr "div" mempty $
-          elAttr "h3" ("class" =: "text-2xl font-bold") $ text "thelockguy.ca"
+          elAttr "h3" ("class" =: "text-2xl font-bold") $ text "Jenga • Lamarckian"
         elAttr "div" ("class" =: "text-sm opacity-70") $ do
-          elAttr "a" ("href" =: "/legal-notice" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Legal Notice"
+          elAttr "a" ("href" =: "https://github.com/lazylambda/lamarckian" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Lamarckian on GitHub"
           elAttr "span" ("class" =: "mx-2") $ text "|"
-          elAttr "a" ("href" =: "/privacy" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Privacy Policy"
+          elAttr "a" ("href" =: "https://github.com/lazylambda/jenga" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Jenga on GitHub"
 
 scriptSection :: DomBuilder t m => m ()
 scriptSection =
@@ -269,7 +241,7 @@ scriptSection =
       , "  event.preventDefault();"
       , "  const formData = new FormData(event.target);"
       , "  const data = Object.fromEntries(formData);"
-      , "  fetch('/email', {"
+      , "  fetch('/', {"
       , "    method: 'POST',"
       , "    headers: {"
       , "      'Content-Type': 'application/json'"
@@ -281,7 +253,7 @@ scriptSection =
       , "    return response.json().catch(() => ({}));"
       , "  })"
       , "  .then(() => {"
-      , "    alert('Thank you for your inquiry! We will get back to you soon.');"
+      , "    alert('Thank you for your message! This is a Lamarckian/Jenga demo form.');"
       , "    event.target.reset();"
       , "  })"
       , "  .catch((error) => {"
