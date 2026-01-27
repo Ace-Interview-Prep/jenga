@@ -161,11 +161,12 @@ contactSection =
   elAttr "section" ("id" =: "contact" <> "class" =: "py-24 bg-white") $
     elAttr "div" ("class" =: "max-w-6xl mx-auto px-8") $ do
       elAttr "h2" ("class" =: "text-3xl md:text-4xl font-bold text-[#0d1b2a] mb-12 text-center") $
-        text "Contact / Feedback"
+        text "Get in Touch With Us"
       elAttr "form" ("class" =: "max-w-xl mx-auto" <> "onsubmit" =: "handleSubmit(event)") $ do
+        --gridCol Col2 $ do
         contactInput "text"    "name"    "Your Name"    True
         contactInput "email"   "email"   "Your Email"   True
-        contactInput "text"    "feedback"   "Feedback or questions about Lamarckian/Jenga"   True
+        contactInput "tel"     "phone"   "Your Phone"   False
         contactTextArea
         contactCheckbox
         contactSubmitButton
