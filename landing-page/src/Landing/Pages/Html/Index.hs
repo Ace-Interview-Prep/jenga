@@ -231,7 +231,7 @@ footerSection =
         elAttr "div" ("class" =: "text-sm opacity-70") $ do
           elAttr "a" ("href" =: "https://github.com/augyg/lamarckian" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Lamarckian on GitHub"
           elAttr "span" ("class" =: "mx-2") $ text "|"
-          elAttr "a" ("href" =: "https://github.com/augyg/jenga" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Jenga on GitHub"
+          elAttr "a" ("href" =: "https://github.com/Ace-Interview-Prep/jenga" <> "class" =: "hover:text-[#d69e2e] transition-colors") $ text "Jenga on GitHub"
 
 scriptSection :: DomBuilder t m => m ()
 scriptSection =
