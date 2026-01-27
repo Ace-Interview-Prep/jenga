@@ -55,10 +55,7 @@ indexHead = el "head" $ do
   elAttr "link" ("rel" =: "preconnect" <> "href" =: "https://fonts.googleapis.com") blank
   elAttr "link" ("rel" =: "preconnect" <> "href" =: "https://fonts.gstatic.com" <> "crossorigin" =: "anonymous") blank
 
-  -- Stylesheets (add more as needed, e.g., for custom styles)
-  elAttr "link" ("rel" =: "stylesheet" <> "type" =: "text/css" <> "media" =: "screen" <> "href" =: "/webcard/static/app.min.1765894245.css") blank
-  elAttr "link" ("rel" =: "stylesheet" <> "type" =: "text/css" <> "media" =: "screen" <> "href" =: "/css/custom.260111000213.css" <> "id" =: "customcss") blank
-
+  
   -- Canonical link (important for SEO)
   elAttr "link" ("rel" =: "canonical" <> "href" =: "") blank
 
@@ -241,7 +238,7 @@ scriptSection =
       , "  event.preventDefault();"
       , "  const formData = new FormData(event.target);"
       , "  const data = Object.fromEntries(formData);"
-      , "  fetch('/', {"
+      , "  fetch('/email', {"
       , "    method: 'POST',"
       , "    headers: {"
       , "      'Content-Type': 'application/json'"
