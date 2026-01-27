@@ -42,7 +42,7 @@ indexHtml =
     indexHead
     
     elAttr "body" ("class" =: "font-sans text-[#374151] bg-white") $ do
-      theLockGuyPage
+      mainPageTemplate
       -- navSection
       -- heroSection
       -- aboutSection
