@@ -141,15 +141,15 @@ mkPureConfigsOrAbort dbPool configsDir = do
     }
 
 -- Can be HTML.
-sendEmailAPI :: SGKey -> Text -> Text -> Text -> Text -> IO (Either String ())
-sendEmailAPI (SGKey key_) toEmail toName subject bodyContent = do
+sendEmailAPI :: SGKey -> Address -> Text -> Text -> Text -> Text -> IO (Either String ())
+sendEmailAPI (SGKey key_) adminEmail toEmail toName subject bodyContent = do
   manager <- newManager tlsManagerSettings
   
   let requestBody_ = object
         [ "personalizations" .= 
             [ object [ "to" .= [ object [ "email" .= toEmail, "name" .= toName ] ] ]
             ]
-        , "from" .= object [ "email" .= ("galen@aceinterviewprep.io" :: Text) ]
+        , "from" .= object [ "email" .= (addressEmail adminEmail :: Text) ]
         , "subject" .= subject
         , "content" .= 
           [ object [ "type" .= ("text/plain" :: Text), "value" .= bodyContent ]
@@ -226,10 +226,9 @@ backendRun = \serve -> Cfg.getConfigs >>= flip runConfigsT do
               liftIO $ print contact
               ((), bs) <- liftIO $ renderStatic $ displayContactUs contact
               let html = T.decodeUtf8 bs
-
               liftIO $ do
-                print =<< sendEmailAPI (_sendGridAPIKey configEnv) "wardcaven@gmail.com" "Ward Caven" "New Contact Us Submission" html
-                print =<< sendEmailAPI (_sendGridAPIKey configEnv) "galen.sprout@gmail.com" "Galen" "TheLockGuy: New Contact Us Submission" html
+                let adminEmail = _adminEmail configEnv
+                print =<< sendEmailAPI (_sendGridAPIKey configEnv) adminEmail (addressEmail adminEmail) (fromMaybe "" $ addressName adminEmail) "New Contact Us Submission" html
             pure $ (Right () :: Either (BackendError ()) ())
             --Auth.Login.loginHandler @Db email_pass
           
