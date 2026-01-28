@@ -90,6 +90,7 @@ project ./. ({ pkgs, hackGet, ... }@args:
           snap-extras = doJailbreak (super.snap-extras);
           scrappy-core = super.callPackage (thunkSet.scrappy-core) {};
           scrappy-template = super.callPackage (thunkSet.scrappy-template) {};
+          scrappy-requests = super.callCabal2nix "scrappy-requests" (thunkSet.scrappy-requests) {};
           gargoyle-postgresql-nix = haskellLib.overrideCabal super.gargoyle-postgresql-nix {
             librarySystemDepends = [ pkgs.postgresql_11 ];
           };
