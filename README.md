@@ -115,7 +115,7 @@ We also implicitly run a check when compiling your code to ensure you're style e
 
 ### templates package
 
-Much like a React component library, these are [reflex-dom](https://github.com/reflex-frp/reflex-dom) and [Classh](#classh) based components to be used out of the box. We welcome contributions.
+Much like a React component library, these are [reflex-dom](https://github.com/reflex-frp/reflex-dom) and [Classh](https://github.com/augyg/ClasshSS) based components to be used out of the box. We welcome contributions.
 
 [(templates)](https://github.com/Ace-Interview-Prep/templates/tree/master)
 
