@@ -13,6 +13,8 @@ Jenga setup is managed through a fork of Obelisk, so as long as Obelisk is insta
 As a core feature of Nix we only build if we would produce a new build; if we have not changed a dependency then we do not need to rebuild it, which nix handles for us. We simply build as we would anytime:
 
 ```bash
+git clone git@github.com:Ace-Interview-Prep/jenga.git
+cd jenga
 ob run
 ```
 
