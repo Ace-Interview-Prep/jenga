@@ -15,7 +15,7 @@ As a core feature of Nix we only build if we would produce a new build; if we ha
 ```bash
 git clone git@github.com:Ace-Interview-Prep/jenga.git
 cd jenga
-ob run
+ob run -v
 ```
 
 since this is our first time running Jenga, it may just take some time. In the future there will be more support for a Jenga-specific [nix binary cache](https://zero-to-nix.com/concepts/caching/) to make setup quicker.
