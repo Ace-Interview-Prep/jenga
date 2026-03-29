@@ -1,0 +1,15 @@
+[forAnyModule]
+# 1 to account for the implicit Prelude import which is always open/unaliased
+allowedOpenUnaliasedImports = 1
+maximumExportsPlusHeaderUndocumented = 0
+maximumExportsWithoutSince = 0
+moduleHeaderCopyrightMustExistNonEmpty = true
+moduleHeaderDescriptionMustExistNonEmpty = true
+moduleHeaderLicenseMustExistNonEmpty = true
+moduleHeaderMaintainerMustExistNonEmpty = true
+allowedAliasUniqueness = { allAliasesUniqueExcept = [] }
+
+[[forAnyModule.allowedQualifications]]
+module = "Prelude"
+[[forAnyModule.allowedQualifications.importScheme]]
+qualified = { qualifiedPre = true, qualifiedPost = true, unqualified = true }

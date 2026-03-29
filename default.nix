@@ -24,25 +24,11 @@ project ./. ({ pkgs, hackGet, ... }@args:
       packages = {
         landing-page = (hackGet ./landing-page);
       };
-      overrides = pkgs.lib.composeExtensions
-        (pkgs.callPackage (hackGet ./thunks/rhyolite) args).haskellOverrides
-        (self: super: with pkgs.haskell.lib; {
-          rhyolite-beam-task-worker-backend = dontCheck (super.rhyolite-beam-task-worker-backend);
-
-          obelisk-oauth-backend = super.callCabal2nix "obelisk-oauth-backend" (hackGet ./thunks/obelisk-oauth + "/backend") {};
-          obelisk-oauth-common = super.callCabal2nix "obelisk-oauth-common" (hackGet ./thunks/obelisk-oauth + "/common") {};
-
-          jenga-auth-frontend = super.callCabal2nix "jenga-auth-frontend" ( hackGet ./thunks/jenga-auth + "/jenga-auth-frontend" ) {};
-          jenga-auth-common = super.callCabal2nix "jenga-auth-common" ( hackGet ./thunks/jenga-auth + "/jenga-auth-common")  {};
-          jenga-auth-backend = super.callCabal2nix "jenga-auth-backend" ( hackGet ./thunks/jenga-auth + "/jenga-auth-backend" ) {};
-
-          gargoyle-postgresql-nix = haskellLib.overrideCabal super.gargoyle-postgresql-nix {
-            librarySystemDepends = [ pkgs.postgresql_11 ];
-          };
-          backend = haskellLib.overrideCabal super.backend {
-            enableSeparateDataOutput = false;
-          };
-        });
+      overrides = self: super: with pkgs.haskell.lib; {
+        backend = haskellLib.overrideCabal super.backend {
+          enableSeparateDataOutput = false;
+        };
+      };
       staticFiles = {
         staticAssets = {
           path = ./static;

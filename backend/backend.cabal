@@ -128,6 +128,9 @@ library
 
     Backend.Workers.SendEmail
 
+  if impl(ghc >= 9.4)
+    build-depends: henforcer
+    ghc-options: -fplugin Henforcer
   ghc-options: -Wall -Werror -O -threaded -fno-show-valid-hole-fits
                -- -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -O -fno-show-valid-hole-fits -Werror=incomplete-patterns
   default-extensions:
@@ -181,6 +184,9 @@ executable backend
   hs-source-dirs: src-bin
   ghc-options: -Wall -Werror -O -threaded -fno-show-valid-hole-fits
                -- -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -O -threaded -fno-show-valid-hole-fits -Werror=incomplete-patterns
+  if impl(ghc >= 9.4)
+    build-depends: henforcer
+    ghc-options: -fplugin Henforcer
   if impl(ghcjs)
     buildable: False
   build-depends: base

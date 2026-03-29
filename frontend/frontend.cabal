@@ -114,6 +114,9 @@ library
   if impl(ghc >= 8.8)
     ghc-options:
                -Wmissing-deriving-strategies
+  if impl(ghc >= 9.4)
+    build-depends: henforcer
+    ghc-options: -fplugin Henforcer
 
 executable frontend
   main-is: main.hs
@@ -132,6 +135,9 @@ executable frontend
   if impl(ghc >= 8.8)
     ghc-options:
                -Wmissing-deriving-strategies
+  if impl(ghc >= 9.4)
+    build-depends: henforcer
+    ghc-options: -fplugin Henforcer
   if impl(ghcjs)
     ghc-options: -dedupe
     cpp-options: -DGHCJS_BROWSER

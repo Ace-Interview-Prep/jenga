@@ -117,7 +117,7 @@ We also implicitly run a check when compiling your code to ensure you're style e
 
 Much like a React component library, these are [reflex-dom](https://github.com/reflex-frp/reflex-dom) and [Classh](https://github.com/augyg/ClasshSS) based components to be used out of the box. We welcome contributions.
 
-[(templates)](https://github.com/Ace-Interview-Prep/templates/tree/master)
+[(templates)](https://github.com/TypifyDev/templates/tree/master)
 
 ### staticAssets
 
@@ -286,7 +286,7 @@ loginHandler
   -> ReaderT cfg m (Either (BackendError LoginError) (Signed (Id Account), UserType))
 ```
 
-Then you have written enough to have a login feature. See [jenga-auth](https://github.com/Ace-Interview-Prep/jenga-auth) for more details on implementation.
+Then you have written enough to have a login feature. See [jenga-auth](https://github.com/TypifyDev/jenga-auth) for more details on implementation.
 
 Same deal exists for:
 
@@ -645,13 +645,13 @@ One of the core goals of Jenga is to make the Haskell ecosystem ridiculously eas
 
 ## Maintained by Jenga
 
-- [jenga-auth](https://github.com/Ace-Interview-Prep/jenga-auth)
+- [jenga-auth](https://github.com/TypifyDev/jenga-auth)
 - [lamarckian](https://github.com/augyg/lamarckian)
-- [templates](https://github.com/Ace-Interview-Prep/templates)
+- [templates](https://github.com/TypifyDev/templates)
 - [ClasshSS](https://github.com/augyg/ClasshSS)
 - [reflex-classh](https://github.com/augyg/reflex-classh)
-- [scrappy-template](https://github.com/Ace-Interview-Prep/scrappy-template)
-- [scrappy-core](https://github.com/Ace-Interview-Prep/scrappy-core)
+- [scrappy-template](https://github.com/TypifyDev/scrappy-template)
+- [scrappy-core](https://github.com/TypifyDev/scrappy-core)
 - [IStr](https://github.com/augyg/IStr)
 
 ## Documented and used by Jenga, but not maintained by us

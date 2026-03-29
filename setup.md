@@ -4,7 +4,7 @@ On a linux system (including Windows Subsystem For Linux), choose the appropriat
 
 # Step 2: Obelisk
 
-Obelisk explains this pretty well [here](https://github.com/Ace-Interview-Prep/obelisk?tab=readme-ov-file#installing-obelisk)
+Obelisk explains this pretty well [here](https://github.com/TypifyDev/obelisk?tab=readme-ov-file#installing-obelisk)
 
 # Step 3: Jenga/Check Installation
 
@@ -13,7 +13,7 @@ Jenga setup is managed through a fork of Obelisk, so as long as Obelisk is insta
 As a core feature of Nix we only build if we would produce a new build; if we have not changed a dependency then we do not need to rebuild it, which nix handles for us. We simply build as we would anytime:
 
 ```bash
-git clone git@github.com:Ace-Interview-Prep/jenga.git
+git clone git@github.com:TypifyDev/jenga.git
 cd jenga
 ob run -v
 ```
